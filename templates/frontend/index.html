@@ -1,1 +1,1256 @@
-home view
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section Start -->
+<div class="hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-4 col-md-6 order-1">
+                <!-- Hero Content Start -->
+                <div class="hero-content">
+                    <!-- Section Title Start -->
+                    <div class="section-title">
+                        <h3 class="wow fadeInUp">Welcome to Dew Trust Bank International — your global banking partner.
+                        </h3>
+                        <h1 class="text-anime-style-3" data-cursor="-opaque">Supporting your everyday banking with ease.
+                        </h1>
+                        <p class="wow fadeInUp" data-wow-delay="0.25s">
+                            Simple and secure personal banking available in branch, online, or on your device.
+                        </p>
+                    </div>
+                    <!-- Section Title End -->
+
+                    <div class="hero-content-form">
+                        <form id="heroForm" action="#" method="POST">
+                            <div class="form-group">
+                                <a href="register.html" class="btn-highlighted">Open Account</a>
+                                <a href="login.html" class="btn-default">Online banking</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Hero Content End -->
+            </div>
+
+            <div class="col-lg-4 order-lg-2 order-3">
+                <!-- Hero Images Start -->
+                <div class="hero-images">
+                    <!-- Hero Image Start -->
+                    <div class="hero-img">
+                        <figure class="image-anime">
+                            <img src="{% static 'frontend/temp/custom/assets/images/hero-image.jpg' %}" alt="">
+                        </figure>
+                    </div>
+                    <!-- Hero Image End -->
+
+                    <!-- Payment Method Image Start -->
+                    <div class="payment-method-image">
+                        <img src="{% static 'frontend/temp/custom/assets/images/payment-method-image.png' %}" alt="">
+                    </div>
+                    <!-- Payment Method Image End -->
+                </div>
+                <!-- Hero Images End -->
+            </div>
+
+            <div class="col-lg-4 col-md-6 order-lg-3 order-2">
+                <!-- Hero Counter Box Start -->
+                <div class="hero-counter-box">
+                    <!-- Hero Counter Item Start -->
+                    <div class="hero-counter-item">
+                        <h2><span class="counter">13</span>M+</h2>
+                        <p class="wow fadeInUp">The first credit card ever created was made of cardboard and was
+                            introduced by American Express in 1958.</p>
+                    </div>
+                    <!-- Hero Counter Item End -->
+
+                    <!-- Hero Counter Item Start -->
+                    <div class="hero-counter-item">
+                        <h2><span class="counter">0</span>%</h2>
+                        <p class="wow fadeInUp" data-wow-delay="0.25s">We believe that you should keep more of what you
+                            earn. That's why we're proud to offer a 0% commission.</p>
+                    </div>
+                    <!-- Hero Counter Item End -->
+                </div>
+                <!-- Hero Counter Box End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Hero Section End -->
+
+
+<!-- Scrolling Ticker Section Start -->
+<div class="our-scrolling-ticker">
+    <!-- Scrolling Ticker Start -->
+    <div class="scrolling-ticker-box">
+        <div class="scrolling-content">
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                International Banking
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Flexible Mortgage
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Low Rate Loans
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Secured Payments
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Market Data
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Credit/Debit Cards
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Insurance
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Business Loan
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Offshore Account
+            </span>
+
+
+
+            <span><img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">Latest Financial
+                News</span>
+            <span><img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">Security &
+                Trust</span>
+        </div>
+        <div class="scrolling-content">
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                International Banking
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Flexible Mortgage
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Low Rate Loans
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Secured Payments
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Market Data
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Credit/Debit Cards
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Insurance
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Business Loan
+            </span>
+            <span>
+                <img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">
+                Offshore Account
+            </span>
+
+
+
+            <span><img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">Latest Financial
+                News</span>
+            <span><img src="{% static 'frontend/temp/custom/assets/images/asterisk-icon.svg' %}" alt="">Security &
+                Trust</span>
+        </div>
+
+    </div>
+</div>
+<!-- Scrolling Ticker Section End -->
+
+
+<!-- PWA Download Section Start -->
+<div class="pwa-download-section bg-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <!-- PWA Content Start -->
+                <div class="pwa-content">
+                    <div class="section-title">
+                        <h3 class="wow fadeInUp">Mobile Banking App</h3>
+                        <h2 class="text-anime-style-3" data-cursor="-opaque">
+                            Access your banking anytime, anywhere with our mobile app.
+                        </h2>
+                        <p class="wow fadeInUp" data-wow-delay="0.25s">
+                            Install Dew Trust Bank International mobile banking app on your phone for instant access to
+                            your accounts, transfers, bill payments, and more. Available for both Android and iPhone.
+                        </p>
+                    </div>
+
+                    <!-- PWA Install Buttons Start -->
+                    <div class="pwa-install-buttons wow fadeInUp" data-wow-delay="0.5s">
+                        <!-- Android Install Button -->
+                        <button id="installAndroidBtn" class="btn-pwa android-btn" style="display: none;">
+                            <i class="fab fa-android"></i>
+                            <div class="btn-text">
+                                <span class="small-text">Install for</span>
+                                <span class="main-text">Android</span>
+                            </div>
+                        </button>
+
+                        <!-- iOS Install Button -->
+                        <button id="installIOSBtn" class="btn-pwa ios-btn" style="display: none;">
+                            <i class="fab fa-apple"></i>
+                            <div class="btn-text">
+                                <span class="small-text">Install for</span>
+                                <span class="main-text">iPhone</span>
+                            </div>
+                        </button>
+
+                        <!-- Generic Install Button -->
+                        <button id="installGenericBtn" class="btn-pwa generic-btn">
+                            <i class="fas fa-download"></i>
+                            <div class="btn-text">
+                                <span class="small-text">Install</span>
+                                <span class="main-text">Mobile App</span>
+                            </div>
+                        </button>
+                    </div>
+                    <!-- PWA Install Buttons End -->
+
+                    <!-- PWA Features Start -->
+                    <div class="pwa-features wow fadeInUp" data-wow-delay="0.75s">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Works offline</li>
+                            <li><i class="fas fa-check"></i> Fast and secure</li>
+
+                            <li><i class="fas fa-check"></i> No app store needed</li>
+                        </ul>
+                    </div>
+                    <!-- PWA Features End -->
+                </div>
+                <!-- PWA Content End -->
+            </div>
+
+            <div class="col-lg-6">
+                <!-- PWA Image Start -->
+                <div class="pwa-image wow fadeInUp" data-wow-delay="0.5s">
+                    <div
+                        style="text-align: center; padding: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; color: white;">
+                        <i class="fas fa-mobile-alt" style="font-size: 120px; margin-bottom: 20px; opacity: 0.8;"></i>
+                        <h3>Dew Trust Bank Mobile App</h3>
+                        <p>Available for Download</p>
+                        <div style="margin-top: 20px;">
+                            <i class="fab fa-android" style="font-size: 30px; margin: 0 10px; opacity: 0.7;"></i>
+                            <i class="fab fa-apple" style="font-size: 30px; margin: 0 10px; opacity: 0.7;"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- PWA Image End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- PWA Download Section End -->
+
+
+<!-- About Us Section Start -->
+<div class="about-us bg-section">
+    <div class="container">
+        <div class="row section-row align-items-center">
+            <div class="col-lg-7">
+                <!-- Section Title Start -->
+                <div class="section-title">
+                    <h3 class="wow fadeInUp">about us</h3>
+                    <h2 class="text-anime-style-3" data-cursor="-opaque">
+                        Empowering businesses and individuals with expertise
+                    </h2>
+                </div>
+                <!-- Section Title End -->
+            </div>
+
+            <div class="col-lg-5">
+                <!-- Section Title Content Start -->
+                <div class="section-title-content wow fadeInUp" data-wow-delay="0.25s">
+                    <p>
+                        We are committed to guiding businesses and individuals through the complexities of finance with
+                        confidence and clarity. With years of experience in financial planning, investment management,
+                        business consulting.
+                    </p>
+                </div>
+                <!-- Section Title Content End -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <!-- About Company Item Start -->
+                <div class="about-company-item wow fadeInUp">
+                    <div class="icon-box">
+                        <img src="{% static 'frontend/temp/custom/assets/images/icon-about-company-1.svg' %}" alt="">
+                    </div>
+                    <div class="about-company-content">
+                        <h3>expertise you can trust</h3>
+                        <p>
+                            Our skilled team provides dependable insights and strategies, ensuring your financial
+                            decisions are informed and secure.
+                        </p>
+                    </div>
+                </div>
+                <!-- About Company Item End -->
+            </div>
+
+            <div class="col-md-4">
+                <!-- About Company Item Start -->
+                <div class="about-company-item wow fadeInUp" data-wow-delay="0.25s">
+                    <div class="icon-box">
+                        <img src="{% static 'frontend/temp/custom/assets/images/icon-about-company-2.svg' %}" alt="">
+                    </div>
+                    <div class="about-company-content">
+                        <h3>personalized solutions</h3>
+                        <p>
+                            Our personalized solutions are crafted to address your unique financial needs, helping you
+                            achieve your specific goals and aspirations.
+                        </p>
+                    </div>
+                </div>
+                <!-- About Company Item End -->
+            </div>
+
+            <div class="col-md-4">
+                <!-- About Company Item Start -->
+                <div class="about-company-item wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="icon-box">
+                        <img src="{% static 'frontend/temp/custom/assets/images/icon-about-company-3.svg' %}" alt="">
+                    </div>
+                    <div class="about-company-content">
+                        <h3>proven track record</h3>
+                        <p>
+                            Our proven track record demonstrates successful outcomes and client satisfaction through
+                            effective financial solutions.
+                        </p>
+                    </div>
+                </div>
+                <!-- About Company Item End -->
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- About Video Image Start -->
+                <div class="about-video-image bg-section">
+                    <!-- About Image Start -->
+                    <div class="about-us-video">
+                        <figure>
+                            <video autoplay="" muted="" loop="">
+                                <source src="{% static 'frontend/temp/custom/assets/videos/leadz-video.mp4' %}"
+                                    type="video/mp4">
+                            </video>
+                        </figure>
+                    </div>
+                    <!-- About Image End -->
+
+                    <!-- About Video Btn Start -->
+                    <div class="about-video-btn">
+                        <!-- Video Play Button Start -->
+                        <div class="video-play-button">
+                            <a href="#" class="popup-video" data-cursor-text="<>">
+                                <i class="fa fa-play"></i>
+                            </a>
+                        </div>
+                        <!-- Video Play Button End -->
+                    </div>
+                    <!-- About Video Btn End -->
+                </div>
+                <!-- About Video Image End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About Us Section End -->
+
+<!-- Our Services Section Start -->
+<div class="our-services">
+    <div class="container">
+        <div class="row section-row align-items-center">
+            <div class="col-lg-7">
+                <!-- Section Title Start -->
+                <div class="section-title">
+                    <h3 class="wow fadeInUp">our services</h3>
+                    <h2 class="text-anime-style-3" data-cursor="-opaque">
+                        Smart financial solutions designed around your goals
+                    </h2>
+                </div>
+                <!-- Section Title End -->
+            </div>
+
+            <div class="col-lg-5">
+                <!-- Section Title Content Start -->
+                <div class="section-title-content wow fadeInUp" data-wow-delay="0.25s">
+                    <p>
+                        Easily manage your finances with Dew Trust Bank. Transfer funds between accounts, schedule
+                        payments, monitor balances and transactions, set up automated bill payments, and receive
+                        real-time email alerts for full control of your money.
+                    </p>
+                </div>
+                <!-- Section Title Content End -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <!-- Services Box Start -->
+                <div class="service-box wow fadeInUp">
+                    <!-- Services Box Header Start -->
+                    <div class="service-box-header">
+                        <!-- Services Box Tag Start -->
+                        <div class="service-box-tag">
+                            <a href="#">financial planning</a>
+                        </div>
+                        <!-- Services Box Tag End -->
+
+                        <!-- Services Box Title Start -->
+                        <div class="service-box-title">
+                            <h3>Strategic advisory services to accelerate business growth</h3>
+                        </div>
+                        <!-- Services Box Title End -->
+                    </div>
+                    <!-- Services Box Header End -->
+
+                    <!-- Services Box Image Start -->
+                    <div class="service-box-image">
+                        <img src="{% static 'frontend/temp/custom/assets/images/service-box-image-1.png' %}" alt="">
+                    </div>
+                    <!-- Services Box Image End -->
+                </div>
+                <!-- Services Box End -->
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <!-- Services Box Start -->
+                <div class="service-box wow fadeInUp" data-wow-delay="0.25s">
+                    <!-- Services Box Header Start -->
+                    <div class="service-box-header">
+                        <!-- Services Box Tag Start -->
+                        <div class="service-box-tag">
+                            <a href="#">business consulting</a>
+                        </div>
+                        <!-- Services Box Tag End -->
+
+                        <!-- Services Box Title Start -->
+                        <div class="service-box-title">
+                            <h3>Personalized financial planning for a secure future</h3>
+                        </div>
+                        <!-- Services Box Title End -->
+                    </div>
+                    <!-- Services Box Header End -->
+
+                    <!-- Services Box Image Start -->
+                    <div class="service-box-image">
+                        <img src="{% static 'frontend/temp/custom/assets/images/service-box-image-2.png' %}" alt="">
+                    </div>
+                    <!-- Services Box Image End -->
+                </div>
+                <!-- Services Box End -->
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <!-- Services Box Start -->
+                <div class="service-box wow fadeInUp" data-wow-delay="0.5s">
+                    <!-- Services Box Header Start -->
+                    <div class="service-box-header">
+                        <!-- Services Box Tag Start -->
+                        <div class="service-box-tag">
+                            <a href="#">home ownership</a>
+                        </div>
+                        <!-- Services Box Tag End -->
+
+                        <!-- Services Box Title Start -->
+                        <div class="service-box-title">
+                            <h3>Explore our flexible mortgage plans today</h3>
+                        </div>
+                        <!-- Services Box Title End -->
+                    </div>
+                    <!-- Services Box Header End -->
+
+                    <!-- Services Box Image Start -->
+                    <div class="service-box-image">
+                        <img src="{% static 'frontend/temp/custom/assets/images/service-box-image-3.png' %}" alt="">
+                    </div>
+                    <!-- Services Box Image End -->
+                </div>
+                <!-- Services Box End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Our Services Section End -->
+
+
+<!-- Our Expertise Section Start -->
+<div class="our-expertise bg-section">
+    <div class="container">
+        <div class="row section-row align-items-center">
+            <div class="col-lg-7">
+                <!-- Section Title Start -->
+                <div class="section-title">
+                    <h3 class="wow fadeInUp">our expertise</h3>
+                    <h2 class="text-anime-style-3" data-cursor="-opaque">
+                        Driving innovation and excellence in financial solutions
+                    </h2>
+                </div>
+                <!-- Section Title End -->
+            </div>
+
+            <div class="col-lg-5">
+                <!-- Section Title Content Start -->
+                <div class="section-title-content wow fadeInUp" data-wow-delay="0.25s">
+                    <p>
+                        Dew Trust Bank Savings Invest is our enterprise-driven approach to innovation, supporting our
+                        strategy as a forward-focused financial institution. It is about leveraging emerging
+                        technologies
+                        to engage customers and consistently exceed their evolving expectations.
+                    </p>
+                </div>
+                <!-- Section Title Content End -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Sidebar Our Expertise Nav start -->
+                <div class="our-tab-nav wow fadeInUp" data-wow-delay="0.25s">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link btn-highlighted active" id="financial-tab" data-bs-toggle="tab"
+                                data-bs-target="#financial" type="button" role="tab" aria-selected="true">
+                                Financial Planning
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link btn-highlighted" id="business-tab" data-bs-toggle="tab"
+                                data-bs-target="#business" type="button" role="tab" aria-selected="false">
+                                Business Consulting
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link btn-highlighted" id="risk-tab" data-bs-toggle="tab"
+                                data-bs-target="#risk" type="button" role="tab" aria-selected="false">
+                                Risk Management
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link btn-highlighted" id="investment-tab" data-bs-toggle="tab"
+                                data-bs-target="#investment" type="button" role="tab" aria-selected="false">
+                                Investment Management
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Sidebar Our Expertise Nav End -->
+
+                <!-- Expertise Box Start -->
+                <div class="expertise-box tab-content" id="myTabContent">
+
+                    <!-- Financial -->
+                    <div class="expertise-item tab-pane fade show active" id="financial" role="tabpanel">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="expertise-content">
+                                    <div class="expertise-content-header">
+                                        <h3>Benefits of our financial services:</h3>
+                                        <p>
+                                            Empower your financial journey with expert advice, personalized strategies,
+                                            and tailored solutions designed to ensure long-term stability, growth, and
+                                            peace of mind.
+                                        </p>
+                                    </div>
+
+                                    <div class="expertise-content-body">
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-1.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>expert investment management</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-2.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>Social Security and Pension Optimization</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-3.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>business financial planning</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="expertise-btn">
+                                        <a href="contact.html" class="btn-default">contact now</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="expertise-image">
+                                    <figure class="image-anime">
+                                        <img src="{% static 'frontend/temp/custom/assets/images/expertise-financial-img.jpg' %}"
+                                            alt="">
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Business -->
+                    <div class="expertise-item tab-pane fade" id="business" role="tabpanel">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="expertise-content">
+                                    <div class="expertise-content-header">
+                                        <h3>Benefits of our business consulting:</h3>
+                                        <p>
+                                            Empower your business journey with expert advice, tailored strategies,
+                                            and solutions designed to drive sustainable growth and long-term success.
+                                        </p>
+                                    </div>
+
+                                    <div class="expertise-content-body">
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-1.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>expert investment management</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-2.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>Social Security and Pension Optimization</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-3.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>business financial planning</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="expertise-btn">
+                                        <a href="#" class="btn-default">contact now</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="expertise-image">
+                                    <figure class="image-anime">
+                                        <img src="{% static 'frontend/temp/custom/assets/images/expertise-financial-img.jpg' %}"
+                                            alt="">
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Risk -->
+                    <div class="expertise-item tab-pane fade" id="risk" role="tabpanel">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="expertise-content">
+                                    <div class="expertise-content-header">
+                                        <h3>Benefits of our risk management:</h3>
+                                        <p>
+                                            Strengthen your risk strategy with expert guidance, proactive planning,
+                                            and solutions designed to ensure stability and resilience.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Investment -->
+                    <div class="expertise-item tab-pane fade" id="investment" role="tabpanel">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="expertise-content">
+                                    <div class="expertise-content-header">
+                                        <h3>Benefits of our investment management:</h3>
+                                        <p>
+                                            Grow your wealth with expert investment strategies, personalized guidance,
+                                            and long-term financial planning designed for success.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Expertise Box End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Our Expertise Section End -->
+
+
+<!-- Why Choose Us Secton Start -->
+<div class="why-choose-us">
+    <div class="container">
+        <div class="row section-row align-items-center">
+            <div class="col-lg-7">
+                <!-- Section Title Start -->
+                <div class="section-title">
+                    <h3 class="wow fadeInUp">why choose us</h3>
+                    <h2 class="text-anime-style-3" data-cursor="-opaque">
+                        Expert driven, client focused solutions for your financial success
+                    </h2>
+                </div>
+                <!-- Section Title End -->
+            </div>
+
+            <div class="col-lg-5">
+                <!-- Section Title Content Start -->
+                <div class="section-title-content wow fadeInUp" data-wow-delay="0.25s">
+                    <p>
+                        Our team of experienced professionals delivers tailored, results oriented financial strategies
+                        designed to meet your unique goals. At Dew Trust Bank, we prioritize transparency, trust,
+                        and long term financial growth.
+                    </p>
+                </div>
+                <!-- Section Title Content End -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <!-- Why Choose Item Start -->
+                <div class="why-choose-item wow fadeInUp">
+                    <div class="why-choose-image">
+                        <figure>
+                            <img src="{% static 'frontend/temp/custom/assets/images/why-choose-image-1.jpg' %}" alt="">
+                        </figure>
+                    </div>
+
+                    <div class="why-choose-no">
+                        <h3>01</h3>
+                    </div>
+
+                    <div class="why-choose-body">
+                        <div class="why-choose-content">
+                            <h3>unmatched expertise</h3>
+                            <p>
+                                Our professionals bring deep industry experience and proven financial knowledge to
+                                deliver reliable solutions.
+                            </p>
+                        </div>
+
+                        <div class="why-choose-btn">
+                            <a href="#" class="readmore-btn">
+                                <img src="{% static 'frontend/temp/custom/assets/images/icon-arrow.svg' %}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <!-- Why Choose Item Start -->
+                <div class="why-choose-item wow fadeInUp" data-wow-delay="0.25s">
+                    <div class="why-choose-image">
+                        <figure>
+                            <img src="{% static 'frontend/temp/custom/assets/images/why-choose-image-2.jpg' %}" alt="">
+                        </figure>
+                    </div>
+
+                    <div class="why-choose-no">
+                        <h3>02</h3>
+                    </div>
+
+                    <div class="why-choose-body">
+                        <div class="why-choose-content">
+                            <h3>cash flow optimization</h3>
+                            <p>
+                                Improve financial stability through structured budgeting, savings strategies, and
+                                smarter money management.
+                            </p>
+                        </div>
+
+                        <div class="why-choose-btn">
+                            <a href="#" class="readmore-btn">
+                                <img src="{% static 'frontend/temp/custom/assets/images/icon-arrow.svg' %}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <!-- Why Choose Item Start -->
+                <div class="why-choose-item wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="why-choose-image">
+                        <figure>
+                            <img src="{% static 'frontend/temp/custom/assets/images/why-choose-image-3.jpg' %}" alt="">
+                        </figure>
+                    </div>
+
+                    <div class="why-choose-no">
+                        <h3>03</h3>
+                    </div>
+
+                    <div class="why-choose-body">
+                        <div class="why-choose-content">
+                            <h3>financial accountability</h3>
+                            <p>
+                                Stay aligned with your financial goals through consistent monitoring, guidance, and
+                                performance tracking.
+                            </p>
+                        </div>
+
+                        <div class="why-choose-btn">
+                            <a href="#" class="readmore-btn">
+                                <img src="{% static 'frontend/temp/custom/assets/images/icon-arrow.svg' %}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Why Choose Us Secton End -->
+
+
+<!-- Our Approach Section Start -->
+<div class="our-approach bg-section">
+    <div class="container">
+        <div class="row section-row align-items-center">
+            <div class="col-lg-7">
+                <!-- Section Title Start -->
+                <div class="section-title">
+                    <h3 class="wow fadeInUp">our approach</h3>
+                    <h2 class="text-anime-style-3" data-cursor="-opaque">
+                        Client centric strategy for lasting financial success
+                    </h2>
+                </div>
+                <!-- Section Title End -->
+            </div>
+
+            <div class="col-lg-5">
+                <!-- Section Title Content Start -->
+                <div class="section-title-content wow fadeInUp" data-wow-delay="0.25s">
+                    <p>
+                        We believe a successful financial journey begins with understanding your unique needs and
+                        aspirations.
+                        Our approach at Dew Trust Bank is built on collaboration, transparency, and deep financial
+                        expertise.
+                    </p>
+                </div>
+                <!-- Section Title Content End -->
+            </div>
+        </div>
+
+        <div class="row align-items-end">
+
+            <div class="col-lg-3 col-md-6">
+                <!-- Approach item Start -->
+                <div class="approach-item approach-box-1 wow fadeInUp">
+
+                    <div class="approach-btn">
+                        <a href="#" class="readmore-btn">
+                            <img src="{% static 'frontend/temp/custom/assets/images/icon-arrow.svg' %}" alt="">
+                        </a>
+                    </div>
+
+                    <div class="approach-image">
+                        <img src="{% static 'frontend/temp/custom/assets/images/approach-image-1.png' %}" alt="">
+                    </div>
+
+                    <div class="approach-body">
+                        <div class="approach-tags">
+                            <a href="#">focus</a>
+                        </div>
+
+                        <div class="approach-content">
+                            <h3>Transparent global exchange rates</h3>
+                            <p>
+                                We don't charge hidden fees on international card usage and pass Mastercard exchange
+                                rates directly to you with full transparency.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <!-- Approach item Start -->
+                <div class="approach-item approach-box-2 wow fadeInUp" data-wow-delay="0.25s">
+
+                    <div class="approach-content">
+                        <h3>
+                            We design customized financial strategies aligned with your personal and business goals.
+                        </h3>
+                    </div>
+
+                    <div class="approach-image">
+                        <img src="{% static 'frontend/temp/custom/assets/images/approach-image-2.png' %}" alt="">
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <!-- Approach item Start -->
+                <div class="approach-item approach-box-3 wow fadeInUp" data-wow-delay="0.5s">
+
+                    <div class="approach-header">
+
+                        <div class="approach-body">
+                            <div class="approach-content">
+                                <p>Stay informed</p>
+                                <h3>Enroll in Online Banking</h3>
+                            </div>
+
+                            <div class="approach-tags">
+                                <a href="#">100%</a> secure
+                            </div>
+                        </div>
+
+                        <div class="approach-btn">
+                            <a href="#" class="readmore-btn">
+                                <img src="{% static 'frontend/temp/custom/assets/images/icon-arrow.svg' %}" alt="">
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <div class="approach-image">
+                        <img src="{% static 'frontend/temp/custom/assets/images/approach-image-3.png' %}" alt="">
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <!-- Approach item Start -->
+                <div class="approach-item approach-box-4 wow fadeInUp" data-wow-delay="0.75s">
+
+                    <div class="approach-btn">
+                        <a href="#" class="readmore-btn">
+                            <img src="{% static 'frontend/temp/custom/assets/images/icon-arrow.svg' %}" alt="">
+                        </a>
+                    </div>
+
+                    <div class="approach-image">
+                        <img src="{% static 'frontend/temp/custom/assets/images/approach-image-4.png' %}" alt="">
+                    </div>
+
+                    <div class="approach-body">
+                        <div class="approach-content">
+                            <h3>
+                                You gain a trusted financial partner committed to your long term well being.
+                            </h3>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Our Approach Section End -->
+
+<!-- Company Wisdom Section Start -->
+<div class="company-wisdom">
+    <div class="container">
+        <div class="row section-row align-items-center">
+            <div class="col-lg-7">
+                <!-- Section Title Start -->
+                <div class="section-title">
+                    <h3 class="wow fadeInUp">financial insights</h3>
+                    <h2 class="text-anime-style-3" data-cursor="-opaque">
+                        Interesting facts that enhance your financial understanding
+                    </h2>
+                </div>
+                <!-- Section Title End -->
+            </div>
+
+            <div class="col-lg-5">
+                <!-- Section Title Content Start -->
+                <div class="section-title-content wow fadeInUp" data-wow-delay="0.25s">
+                    <p>
+                        Discover insightful and surprising facts about the financial world.
+                        Learn how history, innovation, and global trends have shaped modern finance,
+                        helping you make smarter financial decisions with Dew Trust Bank.
+                    </p>
+                </div>
+                <!-- Section Title Content End -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="company-wisdom-box">
+
+                <div class="company-wisdom-image">
+                    <figure class="image-anime reveal">
+                        <img src="{% static 'frontend/temp/custom/assets/images/company-wisdom-img-1.jpg' %}" alt="">
+                    </figure>
+                </div>
+
+                <div class="company-wisdom-item">
+                    <div class="company-counter-title">
+                        <h3>Number of publicly listed companies worldwide</h3>
+                    </div>
+                    <div class="company-wisdom-counter">
+                        <h2><span class="counter">12</span>k+</h2>
+                    </div>
+                </div>
+
+                <div class="company-wisdom-image">
+                    <figure class="image-anime reveal">
+                        <img src="{% static 'frontend/temp/custom/assets/images/company-wisdom-img-2.jpg' %}" alt="">
+                    </figure>
+                </div>
+
+                <div class="company-wisdom-item">
+                    <div class="company-counter-title">
+                        <h3>Percentage of individuals using financial advisors</h3>
+                    </div>
+                    <div class="company-wisdom-counter">
+                        <h2><span class="counter">80</span>%</h2>
+                    </div>
+                </div>
+
+                <div class="company-wisdom-item">
+                    <div class="company-counter-title">
+                        <h3>Total credit cards currently in circulation</h3>
+                    </div>
+                    <div class="company-wisdom-counter">
+                        <h2><span class="counter">31</span>k+</h2>
+                    </div>
+                </div>
+
+                <div class="company-wisdom-image">
+                    <figure class="image-anime reveal">
+                        <img src="{% static 'frontend/temp/custom/assets/images/company-wisdom-img-3.jpg' %}" alt="">
+                    </figure>
+                </div>
+
+                <div class="company-wisdom-item">
+                    <div class="company-counter-title">
+                        <h3>Percentage of people who value financial literacy highly</h3>
+                    </div>
+                    <div class="company-wisdom-counter">
+                        <h2><span class="counter">90</span>%</h2>
+                    </div>
+                </div>
+
+                <div class="company-wisdom-image">
+                    <figure class="image-anime reveal">
+                        <img src="{% static 'frontend/temp/custom/assets/images/company-wisdom-img-4.jpg' %}" alt="">
+                    </figure>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Company Wisdom Section End -->
+
+
+<!-- CTA Box Start -->
+<div class="cta-box bg-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5 order-lg-1 order-2">
+                <!-- CTA Box Image Start -->
+                <div class="cta-box-image">
+                    <figure>
+                        <img src="{% static 'frontend/temp/custom/assets/images/cta-box-image.jpg' %}" alt="">
+                    </figure>
+                </div>
+                <!-- CTA Box Image End -->
+            </div>
+
+            <div class="col-lg-7 order-lg-2 order-1">
+                <!-- CTA Box Content Start -->
+                <div class="cta-box-content">
+                    <!-- Section Title Start -->
+                    <div class="section-title">
+                        <h3 class="wow fadeInUp">
+                            FDIC-insured protection backed by the full faith and credit of the U.S. Government
+                        </h3>
+                        <h2 class="text-anime-style-3" data-cursor="-opaque">
+                            Take control of your financial future today!
+                        </h2>
+                        <p class="wow fadeInUp" data-wow-delay="0.25s">
+                            At Dew Trust Bank, we empower our employees and customers to unlock creativity,
+                            bring innovative ideas to life, and solve real financial challenges with confidence and
+                            ease.
+                        </p>
+                    </div>
+                    <!-- Section Title End -->
+
+                    <!-- CTA Box Button Start -->
+                    <div class="cta-box-btn wow fadeInUp" data-wow-delay="0.5s">
+                        <a href="register.html" class="btn-highlighted btn-cta-1">get started today</a>
+                        <a href="about.html" class="btn-highlighted btn-cta-2">explore our services</a>
+                    </div>
+                    <!-- CTA Box Button End -->
+                </div>
+                <!-- CTA Box Content End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- CTA Box End -->
+
+
+<!-- Our FAQs Section Start -->
+<div class="our-faqs bg-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12"></div>
+    </div>
+
+    <div class="row section-row align-items-center">
+      <div class="col-lg-7">
+        <!-- Section Title Start -->
+        <div class="section-title">
+          <h3 class="wow fadeInUp">frequently asked questions</h3>
+          <h2 class="text-anime-style-3" data-cursor="-opaque">
+            Common banking & financial questions answered
+          </h2>
+        </div>
+        <!-- Section Title End -->
+      </div>
+
+      <div class="col-lg-5">
+        <!-- Section Button Start -->
+        <div class="section-btn wow fadeInUp" data-wow-delay="0.25s">
+          <a href="contact.html" class="btn-default">contact now</a>
+        </div>
+        <!-- Section Button End -->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- Our FAQs Box Start -->
+        <div class="our-faqs-box">
+
+          <!-- FAQ Item Start -->
+          <div class="faqs-item wow fadeInUp">
+            <div class="faqs-item-content">
+              <h3>How do I register for mobile banking at Dew Trust Bank?</h3>
+              <p>
+                <ul>
+                  <li>If you are already enrolled in Online Banking, simply log in using your username and password through the Dew Trust Bank Savings app.</li>
+                  <li>After logging in, Android® and iPhone® users can access mobile banking features instantly.</li>
+                  <li>You may also enroll in Mobile Deposit to deposit checks using your mobile device camera.</li>
+                  <li>To enroll, select “Mobile Deposit” from the main menu, then review and accept the terms.</li>
+                  <li>If you are not yet registered for Online Banking, you can <a href="register.html">sign up online</a>.</li>
+                </ul>
+              </p>
+            </div>
+          </div>
+          <!-- FAQ Item End -->
+
+          <!-- FAQ Item Start -->
+          <div class="faqs-item wow fadeInUp" data-wow-delay="0.2s">
+            <div class="faqs-item-content">
+              <h3>What is Mobile Deposit?</h3>
+              <p>
+                Mobile Deposit allows you to deposit checks using the Dew Trust Bank Savings mobile app on any internet-enabled iPhone® or Android™ device with a camera.
+                You must be enrolled in Online or Mobile Banking and activated for the Mobile Deposit service.
+                Simply select “Mobile Deposit” in the app and follow the on-screen instructions to complete your deposit.
+              </p>
+            </div>
+          </div>
+          <!-- FAQ Item End -->
+
+        </div>
+        <!-- Our FAQs Box End -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Our FAQs Section End -->
+
+<!-- iOS Install Instructions Modal -->
+<div id="iosInstallModal" class="ios-install-modal">
+    <div class="ios-install-content">
+        <span class="ios-install-close">&times;</span>
+        <h3>Install Dew Trust Bank App</h3>
+
+        <p>To install this app on your iPhone, follow these steps:</p>
+
+        <div class="ios-steps">
+
+            <div class="ios-step">
+                <div class="ios-step-number">1</div>
+                <div class="ios-step-text">
+                    Tap the <strong>Share</strong> button <i class="fas fa-share"></i> at the bottom of your screen
+                </div>
+            </div>
+
+            <div class="ios-step">
+                <div class="ios-step-number">2</div>
+                <div class="ios-step-text">
+                    Scroll down and tap <strong>"Add to Home Screen"</strong> <i class="fas fa-plus-square"></i>
+                </div>
+            </div>
+
+            <div class="ios-step">
+                <div class="ios-step-number">3</div>
+                <div class="ios-step-text">
+                    Tap <strong>"Add"</strong> to confirm installation
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

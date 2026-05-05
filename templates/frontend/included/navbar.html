@@ -1,0 +1,100 @@
+{% load static %}
+
+<!-- Topbar Section Start -->
+<div class="topbar">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <!-- Topbar Information Content Start -->
+                <div class="topbar-info-content">
+                    <p>
+                        <img src="{% static 'frontend/temp/custom/assets/images/icon-topbar-info.svg' %}" alt="">
+                        Experience world class banking services with Dew Trust Bank International — your trusted partner
+                        in global banking.
+                    </p>
+                </div>
+                <!-- Topbar Information Content End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Topbar Section End -->
+
+
+<!-- Header Start -->
+<header class="main-header">
+    <div class="header-sticky">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <!-- Logo Start -->
+                <a class="navbar-brand" href="{% url 'frontend:home' %}">
+                    <img src="{% static 'frontend/custom/logo.png' %}" width="180px"
+                        alt="Logo">
+                    <!-- <img src="{% static 'frontend/storage/app/public/photos/13tIhKkSILyryKxw7XKFROsurhsPYAhT0XW5pWVN.jpg' %}" width="140px"
+                        alt="Logo"> -->
+                </a>
+                <!-- Logo End -->
+
+                <!-- Main Menu Start -->
+                <div class="collapse navbar-collapse main-menu">
+                    <div class="nav-menu-wrapper">
+                        <ul class="navbar-nav mr-auto" id="menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'frontend:home' %}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'frontend:personal' %}">Personal</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'frontend:corperate' %}">Cooperate</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'frontend:insurance' %}">Insurance</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mortgages.html">Mortgages</a>
+                            </li>
+                            <li class="nav-item submenu">
+                                <a class="nav-link" href="#">Sefton Savings</a>
+                                <ul>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="savings.html">Savings</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="loans.html">Business Loans</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="cards.html">Credit-Cards</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="about.html">About Us</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="contact.html">Contact Us</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="contact.html">Privacy-Policy</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="terms.html">Terms Of Use</a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Header Btn Start -->
+                    <div class="header-btn d-inline-flex">
+                        <a href="login.html" class="btn-login">login</a>
+                        <a href="register.html" class="btn-default btn-signup">Open An Account</a>
+                    </div>
+                    <!-- Header Btn End -->
+                </div>
+                <!-- Main Menu End -->
+                <div class="navbar-toggle"></div>
+            </div>
+        </nav>
+        <div class="responsive-menu"></div>
+    </div>
+</header>
+<!-- Header End -->

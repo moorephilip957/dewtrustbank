@@ -1,0 +1,593 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section Start -->
+<div class="hero hero-image hero-video mb-2 p-0">
+
+    <!-- Video Start -->
+    <div class="hero-bg-video">
+        <video autoplay muted loop id="myVideo">
+            <source src="{% static 'frontend/temp/custom/assets/videos/hero.mp4' %}" type="video/mp4">
+        </video>
+    </div>
+    <!-- Video End -->
+
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12 mt-5">
+
+                <!-- Hero Content Start -->
+                <div class="hero-content">
+
+                    <!-- Section Title Start -->
+                    <div class="section-title mt-5">
+                        <h1 class="text-anime-style-3" data-cursor="-opaque">
+                            Empowering individuals and businesses to achieve financial growth
+                        </h1>
+
+                        <p class="wow fadeInUp" data-wow-delay="0.25s">
+                            <small>
+                                Maximize your wealth with tailored financial strategies and expert guidance from Dew
+                                Trust Bank.
+                                We deliver comprehensive banking and investment solutions designed to help individuals
+                                and businesses
+                                succeed in today’s dynamic financial landscape.
+                            </small>
+                        </p>
+                    </div>
+                    <!-- Section Title End -->
+
+                    <!-- Hero Content Btn Start -->
+                    <div class="hero-content-btn">
+                        <a href="register.html" class="btn-default">Enroll Now</a>
+                    </div>
+                    <!-- Hero Content Btn End -->
+
+                </div>
+                <!-- Hero Content End -->
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Hero Section End -->
+
+
+<!-- Our Expertise Section Start -->
+<div class="our-expertise mt-5">
+    <div class="container">
+        <div class="row section-row align-items-center">
+            <div class="col-lg-7">
+                <!-- Section Title Start -->
+                <div class="section-title">
+                    <h3 class="wow fadeInUp">our expertise</h3>
+                    <h2 class="text-anime-style-3" data-cursor="-opaque">
+                        Banking made simpler, designed around your needs
+                    </h2>
+                </div>
+                <!-- Section Title End -->
+            </div>
+
+            <div class="col-lg-5">
+                <!-- Section Title Content Start -->
+                <div class="section-title-content wow fadeInUp" data-wow-delay="0.25s">
+                    <p>
+                        Dew Trust Bank Savings Innovate is our commitment to digital transformation and innovation.
+                        It supports our forward-focused strategy by leveraging emerging technology to better serve our
+                        customers
+                        and consistently exceed their evolving expectations.
+                    </p>
+                </div>
+                <!-- Section Title Content End -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+
+                <!-- Tabs Nav Start -->
+                <div class="our-tab-nav wow fadeInUp" data-wow-delay="0.25s">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link btn-highlighted active" data-bs-toggle="tab"
+                                data-bs-target="#financial" type="button">
+                                Economy Checking
+                            </button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link btn-highlighted" data-bs-toggle="tab" data-bs-target="#business"
+                                type="button">
+                                NOW Checking
+                            </button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link btn-highlighted" data-bs-toggle="tab" data-bs-target="#risk"
+                                type="button">
+                                Special SSB Account
+                            </button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link btn-highlighted" data-bs-toggle="tab" data-bs-target="#investment"
+                                type="button">
+                                Investment Management
+                            </button>
+                        </li>
+
+                    </ul>
+                </div>
+                <!-- Tabs Nav End -->
+
+                <!-- Tab Content Start -->
+                <div class="expertise-box tab-content">
+
+                    <!-- Economy Checking -->
+                    <div class="expertise-item tab-pane fade show active" id="financial">
+                        <div class="row align-items-center">
+
+                            <div class="col-lg-6">
+                                <div class="expertise-content">
+                                    <div class="expertise-content-header">
+                                        <h3>Economy Checking</h3>
+                                        <p>
+                                            A simple everyday account designed to help you manage your daily financial
+                                            needs with ease.
+                                        </p>
+                                    </div>
+
+                                    <div class="expertise-content-body">
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-1.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>Opening balance $100</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-2.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>Maintenance fee $0</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-3.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>No minimum balance required</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="expertise-btn">
+                                        <a href="contact.html" class="btn-default">contact now</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="expertise-image">
+                                    <figure class="image-anime">
+                                        <img src="{% static 'frontend/temp/custom/assets/images/expertise-financial-img.jpg' %}"
+                                            alt="">
+                                    </figure>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- NOW Checking -->
+                    <div class="expertise-item tab-pane fade" id="business">
+                        <div class="row align-items-center">
+
+                            <div class="col-lg-6">
+                                <div class="expertise-content">
+                                    <div class="expertise-content-header">
+                                        <h3>NOW Checking</h3>
+                                        <p>
+                                            Earn interest while enjoying full checking account functionality and
+                                            everyday banking convenience.
+                                        </p>
+                                    </div>
+
+                                    <div class="expertise-content-body">
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-1.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>Opening balance $1,000</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-2.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>Monthly fee $15</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-3.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>Minimum balance to avoid fee $1,000</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="expertise-btn">
+                                        <a href="contact.html" class="btn-default">contact now</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="expertise-image">
+                                    <figure class="image-anime">
+                                        <img src="{% static 'frontend/temp/custom/assets/images/expertise-financial-img.jpg' %}"
+                                            alt="">
+                                    </figure>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Special SSB -->
+                    <div class="expertise-item tab-pane fade" id="risk">
+                        <div class="row align-items-center">
+
+                            <div class="col-lg-6">
+                                <div class="expertise-content">
+                                    <div class="expertise-content-header">
+                                        <h3>Special SSB Account</h3>
+                                        <p>
+                                            A rewarding interest-bearing checking account with added flexibility and
+                                            check-writing convenience.
+                                        </p>
+                                    </div>
+
+                                    <div class="expertise-content-body">
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-1.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>Opening balance $2,000</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-2.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>Monthly fee $25</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-3.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>Minimum balance to avoid fee $2,000</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="expertise-btn">
+                                        <a href="contact.html" class="btn-default">contact now</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="expertise-image">
+                                    <figure class="image-anime">
+                                        <img src="{% static 'frontend/temp/custom/assets/images/expertise-financial-img.jpg' %}"
+                                            alt="">
+                                    </figure>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Investment -->
+                    <div class="expertise-item tab-pane fade" id="investment">
+                        <div class="row align-items-center">
+
+                            <div class="col-lg-6">
+                                <div class="expertise-content">
+                                    <div class="expertise-content-header">
+                                        <h3>Investment Management</h3>
+                                        <p>
+                                            A flexible savings and investment account designed to help you grow wealth
+                                            while staying prepared for emergencies and future goals.
+                                        </p>
+                                    </div>
+
+                                    <div class="expertise-content-body">
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-1.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>Expert investment management</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-2.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>Retirement & pension optimization</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-3.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>Business financial planning</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="expertise-btn">
+                                        <a href="register.html" class="btn-default">Open Account</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="expertise-image">
+                                    <figure class="image-anime">
+                                        <img src="{% static 'frontend/temp/custom/assets/images/expertise-financial-img.jpg' %}"
+                                            alt="">
+                                    </figure>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Tab Content End -->
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Our Expertise Section End -->
+
+
+<!-- Company Wisdom Section Start -->
+<div class="company-wisdom">
+  <div class="container">
+    <div class="row section-row align-items-center">
+      <div class="col-lg-7">
+        <!-- Section Title Start -->
+        <div class="section-title">
+          <h3 class="wow fadeInUp">financial wisdom</h3>
+          <h2 class="text-anime-style-3" data-cursor="-opaque">
+            Insightful facts that strengthen your financial understanding
+          </h2>
+        </div>
+        <!-- Section Title End -->
+      </div>
+
+      <div class="col-lg-5">
+        <!-- Section Title Content Start -->
+        <div class="section-title-content wow fadeInUp" data-wow-delay="0.25s">
+          <p>
+            Discover interesting and surprising facts about the financial world. Explore how history,
+            innovation, and global trends continue to shape modern finance and make financial decisions
+            easier and more informed.
+          </p>
+        </div>
+        <!-- Section Title Content End -->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="company-wisdom-box">
+
+        <!-- Image -->
+        <div class="company-wisdom-image">
+          <figure class="image-anime reveal">
+            <img src="{% static 'frontend/temp/custom/assets/images/company-wisdom-img-1.jpg' %}" alt="">
+          </figure>
+        </div>
+
+        <div class="company-wisdom-item">
+          <div class="company-counter-title">
+            <h3>Number of publicly traded companies worldwide</h3>
+          </div>
+          <div class="company-wisdom-counter">
+            <h2><span class="counter">12</span>k+</h2>
+          </div>
+        </div>
+
+        <!-- Image -->
+        <div class="company-wisdom-image">
+          <figure class="image-anime reveal">
+            <img src="{% static 'frontend/temp/custom/assets/images/company-wisdom-img-2.jpg' %}" alt="">
+          </figure>
+        </div>
+
+        <div class="company-wisdom-item">
+          <div class="company-counter-title">
+            <h3>Percentage of certified financial advisors globally</h3>
+          </div>
+          <div class="company-wisdom-counter">
+            <h2><span class="counter">80</span>%</h2>
+          </div>
+        </div>
+
+        <div class="company-wisdom-item">
+          <div class="company-counter-title">
+            <h3>Credit cards currently in active circulation</h3>
+          </div>
+          <div class="company-wisdom-counter">
+            <h2><span class="counter">31</span>k+</h2>
+          </div>
+        </div>
+
+        <!-- Image -->
+        <div class="company-wisdom-image">
+          <figure class="image-anime reveal">
+            <img src="{% static 'frontend/temp/custom/assets/images/company-wisdom-img-3.jpg' %}" alt="">
+          </figure>
+        </div>
+
+        <div class="company-wisdom-item">
+          <div class="company-counter-title">
+            <h3>Americans who believe financial literacy is essential</h3>
+          </div>
+          <div class="company-wisdom-counter">
+            <h2><span class="counter">90</span>%</h2>
+          </div>
+        </div>
+
+        <!-- Image -->
+        <div class="company-wisdom-image">
+          <figure class="image-anime reveal">
+            <img src="{% static 'frontend/temp/custom/assets/images/company-wisdom-img-4.jpg' %}" alt="">
+          </figure>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Company Wisdom Section End -->
+
+
+<!-- CTA Box Start -->
+<div class="cta-box bg-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-5 order-lg-1 order-2">
+
+        <!-- CTA Box Image Start -->
+        <div class="cta-box-image">
+          <figure>
+            <img src="{% static 'frontend/temp/custom/assets/images/cta-box-image.jpg' %}" alt="">
+          </figure>
+        </div>
+        <!-- CTA Box Image End -->
+
+      </div>
+
+      <div class="col-lg-7 order-lg-2 order-1">
+
+        <!-- CTA Box Content Start -->
+        <div class="cta-box-content">
+
+          <!-- Section Title Start -->
+          <div class="section-title">
+            <h3 class="wow fadeInUp">
+              FDIC-Insured — Backed by the full faith and credit of the U.S. Government
+            </h3>
+
+            <h2 class="text-anime-style-3" data-cursor="-opaque">
+              Take control of your financial future today with Dew Trust Bank!
+            </h2>
+
+            <p class="wow fadeInUp" data-wow-delay="0.25s">
+              We’ve made it easy for Dew Trust Bank customers to harness their creativity,
+              bring their ideas to life, and solve everyday financial challenges with ease.
+            </p>
+          </div>
+          <!-- Section Title End -->
+
+          <!-- CTA Box Button Start -->
+          <div class="cta-box-btn wow fadeInUp" data-wow-delay="0.5s">
+            <a href="register.html" class="btn-highlighted btn-cta-1">get started today</a>
+            <a href="about.html" class="btn-highlighted btn-cta-2">explore our services</a>
+          </div>
+          <!-- CTA Box Button End -->
+
+        </div>
+        <!-- CTA Box Content End -->
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- CTA Box End -->
+
+
+<!-- Our FAQs Section Start -->
+<div class="our-faqs bg-section">
+  <div class="container">
+
+    <div class="row section-row align-items-center">
+      <div class="col-lg-7">
+        <!-- Section Title Start -->
+        <div class="section-title">
+          <h3 class="wow fadeInUp">frequently asked questions</h3>
+          <h2 class="text-anime-style-3" data-cursor="-opaque">
+            Common banking & financial questions answered
+          </h2>
+        </div>
+        <!-- Section Title End -->
+      </div>
+
+      <div class="col-lg-5">
+        <!-- Section Button Start -->
+        <div class="section-btn wow fadeInUp" data-wow-delay="0.25s">
+          <a href="contact.html" class="btn-default">contact now</a>
+        </div>
+        <!-- Section Button End -->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <a href="faqs.html">View Frequently Asked Questions</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- Our FAQs Section End -->
+{% endblock %}

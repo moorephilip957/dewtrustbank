@@ -6,5 +6,7 @@ app_name = 'frontend'  # this is the namespace
 
 urlpatterns = [
     path('', views.home_view, name='home'),
-    # path('about/', views.about, name='about'),
+    path('personal/', views.personal_view, name='personal'),
+    path('corperate/', views.corperate_view, name='corperate'),
+    path('insurance/', views.insurance_view, name='insurance'),
 ]
