@@ -1,0 +1,187 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Page Header Start -->
+<div class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <!-- Page Header Box Start -->
+                <div class="page-header-box">
+                    <h1 class="text-anime-style-3" data-cursor="-opaque">Contact Dew Trust Bank</h1>
+
+                    <nav class="wow fadeInUp">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page">
+                                We are here to help you with your banking needs
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+                <!-- Page Header Box End -->
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+
+
+<!-- Page Contact Us Start -->
+<div class="page-contact-us">
+
+    <div class="contact-us bg-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <!-- Contact Information Start -->
+                    <div class="contact-information">
+
+                        <!-- Phone -->
+                        <div class="contact-info-item wow fadeInUp">
+                            <div class="icon-box">
+                                <img src="{% static 'frontend/temp/custom/assets/images/icon-phone.svg' %}" alt="">
+                            </div>
+                            <div class="contact-info-content">
+                                <h3>Phone Support</h3>
+                                <p><a class="text-dark" href="tel:+">Available on request</a></p>
+                                <p><a class="text-dark" href="tel:+">Customer service line</a></p>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="contact-info-item wow fadeInUp" data-wow-delay="0.25s">
+                            <div class="icon-box">
+                                <img src="{% static 'frontend/temp/custom/assets/images/icon-email.svg' %}" alt="">
+                            </div>
+                            <div class="contact-info-content">
+                                <h3>Email</h3>
+                                <p><a class="text-dark"
+                                        href="mailto:support@dewtrustbank.com">support@dewtrustbank.com</a></p>
+                                <p><a class="text-dark" href="mailto:help@dewtrustbank.com">help@dewtrustbank.com</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="contact-info-item wow fadeInUp" data-wow-delay="0.5s">
+                            <div class="icon-box">
+                                <img src="{% static 'frontend/temp/custom/assets/images/icon-location.svg' %}" alt="">
+                            </div>
+                            <div class="contact-info-content">
+                                <h3>Head Office</h3>
+                                <p>
+                                    214 North Tryon Street, Charlotte, North Carolina, 28202
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Contact Information End -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Contact Form Start -->
+    <div class="contact-us-form">
+        <div class="container">
+
+            <div class="row section-row align-items-center">
+                <div class="col-lg-6 col-md-8">
+                    <div class="section-title">
+                        <h3 class="wow fadeInUp">Contact Us</h3>
+                        <h2 class="text-anime-style-3" data-cursor="-opaque">
+                            Speak with a Dew Trust Bank expert today
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+
+                <!-- Map -->
+                <div class="col-lg-6">
+                    <div class="google-map">
+                        <iframe
+                            src="https://www.google.com/maps?q=214+North+Tryon+Street,+Charlotte,+North+Carolina,+28202&output=embed"
+                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div class="col-lg-6">
+                    <div class="contact-form">
+
+                        <div class="contact-form-title wow fadeInUp">
+                            <h2>Have any questions?</h2>
+                        </div>
+
+                        <form action="https://intl-bc-online.com/enquiryfront" method="POST" data-toggle="validator"
+                            class="wow fadeInUp" data-wow-delay="0.25s">
+
+                            <input type="hidden" name="_token" value="75p0srryeFucAhpVLzEPyxQjCUu0x2Z02VxT7uX5">
+
+                            <div class="row">
+
+                                <div class="form-group col-md-6 mb-4">
+                                    <input type="text" name="fname" class="form-control" placeholder="First Name"
+                                        required>
+                                </div>
+
+                                <div class="form-group col-md-6 mb-4">
+                                    <input type="text" name="lname" class="form-control" placeholder="Last Name"
+                                        required>
+                                </div>
+
+                                <div class="form-group col-md-6 mb-4">
+                                    <input type="email" name="email" class="form-control" placeholder="Email Address"
+                                        required>
+                                </div>
+
+                                <div class="form-group col-md-6 mb-4">
+                                    <input type="text" name="phone" class="form-control" placeholder="Phone Number"
+                                        required>
+                                </div>
+
+                                <div class="form-group col-md-12 mb-5">
+                                    <textarea name="message" class="form-control" rows="5"
+                                        placeholder="Message"></textarea>
+                                </div>
+
+                                <!-- CAPTCHA -->
+                                <div class="captcha-box mb-3">
+                                    B9ACFB
+                                    <input type="text" name="captcha" class="form-control" placeholder="Enter Captcha *"
+                                        required>
+                                    <input type="hidden" name="captcha_confirmation" value="B9ACFB">
+                                </div>
+
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn-highlighted">
+                                        Submit Message
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- Contact Form End -->
+
+</div>
+<!-- Page Contact Us End -->
+{% endblock %}

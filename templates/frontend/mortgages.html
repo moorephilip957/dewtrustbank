@@ -1,0 +1,203 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section Start -->
+<div class="hero hero-image hero-video mb-2 p-0">
+    <!-- Video Start -->
+    <div class="hero-bg-video">
+        <video autoplay muted loop id="myVideo">
+            <source src="{% static 'frontend/temp/custom/assets/videos/mortgage.mp4' %}" type="video/mp4">
+        </video>
+    </div>
+    <!-- Video End -->
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12 mt-5">
+                <!-- Hero Content Start -->
+                <div class="hero-content">
+                    <!-- Section Title Start -->
+                    <div class="section-title mt-5">
+                        <h1 class="text-anime-style-3" data-cursor="-opaque">
+                            Mortgages tailored to fit your life
+                        </h1>
+                        <p class="wow fadeInUp" data-wow-delay="0.25s">
+                            <small>
+                                At Dew Trust Bank, we understand that every home journey is unique.
+                                That's why we offer flexible mortgage solutions designed around your needs,
+                                with competitive rates, clear guidance, and support every step of the way.
+                                Own your dream home with confidence and peace of mind.
+                            </small>
+                        </p>
+                    </div>
+                    <!-- Section Title End -->
+
+                    <!-- Hero Content Btn Start -->
+                    <div class="hero-content-btn">
+                        <a href="register.html" class="btn-default">Get Started</a>
+                    </div>
+                    <!-- Hero Content Btn End -->
+                </div>
+                <!-- Hero Content End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Hero Section End -->
+
+<!-- Our Expertise Section Start -->
+<div class="our-expertise mt-5">
+    <div class="container">
+        <div class="row section-row align-items-center">
+            <div class="col-lg-7">
+                <!-- Section Title Start -->
+                <div class="section-title">
+                    <h3 class="wow fadeInUp">Ready to Own a Home?</h3>
+                    <h2 class="text-anime-style-3" data-cursor="-opaque">
+                        Discover Mortgage Solutions That Work for You
+                    </h2>
+                    <h4 class="title">Residential & Commercial Mortgages</h4>
+                    <p class="pera">
+                        At Dew Trust Bank, we make finding the right mortgage simple.
+                        Our experienced advisors take time to understand your financial goals
+                        and provide tailored guidance to help you make confident decisions.
+                    </p>
+                </div>
+                <!-- Section Title End -->
+            </div>
+
+            <div class="col-lg-5">
+                <!-- Section Title Content Start -->
+                <div class="section-title-content wow fadeInUp" data-wow-delay="0.25s">
+                    <h4 class="title">Overview</h4>
+                    <p class="pera">
+                        Whether you're buying your first home or expanding your property portfolio,
+                        we provide personalized mortgage solutions designed to suit your needs.
+                        With Dew Trust Bank, you gain a trusted partner every step of the way.
+                    </p>
+
+                    <div class="col-12 mt-2">
+                        <h4 class="title">Mortgage Support</h4>
+                        <p class="pera">
+                            If you're experiencing difficulty with your mortgage payments,
+                            we're here to help. Our support team can guide you through flexible
+                            options and practical solutions to ease financial pressure.
+                            Reach out early so we can support you effectively.
+                        </p>
+                    </div>
+                </div>
+                <!-- Section Title Content End -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Sidebar Our Expertise Nav start -->
+                <div class="our-tab-nav wow fadeInUp" data-wow-delay="0.25s">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    </ul>
+                </div>
+                <!-- Sidebar Our Expertise Nav End -->
+
+                <!-- Expertise Box Start -->
+                <div class="expertise-box tab-content" id="myTabContent">
+                    <!-- Expertise Item Start -->
+                    <div class="expertise-item tab-pane fade show active" id="financial" role="tabpanel">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <!-- Expertise Content Start -->
+                                <div class="expertise-content">
+                                    <!-- Expertise Content Header Start -->
+                                    <div class="expertise-content-header">
+                                        <h3>Flexible Mortgage Plans</h3>
+                                        <p>
+                                            Choose from a range of mortgage options designed to suit your lifestyle,
+                                            whether for personal home ownership or business property investment.
+                                        </p>
+                                    </div>
+                                    <!-- Expertise Content Header End -->
+
+                                    <!-- Expertise Content Body Start -->
+                                    <div class="expertise-content-body">
+                                        <!-- Expertise List Item Start -->
+                                        <div class="expertise-list-item">
+                                            <div class="icon-box">
+                                                <img src="{% static 'frontend/temp/custom/assets/images/icon-expertise-list-1.svg' %}"
+                                                    alt="">
+                                            </div>
+                                            <div class="expertise-list-content">
+                                                <p>
+                                                    We offer competitive interest rates, flexible repayment plans,
+                                                    and expert financial guidance to help you secure and manage your
+                                                    mortgage
+                                                    with confidence. Our goal is to make your journey to property
+                                                    ownership
+                                                    smooth, transparent, and rewarding.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!-- Expertise List Item End -->
+                                    </div>
+                                    <!-- Expertise Content Body End -->
+
+                                    <!-- Expertise Button Start -->
+                                    <div class="expertise-btn">
+                                        <a href="contact.html" class="btn-default">Contact Us</a>
+                                    </div>
+                                    <!-- Expertise Button End -->
+                                </div>
+                                <!-- Expertise Content End -->
+                            </div>
+
+                            <div class="col-lg-6">
+                                <!-- Expertise Image Start -->
+                                <div class="expertise-image">
+                                    <figure class="image-anime">
+                                        <img src="{% static 'frontend/temp/custom/assets/images/mortgage.webp' %}" alt="">
+                                    </figure>
+                                </div>
+                                <!-- Expertise Image End -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Expertise Item End -->
+                </div>
+                <!-- Expertise Box End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Our Expertise Section End -->
+
+
+<!-- Company Wisdom Section Start -->
+<div class="company-wisdom">
+  <div class="container">
+    <div class="row section-row align-items-center">
+      <div class="col-lg-7">
+        <!-- Section Title Start -->
+        <div class="section-title">
+          <h3 class="wow fadeInUp">Financial Insights</h3>
+          <h2 class="text-anime-style-3" data-cursor="-opaque">
+            Smart knowledge to guide your financial journey
+          </h2>
+        </div>
+        <!-- Section Title End -->
+      </div>
+
+      <div class="col-lg-5">
+        <!-- Section Title Content Start -->
+        <div class="section-title-content wow fadeInUp" data-wow-delay="0.25s">
+          <p>
+            At Dew Trust Bank, we believe informed decisions lead to better outcomes.
+            Discover valuable insights, key trends, and practical knowledge that empower
+            you to navigate today’s financial landscape with confidence and clarity.
+          </p>
+        </div>
+        <!-- Section Title Content End -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Company Wisdom Section End -->
+{% endblock %}
