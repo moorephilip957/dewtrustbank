@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Account • MyApp Dashboard</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --primary-light: #a5b4fc;
+      --secondary: #f59e0b;
+      --text: #374151;
+      --text-light: #6b7280;
+      --bg: #f9fafb;
+      --card-bg: #ffffff;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ===== Page Loader ===== */
+    .page-loader {
+      position: fixed; inset: 0; background: white;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999; transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+    .page-loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .loader-content { text-align: center; }
+    .spinner { width: 72px; height: 72px; position: relative; margin: 0 auto 1.5rem; }
+    .spinner-ring {
+      position: absolute; width: 100%; height: 100%;
+      border: 4px solid transparent; border-radius: 50%;
+      animation: rotate 1.5s linear infinite;
+    }
+    .spinner-ring:nth-child(1) { border-top-color: var(--primary); animation-delay: 0s; }
+    .spinner-ring:nth-child(2) { border-right-color: var(--primary-light); animation-delay: 0.2s; }
+    .spinner-ring:nth-child(3) { border-bottom-color: var(--secondary); animation-delay: 0.4s; }
+    .spinner-ring:nth-child(4) { border-left-color: var(--primary-light); animation-delay: 0.6s; }
+    .spinner-core {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 20px; height: 20px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+      box-shadow: 0 0 15px rgba(79, 70, 229, 0.4);
+      animation: pulse 1s ease-in-out infinite alternate;
+    }
+    .loader-text {
+      font-weight: 600; color: var(--primary);
+      background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--primary-dark));
+      background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      animation: gradientShift 2s linear infinite; letter-spacing: 0.025em;
+    }
+    @keyframes rotate { to { transform: rotate(360deg); } }
+    @keyframes pulse { from { transform: translate(-50%, -50%) scale(0.85); opacity: 0.8; } to { transform: translate(-50%, -50%) scale(1.1); opacity: 1; } }
+    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+    /* ===== Floating Decorations ===== */
+    .floating { animation: float 6s ease-in-out infinite; }
+    .floating-slow { animation: float 8s ease-in-out infinite; }
+    .floating-slower { animation: float 10s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+    /* ===== Form Enhancements ===== */
+    .input-group-custom { position: relative; transition: transform 0.2s ease; }
+    .input-group-custom:focus-within { transform: translateY(-2px); }
+    .input-icon {
+      position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+      color: var(--text-light); transition: color 0.2s ease; z-index: 3;
+    }
+    .input-group-custom:focus-within .input-icon { color: var(--primary); }
+    .form-control-custom {
+      padding-left: 2.75rem; padding-right: 2.5rem;
+      border: 1px solid #d1d5db; border-radius: 0.75rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-control-custom:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+    .password-toggle {
+      position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--text-light);
+      cursor: pointer; padding: 0.25rem; z-index: 3;
+    }
+    .password-toggle:hover { color: var(--primary); }
+
+    /* ===== Branding Side (Desktop) ===== */
+    .brand-side {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      position: relative; overflow: hidden;
+    }
+    .brand-overlay { position: absolute; inset: 0; opacity: 0.1; }
+    .brand-dot {
+      position: absolute; border-radius: 50%; background: white; mix-blend-mode: overlay;
+    }
+    .brand-grid {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* ===== Progress Bar & Steps ===== */
+    .progress-step {
+      display: flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #e5e7eb; color: var(--text-light);
+      font-weight: 600; font-size: 0.875rem;
+      transition: all 0.2s ease;
+    }
+    .progress-step.active {
+      background: var(--primary); color: white;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+    }
+    .progress-step.completed {
+      background: #10b981; color: white;
+    }
+    .step-label {
+      font-size: 0.75rem; color: var(--text-light);
+      transition: color 0.2s ease;
+    }
+    .step-label.active { color: var(--primary); font-weight: 500; }
+
+    /* ===== Plan Selection Cards ===== */
+    .plan-card {
+      border: 2px solid #e5e7eb; border-radius: 1rem;
+      padding: 1.25rem; cursor: pointer; transition: all 0.2s ease;
+      position: relative;
+    }
+    .plan-card:hover { border-color: var(--primary-light); }
+    .plan-card.selected {
+      border-color: var(--primary);
+      background: rgba(79, 70, 229, 0.05);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+    .plan-card .check-badge {
+      position: absolute; top: 0.75rem; right: 0.75rem;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--primary); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; opacity: 0; transition: opacity 0.2s;
+    }
+    .plan-card.selected .check-badge { opacity: 1; }
+
+    /* ===== Password Strength ===== */
+    .strength-meter { height: 6px; border-radius: 3px; overflow: hidden; background: #e5e7eb; }
+    .strength-fill { height: 100%; border-radius: 3px; transition: width 0.3s ease, background 0.3s ease; }
+    .strength-weak { background: #ef4444; }
+    .strength-fair { background: #f59e0b; }
+    .strength-good { background: #22c55e; }
+    .strength-strong { background: #16a34a; }
+
+    /* ===== Utilities ===== */
+    .text-gradient {
+      background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .btn-primary-custom {
+      background: var(--primary); border: none; padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem; font-weight: 500; transition: all 0.2s ease;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .btn-primary-custom:hover {
+      background: var(--primary-dark); transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+    .btn-outline-custom {
+      background: transparent; border: 1px solid #e5e7eb; color: var(--text);
+      padding: 0.75rem 1.5rem; border-radius: 0.75rem; font-weight: 500;
+      transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .btn-outline-custom:hover {
+      background: #f3f4f6; border-color: #d1d5db;
+    }
+    .step-content { display: none; }
+    .step-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+  <!-- Page Loader -->
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-content">
+      <div class="spinner">
+        <div class="spinner-ring"></div><div class="spinner-ring"></div>
+        <div class="spinner-ring"></div><div class="spinner-ring"></div>
+        <div class="spinner-core"></div>
+      </div>
+      <div class="loader-text">MyApp Dashboard</div>
+    </div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="container-fluid p-0">
+    <div class="row g-0 min-vh-100">
+      
+      <!-- Branding Side (Desktop) -->
+      <div class="col-lg-6 d-none d-lg-flex brand-side align-items-center justify-content-center position-relative">
+        <div class="brand-overlay">
+          <div class="brand-dot floating-slow" style="width:120px;height:120px;top:25%;left:20%"></div>
+          <div class="brand-dot floating" style="width:180px;height:180px;bottom:30%;right:25%"></div>
+          <div class="brand-dot floating-slower" style="width:80px;height:80px;top:65%;left:35%"></div>
+          <div class="brand-grid"></div>
+        </div>
+        <div class="text-center text-white px-5 position-relative z-1">
+          <div class="mb-4"><i class="bi bi-stars display-4"></i></div>
+          <h1 class="display-5 fw-bold mb-3">Join MyApp Today</h1>
+          <p class="lead mb-4 opacity-90">Create your account in minutes and start organizing your work, ideas, and goals — all in one beautiful place.</p>
+          <div class="row g-3 justify-content-center mt-4">
+            <div class="col-auto">
+              <div class="d-flex align-items-center gap-2">
+                <div class="bg-white/20 rounded-circle p-2"><i class="bi bi-shield-check"></i></div>
+                <span>Secure & Private</span>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="d-flex align-items-center gap-2">
+                <div class="bg-white/20 rounded-circle p-2"><i class="bi bi-lightning-charge"></i></div>
+                <span>Lightning Fast</span>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="d-flex align-items-center gap-2">
+                <div class="bg-white/20 rounded-circle p-2"><i class="bi bi-phone"></i></div>
+                <span>Works Everywhere</span>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="d-flex align-items-center gap-2">
+                <div class="bg-white/20 rounded-circle p-2"><i class="bi bi-people"></i></div>
+                <span>Team Ready</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Side -->
+      <div class="col-12 col-lg-6 d-flex align-items-center justify-content-center p-4">
+        <div class="w-100" style="max-width: 520px;">
+          
+          <!-- Mobile Logo -->
+          <div class="text-center mb-4 d-lg-none">
+            <i class="bi bi-stars text-primary fs-1"></i>
+            <h3 class="mt-2 fw-bold text-gradient">MyApp</h3>
+          </div>
+
+          <!-- Registration Card -->
+          <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+            
+            <!-- Progress Header -->
+            <div class="bg-gray-50 px-4 py-4 border-bottom">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="h5 fw-bold mb-0">Create your account</h2>
+                <span class="text-muted small">Step <span id="currentStep">1</span> of <span id="totalSteps">4</span></span>
+              </div>
+              <div class="progress mb-3" style="height: 6px;">
+                <div class="progress-bar bg-primary" id="progressBar" role="progressbar" style="width: 25%"></div>
+              </div>
+              <div class="d-flex justify-content-between">
+                <div class="text-center flex-grow-1">
+                  <div class="progress-step active mx-auto mb-1" id="stepIndicator1">1</div>
+                  <div class="step-label active" id="label1">Details</div>
+                </div>
+                <div class="text-center flex-grow-1">
+                  <div class="progress-step mx-auto mb-1" id="stepIndicator2">2</div>
+                  <div class="step-label" id="label2">Contact</div>
+                </div>
+                <div class="text-center flex-grow-1">
+                  <div class="progress-step mx-auto mb-1" id="stepIndicator3">3</div>
+                  <div class="step-label" id="label3">Preferences</div>
+                </div>
+                <div class="text-center flex-grow-1">
+                  <div class="progress-step mx-auto mb-1" id="stepIndicator4">4</div>
+                  <div class="step-label" id="label4">Security</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Form Body -->
+            <div class="card-body p-4 p-md-5">
+              <form id="registerForm">
+                
+                <!-- STEP 1: Personal Details -->
+                <div class="step-content active" id="step1">
+                  <div class="text-center mb-4">
+                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:64px;height:64px">
+                      <i class="bi bi-person fs-4 text-primary"></i>
+                    </div>
+                    <h4 class="fw-semibold">Personal Details</h4>
+                    <p class="text-muted small mb-0">Tell us a bit about yourself</p>
+                  </div>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label small fw-medium">First Name *</label>
+                      <div class="input-group-custom">
+                        <i class="bi bi-person input-icon"></i>
+                        <input type="text" class="form-control form-control-custom" name="firstName" required placeholder="Jane">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label small fw-medium">Last Name *</label>
+                      <div class="input-group-custom">
+                        <i class="bi bi-person input-icon"></i>
+                        <input type="text" class="form-control form-control-custom" name="lastName" required placeholder="Doe">
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label small fw-medium">Username *</label>
+                      <div class="input-group-custom">
+                        <i class="bi bi-at input-icon"></i>
+                        <input type="text" class="form-control form-control-custom" name="username" required placeholder="jane_doe" pattern="[a-zA-Z0-9_]{3,20}" title="3-20 characters: letters, numbers, underscores">
+                      </div>
+                      <small class="text-muted">Used for your profile URL and mentions</small>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- STEP 2: Contact Info -->
+                <div class="step-content" id="step2">
+                  <div class="text-center mb-4">
+                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:64px;height:64px">
+                      <i class="bi bi-envelope fs-4 text-primary"></i>
+                    </div>
+                    <h4 class="fw-semibold">Contact Information</h4>
+                    <p class="text-muted small mb-0">How can we reach you?</p>
+                  </div>
+                  <div class="space-y-3">
+                    <div>
+                      <label class="form-label small fw-medium">Email Address *</label>
+                      <div class="input-group-custom">
+                        <i class="bi bi-envelope input-icon"></i>
+                        <input type="email" class="form-control form-control-custom" name="email" required placeholder="jane@example.com">
+                      </div>
+                    </div>
+                    <div>
+                      <label class="form-label small fw-medium">Phone (Optional)</label>
+                      <div class="input-group-custom">
+                        <i class="bi bi-phone input-icon"></i>
+                        <input type="tel" class="form-control form-control-custom" name="phone" placeholder="+1 (555) 123-4567">
+                      </div>
+                    </div>
+                    <div>
+                      <label class="form-label small fw-medium">Location</label>
+                      <div class="input-group-custom">
+                        <i class="bi bi-geo-alt input-icon"></i>
+                        <select class="form-control form-control-custom" name="country">
+                          <option value="">Select your country</option>
+                          <option>United States</option><option>Canada</option><option>United Kingdom</option>
+                          <option>Australia</option><option>Germany</option><option>France</option>
+                          <option>Japan</option><option>Brazil</option><option>India</option>
+                          <!-- Add more as needed -->
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- STEP 3: Preferences -->
+                <div class="step-content" id="step3">
+                  <div class="text-center mb-4">
+                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:64px;height:64px">
+                      <i class="bi bi-sliders fs-4 text-primary"></i>
+                    </div>
+                    <h4 class="fw-semibold">Customize Your Experience</h4>
+                    <p class="text-muted small mb-0">Choose what works best for you</p>
+                  </div>
+                  
+                  <!-- Plan Selection -->
+                  <label class="form-label small fw-medium mb-2">Start with a plan *</label>
+                  <div class="space-y-3 mb-4">
+                    <label class="plan-card selected" data-plan="free">
+                      <div class="check-badge"><i class="bi bi-check-lg"></i></div>
+                      <div class="d-flex align-items-start gap-3">
+                        <div class="bg-primary bg-opacity-10 rounded p-2"><i class="bi bi-gift text-primary"></i></div>
+                        <div>
+                          <h6 class="fw-semibold mb-0">Free Plan</h6>
+                          <p class="small text-muted mb-0">Perfect for getting started • Unlimited projects • Basic collaboration</p>
+                        </div>
+                      </div>
+                      <input type="radio" name="plan" value="free" class="d-none" checked>
+                    </label>
+                    
+                    <label class="plan-card" data-plan="pro">
+                      <div class="check-badge"><i class="bi bi-check-lg"></i></div>
+                      <div class="d-flex align-items-start gap-3">
+                        <div class="bg-primary bg-opacity-10 rounded p-2"><i class="bi bi-star text-primary"></i></div>
+                        <div>
+                          <h6 class="fw-semibold mb-0">Pro Plan</h6>
+                          <p class="small text-muted mb-0">For power users • Advanced analytics • Priority support • $9/mo</p>
+                        </div>
+                      </div>
+                      <input type="radio" name="plan" value="pro" class="d-none">
+                    </label>
+                  </div>
+
+                  <!-- Timezone -->
+                  <div>
+                    <label class="form-label small fw-medium">Timezone</label>
+                    <div class="input-group-custom">
+                      <i class="bi bi-clock input-icon"></i>
+                      <select class="form-control form-control-custom" name="timezone">
+                        <option value="UTC">UTC</option>
+                        <option value="America/New_York">Eastern Time (US)</option>
+                        <option value="America/Chicago">Central Time (US)</option>
+                        <option value="America/Denver">Mountain Time (US)</option>
+                        <option value="America/Los_Angeles">Pacific Time (US)</option>
+                        <option value="Europe/London">London</option>
+                        <option value="Europe/Paris">Paris</option>
+                        <option value="Asia/Tokyo">Tokyo</option>
+                        <option value="Asia/Singapore">Singapore</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- STEP 4: Security -->
+                <div class="step-content" id="step4">
+                  <div class="text-center mb-4">
+                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:64px;height:64px">
+                      <i class="bi bi-shield-lock fs-4 text-primary"></i>
+                    </div>
+                    <h4 class="fw-semibold">Secure Your Account</h4>
+                    <p class="text-muted small mb-0">Create a strong password</p>
+                  </div>
+                  
+                  <!-- Password -->
+                  <div class="mb-3">
+                    <label class="form-label small fw-medium">Password *</label>
+                    <div class="input-group-custom">
+                      <i class="bi bi-lock input-icon"></i>
+                      <input type="password" class="form-control form-control-custom" id="password" name="password" required placeholder="••••••••" minlength="8">
+                      <button type="button" class="password-toggle" id="togglePassword" aria-label="Toggle password visibility">
+                        <i class="bi bi-eye" id="eyeIcon"></i>
+                      </button>
+                    </div>
+                    
+                    <!-- Strength Meter -->
+                    <div class="mt-2" id="strengthContainer" style="display:none">
+                      <div class="d-flex justify-content-between small mb-1">
+                        <span class="text-muted">Strength:</span>
+                        <span id="strengthLabel" class="fw-medium">Very Weak</span>
+                      </div>
+                      <div class="strength-meter">
+                        <div class="strength-fill strength-weak" id="strengthFill" style="width:20%"></div>
+                      </div>
+                      <ul class="list-unstyled small text-muted mt-2 mb-0" style="font-size:0.75rem">
+                        <li id="ruleLength"><i class="bi bi-circle small me-1"></i> At least 8 characters</li>
+                        <li id="ruleUpper"><i class="bi bi-circle small me-1"></i> One uppercase letter</li>
+                        <li id="ruleNumber"><i class="bi bi-circle small me-1"></i> One number</li>
+                        <li id="ruleSpecial"><i class="bi bi-circle small me-1"></i> One special character</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <!-- Confirm Password -->
+                  <div class="mb-3">
+                    <label class="form-label small fw-medium">Confirm Password *</label>
+                    <div class="input-group-custom">
+                      <i class="bi bi-lock input-icon"></i>
+                      <input type="password" class="form-control form-control-custom" name="passwordConfirm" required placeholder="••••••••">
+                    </div>
+                    <small class="text-danger d-none" id="passwordMatchError">Passwords do not match</small>
+                  </div>
+
+                  <!-- Terms -->
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="terms" required>
+                    <label class="form-check-label small text-muted" for="terms">
+                      I agree to the <a href="#" class="text-decoration-none" style="color:var(--primary)">Terms of Service</a> and <a href="#" class="text-decoration-none" style="color:var(--primary)">Privacy Policy</a>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                  <button type="button" class="btn btn-outline-custom" id="prevBtn" style="display:none">
+                    <i class="bi bi-arrow-left"></i> Back
+                  </button>
+                  <div></div> <!-- spacer -->
+                  <button type="button" class="btn btn-primary-custom" id="nextBtn">
+                    Next <i class="bi bi-arrow-right"></i>
+                  </button>
+                  <button type="submit" class="btn btn-primary-custom" id="submitBtn" style="display:none">
+                    <i class="bi bi-check-lg"></i> Create Account
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="text-center mt-4">
+            <p class="small text-muted mb-0">
+              Already have an account? 
+              <a href="login.html" class="text-decoration-none" style="color:var(--primary);font-weight:500">Sign in</a>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS + Custom Logic -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // ===== Page Loader =====
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('pageLoader').classList.add('hidden');
+        setTimeout(() => document.getElementById('pageLoader').remove(), 400);
+      }, 700);
+    });
+
+    // ===== Multi-Step Form Logic =====
+    const steps = ['step1','step2','step3','step4'];
+    let currentStep = 1;
+    const totalSteps = steps.length;
+    
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const progressBar = document.getElementById('progressBar');
+    const currentStepEl = document.getElementById('currentStep');
+    
+    function updateStep() {
+      // Show/hide step content
+      steps.forEach((id, idx) => {
+        document.getElementById(id).classList.toggle('active', idx + 1 === currentStep);
+      });
+      
+      // Update progress bar
+      const progress = (currentStep / totalSteps) * 100;
+      progressBar.style.width = `${progress}%`;
+      currentStepEl.textContent = currentStep;
+      
+      // Update step indicators
+      for (let i = 1; i <= totalSteps; i++) {
+        const indicator = document.getElementById(`stepIndicator${i}`);
+        const label = document.getElementById(`label${i}`);
+        indicator.classList.remove('active','completed');
+        label.classList.remove('active');
+        
+        if (i < currentStep) {
+          indicator.classList.add('completed');
+        } else if (i === currentStep) {
+          indicator.classList.add('active');
+          label.classList.add('active');
+        }
+      }
+      
+      // Button visibility
+      prevBtn.style.display = currentStep === 1 ? 'none' : 'inline-flex';
+      nextBtn.style.display = currentStep === totalSteps ? 'none' : 'inline-flex';
+      submitBtn.style.display = currentStep === totalSteps ? 'inline-flex' : 'none';
+    }
+    
+    prevBtn.addEventListener('click', () => {
+      if (currentStep > 1) { currentStep--; updateStep(); }
+    });
+    
+    nextBtn.addEventListener('click', () => {
+      if (validateStep(currentStep) && currentStep < totalSteps) {
+        currentStep++; updateStep();
+      }
+    });
+    
+    function validateStep(step) {
+      const stepEl = document.getElementById(`step${step}`);
+      const required = stepEl.querySelectorAll('[required]');
+      let valid = true;
+      
+      required.forEach(input => {
+        if (!input.value.trim()) {
+          input.classList.add('is-invalid');
+          valid = false;
+        } else {
+          input.classList.remove('is-invalid');
+        }
+      });
+      
+      // Special: password match on step 4
+      if (step === 4) {
+        const pwd = document.querySelector('[name="password"]').value;
+        const confirm = document.querySelector('[name="passwordConfirm"]').value;
+        const error = document.getElementById('passwordMatchError');
+        if (pwd && confirm && pwd !== confirm) {
+          error.classList.remove('d-none');
+          valid = false;
+        } else {
+          error.classList.add('d-none');
+        }
+      }
+      
+      return valid;
+    }
+
+    // ===== Plan Selection =====
+    document.querySelectorAll('.plan-card').forEach(card => {
+      card.addEventListener('click', function() {
+        document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+        this.classList.add('selected');
+        this.querySelector('input').checked = true;
+      });
+    });
+
+    // ===== Password Toggle =====
+    const toggleBtn = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    const eyeIcon = document.getElementById('eyeIcon');
+    
+    toggleBtn.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      eyeIcon.className = isPassword ? 'bi bi-eye-slash' : 'bi bi-eye';
+      toggleBtn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+    });
+
+    // ===== Password Strength Meter =====
+    const strengthContainer = document.getElementById('strengthContainer');
+    const strengthFill = document.getElementById('strengthFill');
+    const strengthLabel = document.getElementById('strengthLabel');
+    const rules = {
+      length: document.getElementById('ruleLength'),
+      upper: document.getElementById('ruleUpper'),
+      number: document.getElementById('ruleNumber'),
+      special: document.getElementById('ruleSpecial')
+    };
+    
+    passwordInput.addEventListener('input', function() {
+      const pwd = this.value;
+      if (!pwd) { strengthContainer.style.display = 'none'; return; }
+      strengthContainer.style.display = 'block';
+      
+      // Check rules
+      const checks = {
+        length: pwd.length >= 8,
+        upper: /[A-Z]/.test(pwd),
+        number: /[0-9]/.test(pwd),
+        special: /[^A-Za-z0-9]/.test(pwd)
+      };
+      
+      // Update rule indicators
+      Object.entries(rules).forEach(([key, el]) => {
+        const icon = el.querySelector('i');
+        if (checks[key]) {
+          icon.className = 'bi bi-check-circle-fill text-success small me-1';
+          el.classList.add('text-success');
+        } else {
+          icon.className = 'bi bi-circle small me-1';
+          el.classList.remove('text-success');
+        }
+      });
+      
+      // Calculate strength
+      const score = Object.values(checks).filter(Boolean).length;
+      let width, label, className;
+      
+      if (score <= 1) { width = 20; label = 'Very Weak'; className = 'strength-weak'; }
+      else if (score === 2) { width = 40; label = 'Weak'; className = 'strength-weak'; }
+      else if (score === 3) { width = 70; label = 'Good'; className = 'strength-fair'; }
+      else { width = 100; label = 'Strong'; className = 'strength-strong'; }
+      
+      strengthFill.style.width = `${width}%`;
+      strengthFill.className = `strength-fill ${className}`;
+      strengthLabel.textContent = label;
+      strengthLabel.className = `fw-medium ${score <= 2 ? 'text-danger' : score === 3 ? 'text-warning' : 'text-success'}`;
+    });
+
+    // ===== Form Submission (Demo) =====
+    document.getElementById('registerForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      // 🔐 EDUCATIONAL NOTE: In production:
+      // • Submit via HTTPS to your backend
+      // • Validate & sanitize ALL inputs server-side
+      // • Hash passwords with bcrypt/argon2
+      // • Implement CSRF protection & rate limiting
+      // • Send verification email before activation
+      
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+      
+      alert(`✅ Demo Registration Successful!\n\n📋 Data collected:\n${JSON.stringify(data, null, 2)}\n\n🔐 In production, this would be securely sent to your backend.`);
+      console.log('Registration data (demo only):', data);
+      
+      // Optional: redirect after success
+      // window.location.href = 'dashboard.html';
+    });
+
+    // Initialize
+    updateStep();
+  </script>
+</body>
+</html>
