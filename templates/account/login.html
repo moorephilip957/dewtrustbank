@@ -2,187 +2,149 @@
 {% load static %}
 
 {% block content %}
-<!-- Main Content -->
-<div class="w-full">
 
-    <div class="flex flex-col lg:flex-row min-h-screen">
 
-        <!-- Left Side - Branding & Illustration (Desktop Only) -->
-        <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-600 to-primary-800 relative overflow-hidden">
+<!-- Main Layout -->
+<div class="container-fluid p-0">
+    <div class="row g-0 min-vh-100">
 
-            <!-- Animated Shapes -->
-            <div class="absolute inset-0 overflow-hidden opacity-10">
-                <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-white rounded-full mix-blend-overlay floating-slow">
-                </div>
-                <div class="absolute bottom-1/3 right-1/4 w-96 h-96 bg-white rounded-full mix-blend-overlay floating">
-                </div>
-                <div
-                    class="absolute top-2/3 left-1/3 w-40 h-40 bg-white rounded-full mix-blend-overlay floating-slower">
-                </div>
-
-                <div class="absolute inset-0"
-                    style="background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 20px 20px;">
-                </div>
+        <!-- Branding Side (Desktop) -->
+        <div class="col-lg-6 d-none d-lg-flex brand-side align-items-center justify-content-center position-relative">
+            <!-- Decorative Elements -->
+            <div class="brand-overlay">
+                <div class="brand-dot floating-slow" style="width: 120px; height: 120px; top: 25%; left: 20%;"></div>
+                <div class="brand-dot floating" style="width: 180px; height: 180px; bottom: 30%; right: 25%;"></div>
+                <div class="brand-dot floating-slower" style="width: 80px; height: 80px; top: 65%; left: 35%;"></div>
+                <div class="brand-grid"></div>
             </div>
 
             <!-- Content -->
-            <div class="relative flex flex-col justify-center items-center w-full h-full text-white p-12 z-10">
-
-                <!-- Logo -->
-                <a href="index.htm" class="mb-6">
-                    <img src="{% static 'frontend/storage/app/public/photos/13tIhKkSILyryKxw7XKFROsurhsPYAhT0XW5pWVN.jpg' %}"
-                        alt="Dew Trust Bank Logo" class="h-16 filter brightness-0 invert">
-                </a>
-
-                <!-- Title -->
-                <h1 class="text-4xl font-extrabold mb-6 text-center">
-                    Dew Trust Bank Online Banking
-                </h1>
-
-                <!-- Description -->
-                <p class="text-xl mb-8 max-w-md text-center text-white/80">
-                    Secure, fast, and reliable digital banking experience designed to help you manage
-                    your finances anytime, anywhere with confidence.
+            <div class="text-center text-white px-5 position-relative z-1">
+                <div class="mb-4">
+                    <i class="bi bi-boxes display-4"></i>
+                </div>
+                <h1 class="display-5 fw-bold mb-3">Secure Online Banking</h1>
+                <p class="lead mb-4 opacity-90">
+                    Manage your accounts, transfer funds, and stay in control of your finances — anytime, anywhere.
                 </p>
 
-                <!-- Features -->
-                <div class="grid grid-cols-2 gap-6 w-full max-w-md">
-
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                            <i data-lucide="shield" class="h-5 w-5"></i>
+                <div class="row g-3 justify-content-center mt-4">
+                    <div class="col-auto">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="bg-white/20 rounded-circle p-2">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <span>Bank-Grade Security</span>
                         </div>
-                        <span>Secure Banking</span>
                     </div>
-
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                            <i data-lucide="zap" class="h-5 w-5"></i>
+                    <div class="col-auto">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="bg-white/20 rounded-circle p-2">
+                                <i class="bi bi-lightning-charge"></i>
+                            </div>
+                            <span>Instant Transactions</span>
                         </div>
-                        <span>Fast Transfers</span>
                     </div>
-
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                            <i data-lucide="globe" class="h-5 w-5"></i>
+                    <div class="col-auto">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="bg-white/20 rounded-circle p-2">
+                                <i class="bi bi-phone"></i>
+                            </div>
+                            <span>Mobile Banking</span>
                         </div>
-                        <span>Global Access</span>
                     </div>
-
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                            <i data-lucide="smartphone" class="h-5 w-5"></i>
+                    <div class="col-auto">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="bg-white/20 rounded-circle p-2">
+                                <i class="bi bi-cloud-check"></i>
+                            </div>
+                            <span>Real-Time Account Updates</span>
                         </div>
-                        <span>Mobile Friendly</span>
                     </div>
-
                 </div>
             </div>
         </div>
 
-        <!-- Right Side - Login Form -->
-        <div class="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 lg:p-12">
-
-            <div class="w-full max-w-md">
+        <!-- Form Side -->
+        <div class="col-12 col-lg-6 d-flex align-items-center justify-content-center p-4">
+            <div class="w-100" style="max-width: 480px;">
 
                 <!-- Mobile Logo -->
-                <div class="lg:hidden text-center mb-8">
-                    <a href="index.htm">
-                        <img src="{% static 'frontend/storage/app/public/photos/13tIhKkSILyryKxw7XKFROsurhsPYAhT0XW5pWVN.jpg' %}"
-                            alt="Dew Trust Bank Logo" class="h-12 mx-auto">
-                    </a>
+                <div class="text-center mb-4 d-lg-none">
+                    <i class="bi bi-boxes text-primary fs-1"></i>
+                    <h3 class="mt-2 fw-bold text-gradient">Dew Trust</h3>
                 </div>
 
                 <!-- Login Card -->
-                <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-
-                    <!-- Header -->
-                    <div class="px-8 pt-8 pb-6">
-                        <h2 class="text-2xl font-bold text-gray-900">
-                            Sign in to Dew Trust Bank
-                        </h2>
-                        <p class="mt-2 text-sm text-gray-600">
-                            Access your account securely using your username and password.
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                    <div class="card-body p-4 p-md-5">
+                        <h2 class="card-title h4 fw-bold mb-2">Access Your Account</h2>
+                        <p class="text-muted mb-4">Sign in securely to manage your accounts, payments, and transactions.
                         </p>
-                    </div>
+                        <form id="loginForm" action="#" method="POST">
 
-                    <!-- Form -->
-                    <div class="px-8 pb-8">
-                        <form method="POST" action="https://intl-bc-online.com/login">
-
-                            <input type="hidden" name="_token" value="75p0srryeFucAhpVLzEPyxQjCUu0x2Z02VxT7uX5">
-
-                            <!-- Username -->
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Username
-                                </label>
-
-                                <input type="text" name="email"
-                                    class="w-full pl-4 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                                    placeholder="Enter your username" required>
+                            <!-- Username/Email -->
+                            <div class="mb-4">
+                                <label for="username" class="form-label fw-medium">Username or Email</label>
+                                <div class="input-group-custom">
+                                    <i class="bi bi-person input-icon"></i>
+                                    <input type="text" class="form-control form-control-custom" id="username"
+                                        name="username" placeholder="Enter your username" required
+                                        autocomplete="username">
+                                </div>
                             </div>
 
                             <!-- Password -->
-                            <div class="mb-6">
-
-                                <div class="flex items-center justify-between mb-2">
-                                    <label class="block text-sm font-medium text-gray-700">
-                                        Password
-                                    </label>
-
-                                    <a href="forgot-password.html"
-                                        class="text-sm text-primary-600 hover:text-primary-500">
-                                        Forgot Password?
-                                    </a>
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label for="password" class="form-label fw-medium mb-0">Password</label>
+                                    <a href="#" class="text-decoration-none small" style="color: var(--primary);">Forgot
+                                        password?</a>
                                 </div>
-
-                                <input type="password" name="password"
-                                    class="w-full pl-4 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                                    placeholder="••••••••" required>
+                                <div class="input-group-custom">
+                                    <i class="bi bi-lock input-icon"></i>
+                                    <input type="password" class="form-control form-control-custom" id="password"
+                                        name="password" placeholder="••••••••" required autocomplete="current-password">
+                                    <button type="button" class="password-toggle" id="togglePassword"
+                                        aria-label="Toggle password visibility">
+                                        <i class="bi bi-eye" id="eyeIcon"></i>
+                                    </button>
+                                </div>
                             </div>
 
-                            <!-- Remember -->
-                            <div class="mb-6">
-                                <label class="inline-flex items-center">
-                                    <input type="checkbox" name="remember_me" checked class="rounded border-gray-300">
-                                    <span class="ml-2 text-sm text-gray-600">
-                                        Keep me signed in
-                                    </span>
+                            <!-- Remember Me -->
+                            <div class="mb-4 form-check">
+                                <input type="checkbox" class="form-check-input" id="remember" name="remember" checked>
+                                <label class="form-check-label text-muted small" for="remember">
+                                    Keep me signed in for 30 days
                                 </label>
                             </div>
 
-                            <!-- Buttons -->
-                            <div class="flex flex-col space-y-4">
-
-                                <button type="submit"
-                                    class="w-full py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg">
-                                    Sign In
+                            <!-- Actions -->
+                            <div class="d-grid gap-3">
+                                <button type="submit" class="btn btn-primary-custom">
+                                    <i class="bi bi-box-arrow-in-right"></i> Sign In
                                 </button>
-
-                                <a href="register.html"
-                                    class="w-full py-3 bg-gray-100 hover:bg-gray-200 text-center text-gray-800 rounded-lg">
-                                    Create New Account
+                                <a href="{% url 'account:register' %}" class="btn btn-outline-custom">
+                                    <i class="bi bi-person-plus"></i> Create new account
                                 </a>
-
                             </div>
-
                         </form>
                     </div>
-
                 </div>
 
-                <!-- Footer Note -->
-                <div class="mt-8 text-center text-sm text-gray-600">
-                    By continuing, you agree to Dew Trust Bank
-                    <a href="#" class="text-primary-600">Terms</a> and
-                    <a href="#" class="text-primary-600">Privacy Policy</a>.
+                <!-- Footer Links -->
+                <div class="text-center mt-4">
+                    <p class="small text-muted mb-0">
+                        By continuing, you agree to our
+                        <a href="#" class="text-decoration-none" style="color: var(--primary);">Terms</a> and
+                        <a href="#" class="text-decoration-none" style="color: var(--primary);">Privacy Policy</a>
+                    </p>
                 </div>
 
             </div>
         </div>
-
     </div>
-
 </div>
+
 {% endblock %}

@@ -1,0 +1,412 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Main Layout -->
+<div class="container-fluid p-0">
+    <div class="row g-0 min-vh-100">
+
+        <!-- Branding Side (Desktop) -->
+        <div class="col-lg-6 d-none d-lg-flex brand-side align-items-center justify-content-center position-relative">
+            <div class="brand-overlay">
+                <div class="brand-dot floating-slow" style="width:120px;height:120px;top:25%;left:20%"></div>
+                <div class="brand-dot floating" style="width:180px;height:180px;bottom:30%;right:25%"></div>
+                <div class="brand-dot floating-slower" style="width:80px;height:80px;top:65%;left:35%"></div>
+                <div class="brand-grid"></div>
+            </div>
+            <div class="text-center text-white px-5 position-relative z-1">
+
+                <div class="mb-4">
+                    <i class="bi bi-stars display-4"></i>
+                </div>
+
+                <h1 class="display-5 fw-bold mb-3">Bank Smarter with Dew Trust</h1>
+
+                <p class="lead mb-4 opacity-90">
+                    Create your account in minutes and take control of your finances with ease.
+                </p>
+
+                <!-- Feature List -->
+                <div class="d-flex flex-column align-items-center gap-3 mt-4">
+
+                    <div class="feature-item d-flex align-items-start gap-3 text-start">
+                        <span class="feature-icon flex-shrink-0">
+                            <i class="bi bi-shield-check"></i>
+                        </span>
+                        <span class="feature-text">
+                            <strong>Secure Banking Platform</strong> – Industry leading security protocols to keep your
+                            funds safe
+                        </span>
+                    </div>
+
+                    <div class="feature-item d-flex align-items-start gap-3 text-start">
+                        <span class="feature-icon flex-shrink-0">
+                            <i class="bi bi-lightning-charge"></i>
+                        </span>
+                        <span class="feature-text">
+                            <strong>24/7 Account Access</strong> – Manage your finances anytime, anywhere on any device
+                        </span>
+                    </div>
+
+                    <div class="feature-item d-flex align-items-start gap-3 text-start">
+                        <span class="feature-icon flex-shrink-0">
+                            <i class="bi bi-phone"></i>
+                        </span>
+                        <span class="feature-text">
+                            <strong>Fast Transfers</strong> – Send and receive money quickly to anyone, anywhere
+                        </span>
+                    </div>
+
+                    <div class="feature-item d-flex align-items-start gap-3 text-start">
+                        <span class="feature-icon flex-shrink-0">
+                            <i class="bi bi-people"></i>
+                        </span>
+                        <span class="feature-text">
+                            <strong>Built for Individuals & Teams</strong> – Flexible banking for personal and business
+                            use
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Side -->
+        <div class="col-12 col-lg-6 d-flex align-items-center justify-content-center p-4">
+            <div class="w-100" style="max-width: 520px;">
+
+                <!-- Mobile Logo -->
+                <div class="text-center mb-4 d-lg-none">
+                    <i class="bi bi-stars text-primary fs-1"></i>
+                    <h3 class="mt-2 fw-bold text-gradient">Dew Trust Bank</h3>
+                </div>
+
+                <!-- Registration Card -->
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+                    <!-- Progress Header -->
+                    <div class="bg-gray-50 px-4 py-4 border-bottom">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h2 class="h5 fw-bold mb-0">Create your account</h2>
+                            <span class="text-muted small">Step <span id="currentStep">1</span> of <span
+                                    id="totalSteps">4</span></span>
+                        </div>
+                        <div class="progress mb-3" style="height: 6px;">
+                            <div class="progress-bar bg-primary" id="progressBar" role="progressbar" style="width: 25%">
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div class="text-center flex-grow-1">
+                                <div class="progress-step active mx-auto mb-1" id="stepIndicator1">1</div>
+                                <div class="step-label active" id="label1">Personal Details</div>
+                            </div>
+                            <div class="text-center flex-grow-1">
+                                <div class="progress-step mx-auto mb-1" id="stepIndicator2">2</div>
+                                <div class="step-label" id="label2">Contact Details</div>
+                            </div>
+                            <div class="text-center flex-grow-1">
+                                <div class="progress-step mx-auto mb-1" id="stepIndicator3">3</div>
+                                <div class="step-label" id="label3">Account Setup</div>
+                            </div>
+                            <div class="text-center flex-grow-1">
+                                <div class="progress-step mx-auto mb-1" id="stepIndicator4">4</div>
+                                <div class="step-label" id="label4">Security</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Body -->
+                    <div class="card-body p-4 p-md-5">
+                        <form id="registerForm">
+
+                            <!-- STEP 1: Personal Details -->
+                            <div class="step-content active" id="step1">
+                                <div class="text-center mb-4">
+                                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                        style="width:64px;height:64px">
+                                        <i class="bi bi-person fs-4 text-primary"></i>
+                                    </div>
+                                    <h4 class="fw-semibold">Personal Details</h4>
+                                    <p class="text-muted small mb-0">Tell us a bit about yourself</p>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-medium">First Name *</label>
+                                        <div class="input-group-custom">
+                                            <i class="bi bi-person input-icon"></i>
+                                            <input type="text" class="form-control form-control-custom" name="firstName"
+                                                required placeholder="Jane">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-medium">Middle Name *</label>
+                                        <div class="input-group-custom">
+                                            <i class="bi bi-person input-icon"></i>
+                                            <input type="text" class="form-control form-control-custom" name="lastName"
+                                                required placeholder="Martha">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-medium">Last Name *</label>
+                                        <div class="input-group-custom">
+                                            <i class="bi bi-person input-icon"></i>
+                                            <input type="text" class="form-control form-control-custom" name="lastName"
+                                                required placeholder="Doe">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small fw-medium">Username *</label>
+                                        <div class="input-group-custom">
+                                            <i class="bi bi-at input-icon"></i>
+                                            <input type="text" class="form-control form-control-custom" name="username"
+                                                required placeholder="jane_doe" pattern="[a-zA-Z0-9_]{3,20}"
+                                                title="3-20 characters: letters, numbers, underscores">
+                                        </div>
+                                        <!-- <small class="text-muted">Used for your profile URL and mentions</small> -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- STEP 2: Contact Info -->
+                            <div class="step-content" id="step2">
+                                <div class="text-center mb-4">
+                                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                        style="width:64px;height:64px">
+                                        <i class="bi bi-envelope fs-4 text-primary"></i>
+                                    </div>
+                                    <h4 class="fw-semibold">Contact Information</h4>
+                                    <p class="text-muted small mb-0">
+                                        We'll use this information to reach you with updates, alerts, and account
+                                        notifications.
+                                    </p>
+                                </div>
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="form-label small fw-medium">Email Address *</label>
+                                        <div class="input-group-custom">
+                                            <i class="bi bi-envelope input-icon"></i>
+                                            <input type="email" class="form-control form-control-custom" name="email"
+                                                required placeholder="jane@example.com">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="form-label small fw-medium">Phone (Optional)</label>
+                                        <div class="input-group-custom">
+                                            <i class="bi bi-phone input-icon"></i>
+                                            <input type="tel" class="form-control form-control-custom" name="phone"
+                                                placeholder="+1 (555) 123-4567">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="form-label small fw-medium">Country</label>
+                                        <div class="input-group-custom">
+                                            <i class="bi bi-geo-alt input-icon"></i>
+                                            <select class="form-control form-control-custom" name="country">
+                                                <option value="">Select your country</option>
+                                                <option>United States</option>
+                                                <option>Canada</option>
+                                                <option>United Kingdom</option>
+                                                <option>Australia</option>
+                                                <option>Germany</option>
+                                                <option>France</option>
+                                                <option>Japan</option>
+                                                <option>Brazil</option>
+                                                <option>India</option>
+                                                <!-- Add more as needed -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- STEP 3: Preferences -->
+                            <div class="step-content" id="step3">
+                                <div class="text-center mb-4">
+                                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                        style="width:64px;height:64px">
+                                        <i class="bi bi-sliders fs-4 text-primary"></i>
+                                    </div>
+                                    <h4 class="fw-semibold">Account Setup</h4>
+                                    <p class="text-muted small mb-0">
+                                        Choose your preferred account type and establish your transaction PIN for secure
+                                        transactions.
+                                    </p>
+                                </div>
+
+                                <!-- Plan Selection -->
+                                <label class="form-label small fw-medium mb-2">Account Type *</label>
+                                <div class="row g-3 mb-4">
+
+                                    <div class="col-12 col-lg-6">
+                                        <label class="plan-card selected d-block" data-plan="free">
+                                            <div class="check-badge"><i class="bi bi-check-lg"></i></div>
+
+                                            <div class="d-flex align-items-start gap-3 justify-content-between">
+                                                <div class="bg-primary bg-opacity-10 rounded p-2">
+                                                    <i class="bi bi-gift text-primary"></i>
+                                                </div>
+
+                                                <div>
+                                                    <h6 class="fw-semibold mb-0">Checking Account</h6>
+                                                    <p class="small text-muted mb-0">
+                                                        Perfect for daily transactions and bill payments
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <input type="radio" name="plan" value="free" class="d-none" checked>
+                                        </label>
+                                    </div>
+
+                                    <div class="col-12 col-lg-6">
+                                        <label class="plan-card d-block" data-plan="pro">
+                                            <div class="check-badge"><i class="bi bi-check-lg"></i></div>
+
+                                            <div class="d-flex align-items-start gap-3">
+                                                <div class="bg-primary bg-opacity-10 rounded p-2">
+                                                    <i class="bi bi-star text-primary"></i>
+                                                </div>
+
+                                                <div>
+                                                    <h6 class="fw-semibold mb-0">Savings Account</h6>
+                                                    <p class="small text-muted mb-0">
+                                                        Earn interest on your deposits
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <input type="radio" name="plan" value="pro" class="d-none">
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                                <!-- Timezone -->
+                                <!-- Currency -->
+                                <div>
+                                    <label class="form-label small fw-medium">Currency</label>
+                                    <div class="input-group-custom">
+                                        <i class="bi bi-currency-exchange input-icon"></i>
+                                        <select class="form-control form-control-custom" name="currency">
+                                            <option value="NGN">Nigerian Naira (NGN)</option>
+                                            <option value="USD">US Dollar (USD)</option>
+                                            <option value="EUR">Euro (EUR)</option>
+                                            <option value="GBP">British Pound (GBP)</option>
+                                            <option value="JPY">Japanese Yen (JPY)</option>
+                                            <option value="SGD">Singapore Dollar (SGD)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Transaction PIN -->
+                                <div>
+                                    <label class="form-label small fw-medium">Transaction PIN</label>
+                                    <div class="input-group-custom">
+                                        <i class="bi bi-shield-lock input-icon"></i>
+                                        <input type="password" class="form-control form-control-custom"
+                                            name="transaction_pin" maxlength="4" inputmode="numeric" placeholder="••••">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- STEP 4: Security -->
+                            <div class="step-content" id="step4">
+                                <div class="text-center mb-4">
+                                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                        style="width:64px;height:64px">
+                                        <i class="bi bi-shield-lock fs-4 text-primary"></i>
+                                    </div>
+                                    <h4 class="fw-semibold">Secure Your Account</h4>
+                                    <p class="text-muted small mb-0">Create a strong password</p>
+                                </div>
+
+                                <!-- Password -->
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium">Password *</label>
+                                    <div class="input-group-custom">
+                                        <i class="bi bi-lock input-icon"></i>
+                                        <input type="password" class="form-control form-control-custom" id="password"
+                                            name="password" required placeholder="••••••••" minlength="8">
+                                        <button type="button" class="password-toggle" id="togglePassword"
+                                            aria-label="Toggle password visibility">
+                                            <i class="bi bi-eye" id="eyeIcon"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- Strength Meter -->
+                                    <div class="mt-2" id="strengthContainer" style="display:none">
+                                        <div class="d-flex justify-content-between small mb-1">
+                                            <span class="text-muted">Strength:</span>
+                                            <span id="strengthLabel" class="fw-medium">Very Weak</span>
+                                        </div>
+                                        <div class="strength-meter">
+                                            <div class="strength-fill strength-weak" id="strengthFill"
+                                                style="width:20%"></div>
+                                        </div>
+                                        <ul class="list-unstyled small text-muted mt-2 mb-0" style="font-size:0.75rem">
+                                            <li id="ruleLength"><i class="bi bi-circle small me-1"></i> At least 8
+                                                characters</li>
+                                            <li id="ruleUpper"><i class="bi bi-circle small me-1"></i> One uppercase
+                                                letter</li>
+                                            <li id="ruleNumber"><i class="bi bi-circle small me-1"></i> One number</li>
+                                            <li id="ruleSpecial"><i class="bi bi-circle small me-1"></i> One special
+                                                character</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Confirm Password -->
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium">Confirm Password *</label>
+                                    <div class="input-group-custom">
+                                        <i class="bi bi-lock input-icon"></i>
+                                        <input type="password" class="form-control form-control-custom"
+                                            name="passwordConfirm" required placeholder="••••••••">
+                                    </div>
+                                    <small class="text-danger d-none" id="passwordMatchError">Passwords do not
+                                        match</small>
+                                </div>
+
+                                <!-- Terms -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="terms" required>
+                                    <label class="form-check-label small text-muted" for="terms">
+                                        I agree to the <a href="#" class="text-decoration-none"
+                                            style="color:var(--primary)">Terms of Service</a> and <a href="#"
+                                            class="text-decoration-none" style="color:var(--primary)">Privacy Policy</a>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Navigation Buttons -->
+                            <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                                <button type="button" class="btn btn-outline-custom" id="prevBtn" style="display:none">
+                                    <i class="bi bi-arrow-left"></i> Back
+                                </button>
+                                <div></div> <!-- spacer -->
+                                <button type="button" class="btn btn-primary-custom" id="nextBtn">
+                                    Next <i class="bi bi-arrow-right"></i>
+                                </button>
+                                <button type="submit" class="btn btn-primary-custom" id="submitBtn"
+                                    style="display:none">
+                                    <i class="bi bi-check-lg"></i> Create Account
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="text-center mt-4">
+                    <p class="small text-muted mb-0">
+                        Already have an account?
+                        <a href="{% url 'account:login' %}" class="text-decoration-none"
+                            style="color:var(--primary);font-weight:500">Sign in</a>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
