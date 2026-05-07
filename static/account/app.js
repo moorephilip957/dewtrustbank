@@ -122,15 +122,35 @@ function validateStep(step) {
     return valid;
 }
 
-// ===== Plan Selection =====
-document.querySelectorAll('.plan-card').forEach(card => {
+// ===== accouint_type Selection =====
+document.querySelectorAll('.account-type-card').forEach(card => {
     card.addEventListener('click', function () {
-        document.querySelectorAll('.plan-card')
+
+        // remove previous selection
+        document.querySelectorAll('.account-type-card')
             .forEach(c => c.classList.remove('selected'));
 
+        // select current card
         this.classList.add('selected');
-        this.querySelector('input').checked = true;
+
+        // get account type ID
+        const value = this.dataset.value;
+
+        // update Django hidden select field
+        const field = document.querySelector('[name="account_type"]');
+
+        if (field) {
+            field.value = value;
+
+            // important for Django validation/UX
+            field.dispatchEvent(new Event('change'));
+        }
     });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const first = document.querySelector('.account-type-card');
+    if (first) first.click();
 });
 
 // ===== Password Strength Meter =====

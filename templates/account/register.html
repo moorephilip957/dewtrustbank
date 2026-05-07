@@ -120,6 +120,7 @@
                         <form method="post" action="." id="registerForm">
                             {% csrf_token %}
                             {% include "../components/form_errors.html" %}
+                            {% include "../components/messages.html" %}
                             <!-- STEP 1: Personal Details -->
                             <div class="step-content active" id="step1">
                                 <div class="text-center mb-4">
@@ -243,10 +244,16 @@
 
                                 <!-- Plan Selection -->
                                 <label class="form-label small fw-medium mb-2">Account Type *</label>
-                                <div class="row g-3 mb-4">
 
+                                <!-- hidden django field -->
+                                <div class="d-none">
+                                    {{ bank_form.account_type }}
+                                </div>
+                                <div class="row g-3 mb-4">
+                                    {% for type in account_types|slice:":2" %}
                                     <div class="col-12 col-lg-6">
-                                        <label class="plan-card selected d-block" data-plan="free">
+                                        <label class="account-type-card d-block account-type-card" data-value="{{ type.id }}">
+
                                             <div class="check-badge"><i class="bi bi-check-lg"></i></div>
 
                                             <div class="d-flex align-items-start gap-3 justify-content-between">
@@ -255,41 +262,58 @@
                                                 </div>
 
                                                 <div>
-                                                    <h6 class="fw-semibold mb-0">Checking Account</h6>
+                                                    <h6 class="fw-semibold mb-0">{{ type.name }}</h6>
                                                     <p class="small text-muted mb-0">
-                                                        Perfect for daily transactions and bill payments
+                                                        {{ type.description|truncatechars:60 }}
                                                     </p>
                                                 </div>
                                             </div>
 
-                                            <input type="radio" name="plan" value="free" class="d-none" checked>
                                         </label>
                                     </div>
+                                    {% endfor %}
 
-                                    <div class="col-12 col-lg-6">
-                                        <label class="plan-card d-block" data-plan="pro">
-                                            <div class="check-badge"><i class="bi bi-check-lg"></i></div>
+                                    {# MORE OPTIONS (HIDDEN INITIALLY) #}
+                                    <div class="collapse mt-2" id="moreAccounts">
+                                        <div class="row">
+                                            {% for type in account_types|slice:"2:" %}
+                                            <div class="col-12 col-lg-6">
+                                                <label class="account-type-card d-block account-type-card"
+                                                    data-value="{{ type.id }}">
 
-                                            <div class="d-flex align-items-start gap-3">
-                                                <div class="bg-primary bg-opacity-10 rounded p-2">
-                                                    <i class="bi bi-star text-primary"></i>
-                                                </div>
+                                                    <div class="check-badge"><i class="bi bi-check-lg"></i></div>
 
-                                                <div>
-                                                    <h6 class="fw-semibold mb-0">Savings Account</h6>
-                                                    <p class="small text-muted mb-0">
-                                                        Earn interest on your deposits
-                                                    </p>
-                                                </div>
+                                                    <div class="d-flex align-items-start gap-3 justify-content-between">
+                                                        <div class="bg-primary bg-opacity-10 rounded p-2">
+                                                            <i class="bi bi-gift text-primary"></i>
+                                                        </div>
+
+                                                        <div>
+                                                            <h6 class="fw-semibold mb-0">{{ type.name }}</h6>
+                                                            <p class="small text-muted mb-0">
+                                                                {{ type.description|truncatechars:60 }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                </label>
                                             </div>
-
-                                            <input type="radio" name="plan" value="pro" class="d-none">
-                                        </label>
+                                            {% endfor %}
+                                        </div>
                                     </div>
+
+                                    <!-- TOGGLE BUTTON -->
+                                    {% if account_types|length > 2 %}
+                                    <div class="mt-3 text-center">
+                                        <button class="btn btn-sm btn-outline-primary" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#moreAccounts">
+                                            More account types <i class="bi bi-chevron-down"></i>
+                                        </button>
+                                    </div>
+                                    {% endif %}
 
                                 </div>
 
-                                <!-- Timezone -->
                                 <!-- Currency -->
                                 <div>
                                     <label class="form-label small fw-medium">Currency</label>
