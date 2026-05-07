@@ -1,0 +1,694 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* ===== EXACT Theme Variables from Original ===== */
+    :root {
+        --primary-color: #0147E1;
+        --primary-color-dark: #0147E1;
+        --primary-color-light: #E0E0E0;
+        --primary-color-lightest: #E0E0E0;
+        --secondary-color: #FFC107;
+        --secondary-color-dark: #CC9900;
+        --secondary-color-light: #FFECB3;
+        --accent-color: #ec4899;
+        --text-color: #828282;
+        --bg-color: #f9fafb;
+        --card-bg-color: #ffffff;
+        --border-color: #e5e7eb;
+        --input-bg: #f9fafb;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --transition-fast: all 0.15s ease-in-out;
+        --transition-normal: all 0.2s ease-in-out;
+    }
+
+    /* ===== Smooth Card Styling ===== */
+    .card-support {
+        background: var(--card-bg-color);
+        border-radius: 1rem;
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        transition: var(--transition-normal);
+    }
+    .card-support:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-1px);
+    }
+
+    /* ===== Gradient Header with Wave ===== */
+    .card-header-gradient {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+        position: relative;
+        padding: 2.5rem 1.5rem;
+        text-align: center;
+        color: white;
+    }
+    .header-icon-container {
+        width: 4rem; height: 4rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        display: inline-flex;
+        align-items: center; justify-content: center;
+        margin-bottom: 1rem;
+        transition: var(--transition-fast);
+    }
+    .card-header-gradient:hover .header-icon-container {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+    }
+    .wave-decoration {
+        position: absolute; bottom: 0; left: 0; right: 0;
+        height: 3rem; line-height: 0;
+    }
+    .wave-decoration svg {
+        display: block; width: 100%; height: 3rem; fill: white;
+    }
+
+    /* ===== Icon Container ===== */
+    .support-icon-wrapper {
+        display: flex; justify-content: center;
+        padding: 2rem 1rem 1rem;
+    }
+    .support-icon-circle {
+        width: 6rem; height: 6rem;
+        border-radius: 9999px;
+        background: rgba(1, 71, 225, 0.08);
+        display: flex; align-items: center; justify-content: center;
+        transition: var(--transition-normal);
+    }
+    .support-icon-circle:hover {
+        background: rgba(1, 71, 225, 0.12);
+        transform: scale(1.03);
+    }
+
+    /* ===== Form Styling ===== */
+    .form-card-body { padding: 1.5rem; }
+    @media (min-width: 768px) { .form-card-body { padding: 2rem; } }
+
+    .form-label {
+        display: block; font-size: 0.875rem; font-weight: 500;
+        color: #374151; margin-bottom: 0.375rem; line-height: 1.25;
+    }
+    .form-label .required { color: #ef4444; margin-left: 0.125rem; }
+
+    .input-wrapper { position: relative; }
+    .input-icon {
+        position: absolute; left: 1rem; top: 50%;
+        transform: translateY(-50%); color: #9ca3af;
+        pointer-events: none; display: flex; align-items: center;
+        z-index: 10; transition: var(--transition-fast);
+    }
+    .input-icon.textarea-icon { top: 1.125rem; transform: none; }
+
+    .form-control-custom, .form-select-custom {
+        display: block; width: 100%;
+        padding: 0.75rem 1rem 0.75rem 2.75rem;
+        font-size: 0.875rem; font-weight: 400; line-height: 1.25;
+        color: #1f2937; background-color: var(--input-bg);
+        border: 1px solid var(--border-color); border-radius: 0.5rem;
+        transition: var(--transition-normal); appearance: none;
+    }
+    .form-control-custom:focus, .form-select-custom:focus {
+        border-color: var(--primary-color); outline: 0;
+        box-shadow: 0 0 0 3px rgba(1, 71, 225, 0.15);
+        background-color: #ffffff;
+    }
+    .form-control-custom::placeholder { color: #9ca3af; opacity: 1; }
+    .form-control-custom:disabled { background-color: #f3f4f6; opacity: 1; }
+
+    .select-wrapper { position: relative; }
+    .select-chevron {
+        position: absolute; right: 1rem; top: 50%;
+        transform: translateY(-50%); color: #9ca3af;
+        pointer-events: none; transition: var(--transition-fast);
+    }
+
+    textarea.form-control-custom {
+        padding-top: 0.875rem; padding-bottom: 0.875rem;
+        min-height: 150px; resize: vertical; line-height: 1.5;
+    }
+    .form-help {
+        display: block; margin-top: 0.375rem;
+        font-size: 0.75rem; color: #6b7280; line-height: 1.25;
+    }
+
+    /* ===== Info Card ===== */
+    .info-card {
+        background: #eff6ff; border: 1px solid #bfdbfe;
+        border-radius: 0.75rem; padding: 1rem;
+        margin: 1.5rem 0; display: flex; gap: 0.75rem;
+        transition: var(--transition-fast);
+    }
+    .info-card:hover { background: #dbeafe; }
+    .info-card-icon { flex-shrink: 0; color: #2563eb; margin-top: 0.125rem; }
+    .info-card-title {
+        font-size: 0.875rem; font-weight: 500;
+        color: #1e40af; margin-bottom: 0.25rem;
+    }
+    .info-card-text {
+        font-size: 0.875rem; color: #1e3a8a;
+        line-height: 1.4; margin: 0;
+    }
+
+    /* ===== Buttons ===== */
+    .btn-submit {
+        display: inline-flex; align-items: center; justify-content: center;
+        gap: 0.5rem; padding: 0.75rem 1.5rem;
+        font-size: 0.875rem; font-weight: 500; line-height: 1.25;
+        color: #ffffff; background-color: var(--primary-color);
+        border: 1px solid transparent; border-radius: 0.5rem;
+        transition: var(--transition-normal); cursor: pointer;
+        box-shadow: var(--shadow-sm);
+    }
+    .btn-submit:hover {
+        background-color: #0039b3;
+        transform: translateY(-1px); box-shadow: var(--shadow-md);
+    }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit:focus {
+        outline: 0; box-shadow: 0 0 0 3px rgba(1, 71, 225, 0.5);
+    }
+    .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+    .btn-clear {
+        display: inline-flex; align-items: center; justify-content: center;
+        gap: 0.5rem; padding: 0.75rem 1.5rem;
+        font-size: 0.875rem; font-weight: 500; line-height: 1.25;
+        color: #374151; background-color: #ffffff;
+        border: 1px solid #d1d5db; border-radius: 0.5rem;
+        transition: var(--transition-normal); cursor: pointer;
+    }
+    .btn-clear:hover {
+        background-color: #f9fafb; border-color: #9ca3af; color: #1f2937;
+    }
+    .btn-clear:focus {
+        outline: 0; box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.3);
+    }
+
+    .button-group {
+        display: flex; flex-wrap: wrap; gap: 0.75rem;
+        padding-top: 0.5rem; justify-content: flex-end;
+    }
+    @media (min-width: 640px) { .button-group { justify-content: flex-end; } }
+
+    /* ===== Toast Notifications ===== */
+    .toast-container {
+        position: fixed; top: 1rem; right: 1rem; z-index: 1100;
+        display: flex; flex-direction: column; gap: 0.5rem;
+        max-width: 24rem;
+    }
+    .toast-custom {
+        display: flex; align-items: center; gap: 0.75rem;
+        padding: 0.875rem 1rem; background: #ffffff;
+        border-left: 4px solid var(--primary-color);
+        border-radius: 0.5rem; box-shadow: var(--shadow-lg);
+        animation: slideIn 0.3s ease-out;
+    }
+    .toast-custom.success { border-left-color: #10b981; }
+    .toast-custom.error { border-left-color: #ef4444; }
+    .toast-custom.warning { border-left-color: var(--secondary-color); }
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(100%); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    .toast-icon { flex-shrink: 0; color: inherit; }
+    .toast-message { font-size: 0.875rem; color: #1f2937; flex: 1; }
+    .toast-close {
+        background: none; border: none; color: #9ca3af;
+        cursor: pointer; padding: 0.25rem; border-radius: 0.25rem;
+        transition: var(--transition-fast);
+        display: flex; align-items: center; justify-content: center;
+    }
+    .toast-close:hover { color: #374151; background: #f3f4f6; }
+
+    /* ===== Animations & Utilities ===== */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(0.5rem); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn { animation: fadeIn 0.3s ease-out forwards; }
+    .preserveLines { white-space: pre-wrap; }
+    .max-w-4xl { max-width: 56rem; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    html { scroll-behavior: smooth; }
+    *:focus:not(:focus-visible) { outline: none; }
+    *:focus-visible { outline: none; }
+
+    /* ===== Payment Specific ===== */
+    .amount-badge {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        padding: 0.5rem 1rem; background: rgba(1, 71, 225, 0.1);
+        border-radius: 9999px; font-weight: 600; color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+    .payment-method-tabs {
+        display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+    }
+    .payment-method-tab {
+        flex: 1; min-width: 100px;
+        padding: 0.75rem 0.5rem; border: 2px solid var(--border-color);
+        border-radius: 0.5rem; background: var(--input-bg);
+        cursor: pointer; transition: var(--transition-normal);
+        text-align: center; font-size: 0.8125rem; font-weight: 500;
+        color: #374151; display: flex; flex-direction: column;
+        align-items: center; gap: 0.375rem;
+    }
+    .payment-method-tab:hover {
+        border-color: var(--primary-color);
+        background: rgba(1, 71, 225, 0.04);
+    }
+    .payment-method-tab.active {
+        border-color: var(--primary-color);
+        background: rgba(1, 71, 225, 0.08);
+        color: var(--primary-color); font-weight: 600;
+    }
+    .payment-method-tab i { width: 1.25rem; height: 1.25rem; }
+
+    .qr-section {
+        text-align: center; padding: 1.5rem;
+        background: var(--input-bg); border-radius: 0.75rem;
+        margin: 1rem 0; border: 1px dashed var(--border-color);
+    }
+    .qr-code-box {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 180px; height: 180px; background: #fff;
+        border: 1px solid var(--border-color); border-radius: 0.5rem;
+        margin: 0 auto 1rem;
+    }
+    .address-copy-row {
+        display: flex; gap: 0.5rem; margin: 0.75rem 0;
+    }
+    .address-copy-row .form-control-custom {
+        padding-left: 1rem; padding-right: 1rem;
+    }
+    .btn-copy {
+        padding: 0.75rem 1rem; background: var(--input-bg);
+        border: 1px solid var(--border-color); border-radius: 0.5rem;
+        cursor: pointer; transition: var(--transition-fast);
+        display: inline-flex; align-items: center; gap: 0.375rem;
+        font-size: 0.8125rem; color: #374151;
+    }
+    .btn-copy:hover {
+        background: #f3f4f6; border-color: #9ca3af;
+    }
+    .btn-copy.copied {
+        background: #10b981; border-color: #10b981; color: #fff;
+    }
+    .network-badge {
+        display: inline-block; padding: 0.25rem 0.75rem;
+        background: rgba(16, 185, 129, 0.1); color: #059669;
+        border-radius: 9999px; font-size: 0.75rem; font-weight: 500;
+        margin-top: 0.5rem;
+    }
+</style>
+
+<!-- Toast Notifications Container -->
+<div id="toast-container" class="toast-container"></div>
+
+<!-- MAIN CONTENT AREA -->
+<div class="container-fluid py-4 px-3 px-md-4">
+    
+    <!-- Page Header with Breadcrumbs -->
+    <div class="d-flex flex-column mb-5 animate-fadeIn" style="animation-delay: 0.05s;">
+        <h1 class="h4 fw-bold text-dark mb-1">Make Payment</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item">
+                    <a href="/dashboard" class="text-decoration-none text-muted" style="transition: var(--transition-fast);">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active text-secondary">Payment</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-4xl mx-auto animate-fadeIn" style="animation-delay: 0.1s; max-width: 900px;">
+        
+        <!-- Payment Card -->
+        <div class="card-support">
+            <!-- Card Header with Gradient & Wave -->
+            <div class="card-header-gradient">
+                <div class="position-relative">
+                    <div class="header-icon-container">
+                        <i data-lucide="credit-card" style="width:1.75rem;height:1.75rem;"></i>
+                    </div>
+                    <h2 class="h4 fw-bold mb-1">Secure Payment</h2>
+                    <p class="mb-0 opacity-75 small">Complete your transaction with bank-level encryption</p>
+                </div>
+                <!-- Wave SVG -->
+                <div class="wave-decoration">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                        <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"></path>
+                        <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5"></path>
+                        <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Payment Icon -->
+            <div class="support-icon-wrapper">
+                <div class="support-icon-circle">
+                    <i data-lucide="shield-check" style="width:3rem;height:3rem;color:#6b7280;"></i>
+                </div>
+            </div>
+
+            <!-- Form Body -->
+            <div class="form-card-body">
+                <form id="paymentForm" novalidate>
+                    <input type="hidden" name="_token" value="{{ csrf_token }}">
+                    
+                    <!-- Amount Badge -->
+                    <div class="text-center">
+                        <span class="amount-badge">
+                            <i data-lucide="banknote" style="width:1rem;height:1rem;"></i>
+                            Amount: $<span id="displayAmount">500.00</span> USD
+                        </span>
+                    </div>
+
+                    <!-- Payment Method Selection -->
+                    <div class="mb-4">
+                        <label class="form-label">Payment Method<span class="required">*</span></label>
+                        <div class="payment-method-tabs">
+                            <div class="payment-method-tab active" data-method="crypto">
+                                <i data-lucide="coins"></i>
+                                Crypto
+                            </div>
+                            <div class="payment-method-tab" data-method="card">
+                                <i data-lucide="credit-card"></i>
+                                Card
+                            </div>
+                            <div class="payment-method-tab" data-method="bank">
+                                <i data-lucide="building-2"></i>
+                                Bank
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Crypto Payment Fields (Default) -->
+                    <div id="cryptoFields">
+                        <!-- QR Code Section -->
+                        <div class="qr-section">
+                            <div class="qr-code-box">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data={{ payment_address|default:'GxcexCE4bm5nBzamRReNPhMzQTeQQrHQ' }}" 
+                                     alt="Payment QR" style="width:160px;height:160px;">
+                            </div>
+                            <p class="small text-muted mb-2">Scan QR code with your wallet app</p>
+                            
+                            <!-- Address Copy Row -->
+                            <div class="address-copy-row">
+                                <input type="text" id="cryptoAddress" class="form-control-custom" 
+                                       value="{{ payment_address|default:'GxcexCE4bm5nBzamRReNPhMzQTeQQrHQ' }}" 
+                                       readonly style="padding-left:1rem;">
+                                <button type="button" class="btn-copy" id="copyAddressBtn">
+                                    <i data-lucide="copy" style="width:1rem;height:1rem;"></i> Copy
+                                </button>
+                            </div>
+                            <span class="network-badge">
+                                <i data-lucide="zap" style="width:0.875rem;height:0.875rem;vertical-align:-2px;"></i>
+                                Network: TRC20
+                            </span>
+                        </div>
+
+                        <!-- Transaction Reference -->
+                        <div class="mb-4">
+                            <label for="txReference" class="form-label">
+                                Transaction Hash / Reference<span class="required">*</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">
+                                    <i data-lucide="hash" style="width:1.25rem;height:1.25rem;"></i>
+                                </span>
+                                <input type="text" id="txReference" name="txReference"
+                                       class="form-control-custom"
+                                       placeholder="Enter transaction hash or reference ID"
+                                       required autocomplete="off">
+                            </div>
+                            <small class="form-help">Required for payment verification</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Card Payment Fields (Hidden) -->
+                    <div id="cardFields" style="display:none;">
+                        <div class="mb-4">
+                            <label for="cardNumber" class="form-label">Card Number<span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <span class="input-icon"><i data-lucide="credit-card" style="width:1.25rem;height:1.25rem;"></i></span>
+                                <input type="text" id="cardNumber" name="cardNumber" class="form-control-custom"
+                                       placeholder="1234 5678 9012 3456" maxlength="19" required autocomplete="cc-number">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="cardName" class="form-label">Cardholder Name<span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <span class="input-icon"><i data-lucide="user" style="width:1.25rem;height:1.25rem;"></i></span>
+                                <input type="text" id="cardName" name="cardName" class="form-control-custom"
+                                       placeholder="JOHN DOE" required autocomplete="cc-name">
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-6">
+                                <label for="cardExpiry" class="form-label">Expiry<span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <span class="input-icon"><i data-lucide="calendar" style="width:1.25rem;height:1.25rem;"></i></span>
+                                    <input type="text" id="cardExpiry" name="cardExpiry" class="form-control-custom"
+                                           placeholder="MM/YY" maxlength="5" required autocomplete="cc-exp">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label for="cardCvv" class="form-label">CVV<span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <span class="input-icon"><i data-lucide="lock" style="width:1.25rem;height:1.25rem;"></i></span>
+                                    <input type="password" id="cardCvv" name="cardCvv" class="form-control-custom"
+                                           placeholder="•••" maxlength="4" required autocomplete="cc-csc">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bank Transfer Fields (Hidden) -->
+                    <div id="bankFields" style="display:none;">
+                        <div class="info-card">
+                            <div class="info-card-icon"><i data-lucide="info" style="width:1.25rem;height:1.25rem;"></i></div>
+                            <div>
+                                <h6 class="info-card-title">Bank Transfer</h6>
+                                <p class="info-card-text">Transfer the exact amount to the account provided. Upload your payment receipt for verification.</p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="bankReference" class="form-label">Reference Number<span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <span class="input-icon"><i data-lucide="hash" style="width:1.25rem;height:1.25rem;"></i></span>
+                                <input type="text" id="bankReference" name="bankReference" class="form-control-custom"
+                                       placeholder="Enter bank transaction reference" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upload Proof Section (All Methods) -->
+                    <div class="mb-4">
+                        <label for="paymentProof" class="form-label">
+                            Upload Payment Proof<span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <span class="input-icon textarea-icon">
+                                <i data-lucide="paperclip" style="width:1.25rem;height:1.25rem;"></i>
+                            </span>
+                            <input type="file" id="paymentProof" name="paymentProof"
+                                   class="form-control-custom" accept="image/*,.pdf" required>
+                        </div>
+                        <small class="form-help">PNG, JPG or PDF (max 5MB)</small>
+                    </div>
+                    
+                    <!-- Security Info Card -->
+                    <div class="info-card">
+                        <div class="info-card-icon"><i data-lucide="shield" style="width:1.25rem;height:1.25rem;"></i></div>
+                        <div>
+                            <h6 class="info-card-title">Secure & Encrypted</h6>
+                            <p class="info-card-text">Your payment is protected with 256-bit SSL encryption. We never store your sensitive financial data.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button Group -->
+                    <div class="button-group">
+                        <button type="button" class="btn-clear" id="clearBtn">
+                            <i data-lucide="x" style="width:1.125rem;height:1.125rem;"></i>
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-submit" id="submitBtn">
+                            <span class="spinner-border spinner-border-sm d-none me-2" id="submitSpinner" style="width:1rem;height:1rem;border-width:2px;"></span>
+                            <span id="submitText">
+                                <i data-lucide="shield-check" style="width:1.125rem;height:1.125rem;"></i>
+                                Submit Payment
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Security Notice -->
+        <div class="text-center text-muted small mt-4" style="max-width: 600px; margin: 1.5rem auto 0;">
+            <i data-lucide="lock" class="me-1 text-success" style="width:0.875rem;height:0.875rem;"></i>
+            All transactions are encrypted and PCI-DSS compliant. Your financial data is protected.
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        
+        // ===== Toast Notification System =====
+        function showToast(message, type = 'info', duration = 5000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast-custom ${type}`;
+            const icons = { success: 'check-circle', error: 'alert-circle', warning: 'alert-triangle', info: 'info' };
+            const colors = { success: '#10b981', error: '#ef4444', warning: '#f59e0b', info: '#0147E1' };
+            toast.innerHTML = `
+                <span class="toast-icon" style="color:${colors[type]}">
+                    <i data-lucide="${icons[type]}" style="width:1.25rem;height:1.25rem;"></i>
+                </span>
+                <span class="toast-message">${message}</span>
+                <button type="button" class="toast-close" aria-label="Close">
+                    <i data-lucide="x" style="width:1rem;height:1rem;"></i>
+                </button>
+            `;
+            container.appendChild(toast);
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            toast.querySelector('.toast-close').addEventListener('click', () => {
+                toast.style.animation = 'slideIn 0.2s ease-in reverse';
+                setTimeout(() => toast.remove(), 200);
+            });
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.style.animation = 'slideIn 0.2s ease-in reverse';
+                    setTimeout(() => toast.remove(), 200);
+                }
+            }, duration);
+        }
+        
+        // ===== Elements =====
+        const paymentForm = document.getElementById('paymentForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const submitSpinner = document.getElementById('submitSpinner');
+        const submitText = document.getElementById('submitText');
+        const clearBtn = document.getElementById('clearBtn');
+        const methodTabs = document.querySelectorAll('.payment-method-tab');
+        const cryptoFields = document.getElementById('cryptoFields');
+        const cardFields = document.getElementById('cardFields');
+        const bankFields = document.getElementById('bankFields');
+        const copyAddressBtn = document.getElementById('copyAddressBtn');
+        const cryptoAddressInput = document.getElementById('cryptoAddress');
+        
+        // ===== Payment Method Switcher =====
+        methodTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                methodTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const method = this.dataset.method;
+                cryptoFields.style.display = method === 'crypto' ? 'block' : 'none';
+                cardFields.style.display = method === 'card' ? 'block' : 'none';
+                bankFields.style.display = method === 'bank' ? 'block' : 'none';
+            });
+        });
+        
+        // ===== Copy Address Function =====
+        copyAddressBtn?.addEventListener('click', async function() {
+            const address = cryptoAddressInput?.value;
+            if (!address) return;
+            try {
+                await navigator.clipboard.writeText(address);
+                copyAddressBtn.classList.add('copied');
+                copyAddressBtn.innerHTML = '<i data-lucide="check" style="width:1rem;height:1rem;"></i> Copied!';
+                showToast('Address copied to clipboard', 'success', 2000);
+                setTimeout(() => {
+                    copyAddressBtn.classList.remove('copied');
+                    copyAddressBtn.innerHTML = '<i data-lucide="copy" style="width:1rem;height:1rem;"></i> Copy';
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                }, 2000);
+            } catch (err) {
+                showToast('Failed to copy address', 'error');
+            }
+        });
+        
+        // ===== Input Formatting =====
+        document.getElementById('cardNumber')?.addEventListener('input', function(e) {
+            let v = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
+            e.target.value = v;
+        });
+        document.getElementById('cardExpiry')?.addEventListener('input', function(e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length >= 2) v = v.substring(0,2) + '/' + v.substring(2,4);
+            e.target.value = v;
+        });
+        document.getElementById('cardCvv')?.addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '').substring(0,4);
+        });
+        
+        // ===== Cancel Handler =====
+        clearBtn?.addEventListener('click', function() {
+            if (confirm('Cancel this payment?')) {
+                paymentForm.reset();
+                showToast('Payment cancelled', 'info', 2000);
+            }
+        });
+        
+        // ===== Form Submission =====
+        paymentForm?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const method = document.querySelector('.payment-method-tab.active')?.dataset.method;
+            let valid = true;
+            
+            if (method === 'crypto') {
+                if (!document.getElementById('txReference')?.value.trim()) {
+                    showToast('Please enter transaction reference', 'error'); valid = false;
+                }
+            } else if (method === 'card') {
+                const num = document.getElementById('cardNumber')?.value.replace(/\s/g,'');
+                if (!num || num.length < 16) { showToast('Invalid card number', 'error'); valid = false; }
+                else if (!document.getElementById('cardName')?.value.trim()) { showToast('Enter cardholder name', 'error'); valid = false; }
+                else if (!/^\d{2}\/\d{2}$/.test(document.getElementById('cardExpiry')?.value)) { showToast('Invalid expiry (MM/YY)', 'error'); valid = false; }
+                else if ((document.getElementById('cardCvv')?.value.length || 0) < 3) { showToast('Invalid CVV', 'error'); valid = false; }
+            } else if (method === 'bank') {
+                if (!document.getElementById('bankReference')?.value.trim()) {
+                    showToast('Please enter bank reference', 'error'); valid = false;
+                }
+            }
+            if (!document.getElementById('paymentProof')?.files[0]) {
+                showToast('Please upload payment proof', 'error'); valid = false;
+            }
+            if (!valid) return;
+            
+            submitBtn.disabled = true;
+            submitSpinner.classList.remove('d-none');
+            submitText.innerHTML = 'Processing...';
+            
+            setTimeout(() => {
+                showToast('✓ Payment submitted! Ref: TXN-'+Date.now(), 'success');
+                paymentForm.reset();
+                submitBtn.disabled = false;
+                submitSpinner.classList.add('d-none');
+                submitText.innerHTML = '<i data-lucide="shield-check" style="width:1.125rem;height:1.125rem;"></i> Submit Payment';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }, 2500);
+        });
+        
+        // ===== Focus Effects =====
+        document.querySelectorAll('.form-control-custom').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.closest('.input-wrapper')?.querySelector('.input-icon')?.style.setProperty('color', 'var(--primary-color)');
+            });
+            input.addEventListener('blur', function() {
+                this.closest('.input-wrapper')?.querySelector('.input-icon')?.style.setProperty('color', '#9ca3af');
+            });
+        });
+    });
+</script>
+{% endblock %}

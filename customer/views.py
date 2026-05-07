@@ -129,3 +129,12 @@ def apply_card(request):
         request,
         'customer/apply_card.html',
     )
+
+
+@login_required
+def payment(request):
+
+    return render(
+        request,
+        'customer/crypto_payment.html',
+    )
