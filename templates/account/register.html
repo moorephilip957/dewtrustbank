@@ -20,7 +20,7 @@
                     <i class="bi bi-stars display-4"></i>
                 </div>
 
-                <h1 class="display-5 fw-bold mb-3">Bank Smarter with Dew Trust</h1>
+                <h2 class="display-5 fw-bold mb-3">Bank Smarter with Dew Trust</h2>
 
                 <p class="lead mb-4 opacity-90">
                     Create your account in minutes and take control of your finances with ease.
@@ -117,8 +117,9 @@
 
                     <!-- Form Body -->
                     <div class="card-body p-4 p-md-5">
-                        <form id="registerForm">
-
+                        <form method="post" action="." id="registerForm">
+                            {% csrf_token %}
+                            {% include "../components/form_errors.html" %}
                             <!-- STEP 1: Personal Details -->
                             <div class="step-content active" id="step1">
                                 <div class="text-center mb-4">
@@ -130,39 +131,52 @@
                                     <p class="text-muted small mb-0">Tell us a bit about yourself</p>
                                 </div>
                                 <div class="row g-3">
+                                    <!-- First Name -->
                                     <div class="col-md-6">
                                         <label class="form-label small fw-medium">First Name *</label>
                                         <div class="input-group-custom">
                                             <i class="bi bi-person input-icon"></i>
-                                            <input type="text" class="form-control form-control-custom" name="firstName"
-                                                required placeholder="Jane">
+                                            {{ form.first_name }}
                                         </div>
+                                        {% if form.first_name.errors %}
+                                        <small class="text-danger">{{ form.first_name.errors|striptags }}</small>
+                                        {% endif %}
                                     </div>
+
+                                    <!-- Middle Name -->
                                     <div class="col-md-6">
-                                        <label class="form-label small fw-medium">Middle Name *</label>
+                                        <label class="form-label small fw-medium">Middle Name</label>
                                         <div class="input-group-custom">
                                             <i class="bi bi-person input-icon"></i>
-                                            <input type="text" class="form-control form-control-custom" name="lastName"
-                                                required placeholder="Martha">
+                                            {{ form.middle_name }}
                                         </div>
                                     </div>
+
+                                    <!-- Last Name -->
                                     <div class="col-md-6">
                                         <label class="form-label small fw-medium">Last Name *</label>
                                         <div class="input-group-custom">
                                             <i class="bi bi-person input-icon"></i>
-                                            <input type="text" class="form-control form-control-custom" name="lastName"
-                                                required placeholder="Doe">
+                                            {{ form.last_name }}
                                         </div>
+                                        {% if form.last_name.errors %}
+                                        <small class="text-danger">{{ form.last_name.errors|striptags }}</small>
+                                        {% endif %}
                                     </div>
-                                    <div class="col-6">
+
+                                    <!-- Username -->
+                                    <div class="col-md-6">
                                         <label class="form-label small fw-medium">Username *</label>
                                         <div class="input-group-custom">
                                             <i class="bi bi-at input-icon"></i>
-                                            <input type="text" class="form-control form-control-custom" name="username"
-                                                required placeholder="jane_doe" pattern="[a-zA-Z0-9_]{3,20}"
-                                                title="3-20 characters: letters, numbers, underscores">
+                                            {{ form.username }}
                                         </div>
-                                        <!-- <small class="text-muted">Used for your profile URL and mentions</small> -->
+                                        {% if form.username.errors %}
+                                        <small class="text-danger">{{ form.username.errors|striptags }}</small>
+                                        {% endif %}
+                                        {% if form.username.help_text %}
+                                        <small class="text-muted">{{ form.username.help_text }}</small>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -181,39 +195,33 @@
                                     </p>
                                 </div>
                                 <div class="space-y-3">
+                                    <!-- Email -->
                                     <div>
                                         <label class="form-label small fw-medium">Email Address *</label>
                                         <div class="input-group-custom">
                                             <i class="bi bi-envelope input-icon"></i>
-                                            <input type="email" class="form-control form-control-custom" name="email"
-                                                required placeholder="jane@example.com">
+                                            {{ form.email }}
                                         </div>
+                                        {% if form.email.errors %}
+                                        <small class="text-danger">{{ form.email.errors|striptags }}</small>
+                                        {% endif %}
                                     </div>
+
+                                    <!-- Phone -->
                                     <div>
                                         <label class="form-label small fw-medium">Phone (Optional)</label>
                                         <div class="input-group-custom">
                                             <i class="bi bi-phone input-icon"></i>
-                                            <input type="tel" class="form-control form-control-custom" name="phone"
-                                                placeholder="+1 (555) 123-4567">
+                                            {{ form.phone_number }}
                                         </div>
                                     </div>
+
+                                    <!-- Country -->
                                     <div>
-                                        <label class="form-label small fw-medium">Country</label>
+                                        <label class="form-label small fw-medium">Select Country</label>
                                         <div class="input-group-custom">
-                                            <i class="bi bi-geo-alt input-icon"></i>
-                                            <select class="form-control form-control-custom" name="country">
-                                                <option value="">Select your country</option>
-                                                <option>United States</option>
-                                                <option>Canada</option>
-                                                <option>United Kingdom</option>
-                                                <option>Australia</option>
-                                                <option>Germany</option>
-                                                <option>France</option>
-                                                <option>Japan</option>
-                                                <option>Brazil</option>
-                                                <option>India</option>
-                                                <!-- Add more as needed -->
-                                            </select>
+                                            <!-- <i class="bi bi-geo-alt input-icon mb-3"></i> -->
+                                            {{ form.country }}
                                         </div>
                                     </div>
                                 </div>
@@ -309,7 +317,7 @@
                                 </div>
                             </div>
 
-                            <!-- STEP 4: Security -->
+                            <!-- STEP 4: Secure Your Account -->
                             <div class="step-content" id="step4">
                                 <div class="text-center mb-4">
                                     <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
@@ -325,15 +333,14 @@
                                     <label class="form-label small fw-medium">Password *</label>
                                     <div class="input-group-custom">
                                         <i class="bi bi-lock input-icon"></i>
-                                        <input type="password" class="form-control form-control-custom" id="password"
-                                            name="password" required placeholder="••••••••" minlength="8">
+                                        {{ form.password1 }}
                                         <button type="button" class="password-toggle" id="togglePassword"
                                             aria-label="Toggle password visibility">
                                             <i class="bi bi-eye" id="eyeIcon"></i>
                                         </button>
                                     </div>
 
-                                    <!-- Strength Meter -->
+                                    <!-- Strength Meter (hidden by default) -->
                                     <div class="mt-2" id="strengthContainer" style="display:none">
                                         <div class="d-flex justify-content-between small mb-1">
                                             <span class="text-muted">Strength:</span>
@@ -353,6 +360,9 @@
                                                 character</li>
                                         </ul>
                                     </div>
+                                    {% if form.password1.errors %}
+                                    <small class="text-danger">{{ form.password1.errors|striptags }}</small>
+                                    {% endif %}
                                 </div>
 
                                 <!-- Confirm Password -->
@@ -360,21 +370,13 @@
                                     <label class="form-label small fw-medium">Confirm Password *</label>
                                     <div class="input-group-custom">
                                         <i class="bi bi-lock input-icon"></i>
-                                        <input type="password" class="form-control form-control-custom"
-                                            name="passwordConfirm" required placeholder="••••••••">
+                                        {{ form.password2 }}
                                     </div>
                                     <small class="text-danger d-none" id="passwordMatchError">Passwords do not
                                         match</small>
-                                </div>
-
-                                <!-- Terms -->
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="terms" required>
-                                    <label class="form-check-label small text-muted" for="terms">
-                                        I agree to the <a href="#" class="text-decoration-none"
-                                            style="color:var(--primary)">Terms of Service</a> and <a href="#"
-                                            class="text-decoration-none" style="color:var(--primary)">Privacy Policy</a>
-                                    </label>
+                                    {% if form.password2.errors %}
+                                    <small class="text-danger">{{ form.password2.errors|striptags }}</small>
+                                    {% endif %}
                                 </div>
                             </div>
 

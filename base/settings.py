@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # external apps
+    'django_countries',
+
     # my apps
     'frontend',
     'account',
@@ -113,6 +116,9 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+# settings.py
+AUTH_USER_MODEL = 'account.CustomUser'
 
 
 # Static files (CSS, JavaScript, Images)

@@ -1,0 +1,61 @@
+{% if form.errors %}
+<div class="alert alert-danger rounded-3 py-3 px-3 mb-3">
+
+    <div class="d-flex align-items-center mb-2">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <strong>There were some errors with your submission</strong>
+    </div>
+
+    <ul class="mb-0 ps-3 small">
+
+        {% if form.errors %}
+        <div class="alert alert-danger border-0 shadow-sm rounded-3">
+            <i class="bi bi-shield-exclamation me-2 text-danger"></i>
+            <strong>Please fix the errors below:</strong>
+
+            <ul class="mb-0 mt-2">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+    </ul>
+</div>
+{% endif %}
+<!-- {% if form.errors %}
+<div class="alert alert-danger rounded-3 py-3 px-3 mb-3">
+
+    <div class="d-flex align-items-center mb-2">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <strong>There were some errors with your submission</strong>
+    </div>
+
+    <ul class="mb-0 ps-3 small">
+
+        {# Non-field errors #}
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        {% endif %}
+
+        {# Field errors #}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <li>
+                    <strong>{{ field.label }}:</strong> {{ error }}
+                </li>
+            {% endfor %}
+        {% endfor %}
+
+    </ul>
+</div>
+{% endif %} -->

@@ -1,0 +1,62 @@
+{% if messages %}
+<div class="mb-3">
+
+    {% for message in messages %}
+
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3 shadow-sm py-2 px-3 border-0 shadow-sm rounded-3"
+             role="alert">
+
+            <div class="d-flex align-items-center">
+
+                {% if message.tags == "success" %}
+                    <i class="bi bi-check-circle-fill me-2"></i>
+
+                {% elif message.tags == "error" or message.tags == "danger" %}
+                    <i class="bi bi-x-circle-fill me-2"></i>
+
+                {% elif message.tags == "warning" %}
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+                {% else %}
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                {% endif %}
+
+                <div class="small">
+                    {{ message }}
+                </div>
+
+            </div>
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+{% endif %}
+
+
+<!-- from django.contrib import messages
+
+messages.success(request, "Account created successfully!")
+messages.error(request, "Something went wrong.")
+messages.warning(request, "Please check your details.")
+messages.info(request, "Welcome back!") -->
+
+
+<!-- Use messages for:
+
+login success
+registration success
+transfers completed
+OTP sent
+password changes
+KYC status updates
+
+Use form errors ONLY for:
+
+validation failures -->

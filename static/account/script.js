@@ -195,5 +195,16 @@ $('password')?.addEventListener('input', function () {
     }`;
 });
 
+// ===== Form Submission (Register Demo) =====
+// $('registerForm')?.addEventListener('submit', (e) => {
+//     e.preventDefault();
+
+//     const data = Object.fromEntries(new FormData(e.target).entries());
+
+//     alert(`✅ Demo Registration Successful!\n\n📋 Data collected:\n${JSON.stringify(data, null, 2)}\n\n🔐 In production, this would be securely sent to your backend.`);
+
+//     console.log('Registration data (demo only):', data);
+// });
+
 // ===== Init =====
 updateStep();
