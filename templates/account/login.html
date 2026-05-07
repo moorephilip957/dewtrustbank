@@ -3,64 +3,26 @@
 
 {% block content %}
 
-
 <!-- Main Layout -->
 <div class="container-fluid p-0">
     <div class="row g-0 min-vh-100">
-
         <!-- Branding Side (Desktop) -->
         <div class="col-lg-6 d-none d-lg-flex brand-side align-items-center justify-content-center position-relative">
-            <!-- Decorative Elements -->
             <div class="brand-overlay">
                 <div class="brand-dot floating-slow" style="width: 120px; height: 120px; top: 25%; left: 20%;"></div>
                 <div class="brand-dot floating" style="width: 180px; height: 180px; bottom: 30%; right: 25%;"></div>
                 <div class="brand-dot floating-slower" style="width: 80px; height: 80px; top: 65%; left: 35%;"></div>
                 <div class="brand-grid"></div>
             </div>
-
-            <!-- Content -->
             <div class="text-center text-white px-5 position-relative z-1">
-                <div class="mb-4">
-                    <i class="bi bi-boxes display-4"></i>
-                </div>
+                <div class="mb-4"><i class="bi bi-boxes display-4"></i></div>
                 <h1 class="display-5 fw-bold mb-3">Secure Online Banking</h1>
-                <p class="lead mb-4 opacity-90">
-                    Manage your accounts, transfer funds, and stay in control of your finances — anytime, anywhere.
-                </p>
-
+                <p class="lead mb-4 opacity-90">Manage your accounts, transfer funds, and stay in control of your finances — anytime, anywhere.</p>
                 <div class="row g-3 justify-content-center mt-4">
-                    <div class="col-auto">
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="bg-white/20 rounded-circle p-2">
-                                <i class="bi bi-shield-check"></i>
-                            </div>
-                            <span>Bank-Grade Security</span>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="bg-white/20 rounded-circle p-2">
-                                <i class="bi bi-lightning-charge"></i>
-                            </div>
-                            <span>Instant Transactions</span>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="bg-white/20 rounded-circle p-2">
-                                <i class="bi bi-phone"></i>
-                            </div>
-                            <span>Mobile Banking</span>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="bg-white/20 rounded-circle p-2">
-                                <i class="bi bi-cloud-check"></i>
-                            </div>
-                            <span>Real-Time Account Updates</span>
-                        </div>
-                    </div>
+                    <div class="col-auto"><div class="d-flex align-items-center gap-2"><div class="bg-white/20 rounded-circle p-2"><i class="bi bi-shield-check"></i></div><span>Bank-Grade Security</span></div></div>
+                    <div class="col-auto"><div class="d-flex align-items-center gap-2"><div class="bg-white/20 rounded-circle p-2"><i class="bi bi-lightning-charge"></i></div><span>Instant Transactions</span></div></div>
+                    <div class="col-auto"><div class="d-flex align-items-center gap-2"><div class="bg-white/20 rounded-circle p-2"><i class="bi bi-phone"></i></div><span>Mobile Banking</span></div></div>
+                    <div class="col-auto"><div class="d-flex align-items-center gap-2"><div class="bg-white/20 rounded-circle p-2"><i class="bi bi-cloud-check"></i></div><span>Real-Time Account Updates</span></div></div>
                 </div>
             </div>
         </div>
@@ -68,29 +30,30 @@
         <!-- Form Side -->
         <div class="col-12 col-lg-6 d-flex align-items-center justify-content-center p-4">
             <div class="w-100" style="max-width: 480px;">
-
-                <!-- Mobile Logo -->
                 <div class="text-center mb-4 d-lg-none">
                     <i class="bi bi-boxes text-primary fs-1"></i>
                     <h3 class="mt-2 fw-bold text-gradient">Dew Trust</h3>
                 </div>
 
-                <!-- Login Card -->
                 <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
                     <div class="card-body p-4 p-md-5">
                         <h2 class="card-title h4 fw-bold mb-2">Access Your Account</h2>
-                        <p class="text-muted mb-4">Sign in securely to manage your accounts, payments, and transactions.
-                        </p>
-                        <form id="loginForm" action="#" method="POST">
+                        <p class="text-muted mb-4">Sign in securely to manage your accounts, payments, and transactions.</p>
+                        {% include "../components/messages.html" %}
 
-                            <!-- Username/Email -->
+                        
+                        <!-- 🔑 Updated form action & method -->
+                        <form id="loginForms" action="{% url 'account:login' %}" method="POST">
+                            {% csrf_token %}
+
+                            <!-- Email Field (Changed from username to match your auth flow) -->
                             <div class="mb-4">
-                                <label for="username" class="form-label fw-medium">Username or Email</label>
+                                <label for="email" class="form-label fw-medium">Email Address</label>
                                 <div class="input-group-custom">
                                     <i class="bi bi-person input-icon"></i>
-                                    <input type="text" class="form-control form-control-custom" id="username"
-                                        name="username" placeholder="Enter your username" required
-                                        autocomplete="username">
+                                    <input type="email" class="form-control form-control-custom" id="email"
+                                        name="email" placeholder="name@example.com" required
+                                        autocomplete="email" value="{{ email }}">
                                 </div>
                             </div>
 
@@ -98,8 +61,7 @@
                             <div class="mb-4">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <label for="password" class="form-label fw-medium mb-0">Password</label>
-                                    <a href="#" class="text-decoration-none small" style="color: var(--primary);">Forgot
-                                        password?</a>
+                                    <a href="" class="text-decoration-none small" style="color: var(--primary);">Forgot password?</a>
                                 </div>
                                 <div class="input-group-custom">
                                     <i class="bi bi-lock input-icon"></i>
@@ -133,7 +95,6 @@
                     </div>
                 </div>
 
-                <!-- Footer Links -->
                 <div class="text-center mt-4">
                     <p class="small text-muted mb-0">
                         By continuing, you agree to our
@@ -141,10 +102,8 @@
                         <a href="#" class="text-decoration-none" style="color: var(--primary);">Privacy Policy</a>
                     </p>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}
