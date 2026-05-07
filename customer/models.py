@@ -28,12 +28,12 @@ class BankAccountType(models.Model):
 class UserBankAccount(models.Model):
     """Bank account model linked to CustomUser with secure transaction PIN."""
 
-    ACCOUNT_TYPES = [
-        ('savings', _('Savings Account')),
-        ('checking', _('Checking Account')),
-        ('business', _('Business Account')),
-        ('virtual', _('Virtual Account')),
-    ]
+    # ACCOUNT_TYPES = [
+    #     ('savings', _('Savings Account')),
+    #     ('checking', _('Checking Account')),
+    #     ('business', _('Business Account')),
+    #     ('virtual', _('Virtual Account')),
+    # ]
 
     CURRENCIES = [
         ('USD', 'US Dollar ($)'),

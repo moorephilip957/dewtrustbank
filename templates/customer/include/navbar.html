@@ -1,0 +1,198 @@
+<!-- Header -->
+<header class="header">
+    <div class="d-flex align-items-center justify-content-between">
+        <!-- Mobile: Menu + Logo -->
+        <div class="d-md-none d-flex align-items-center">
+            <button class="btn btn-link text-dark p-0 me-2" id="mobileMenuToggle" aria-label="Toggle menu">
+                <i class="bi bi-list fs-4"></i>
+            </button>
+            <a href="#" class="text-decoration-none">
+                <div class="bg-primary text-white rounded d-flex align-items-center justify-content-center"
+                    style="width: 2rem; height: 2rem;">
+                    <i class="bi bi-building fs-6"></i>
+                </div>
+            </a>
+        </div>
+
+        <!-- Desktop: Date -->
+        <div class="d-none d-md-flex align-items-center">
+            <i class="bi bi-calendar me-2 text-muted"></i>
+            <span class="text-sm text-muted" id="headerDate">Thursday, May 7, 2026</span>
+        </div>
+
+        <!-- Right Actions -->
+        <div class="d-flex align-items-center gap-3">
+            <!-- Balance (Desktop) -->
+            <div class="d-none d-md-flex align-items-center px-2 py-1 bg-primary-light rounded-pill">
+                <i class="bi bi-wallet me-1 text-dark"></i>
+                <span class="text-sm fw-medium text-dark">$0</span>
+            </div>
+
+            <!-- Notifications -->
+            <div class="dropdown">
+                <button class="btn btn-link text-dark p-0 position-relative" type="button" id="notificationDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-bell fs-5"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end p-0" style="width: 20rem;">
+                    <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                        <h6 class="mb-0 fw-semibold">Notifications</h6>
+                        <button class="btn btn-link btn-sm p-0 text-primary">Mark all as read</button>
+                    </div>
+                    <div class="overflow-auto" style="max-height: 15rem;">
+                        <a href="#" class="notification-item d-flex">
+                            <div class="notification-icon success me-3">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                            <div class="flex-grow-1 min-w-0">
+                                <p class="mb-0 fw-medium text-dark">KYC Verification Approved</p>
+                                <p class="mb-0 text-sm text-muted text-truncate">Your KYC verification has been reviewed
+                                    and approved.</p>
+                                <p class="mb-0 text-xs text-muted mt-1">6 days ago</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="text-center p-2 border-top">
+                        <a href="#" class="text-sm fw-medium text-primary text-decoration-none">View all
+                            notifications</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Dropdown -->
+            <div class="dropdown">
+                <button class="btn btn-link p-0 d-flex align-items-center" type="button" id="userDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://ui-avatars.com/api/?name=Andrew+Levin&background=0147E1&color=fff" alt="User"
+                        class="rounded-circle border border-2" style="width: 2rem; height: 2rem; object-fit: cover;">
+                </button>
+                <div class="dropdown-menu dropdown-menu-end p-0" style="width: 12rem;">
+                    <div class="p-3 border-bottom">
+                        <p class="mb-0 fw-medium text-dark">Andrew Levin</p>
+                        <p class="mb-0 text-xs text-muted">ID: 7068987377</p>
+                        <span class="badge-verified mt-1">
+                            <i class="bi bi-check-circle-fill"></i> Verified
+                        </span>
+                    </div>
+                    <a href="#" class="dropdown-item">
+                        <i class="bi bi-question-circle"></i> Support Ticket
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="bi bi-person"></i> My Profile
+                    </a>
+                    <a href="#" class="dropdown-item text-danger">
+                        <i class="bi bi-box-arrow-right"></i> Sign Out
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<!-- Mobile Menu Modal -->
+<div class="mobile-menu-modal" id="mobileMenuModal">
+    <div class="mobile-menu-content">
+        <button class="btn btn-link position-absolute top-0 end-0 p-2 text-muted" id="closeMobileMenu">
+            <i class="bi bi-x fs-5"></i>
+        </button>
+
+        <!-- User Info -->
+        <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+            <img src="https://ui-avatars.com/api/?name=Andrew+Levin&background=0147E1&color=fff" alt="User"
+                class="rounded-circle border border-2 border-primary-light"
+                style="width: 3rem; height: 3rem; object-fit: cover;">
+            <div class="ms-3">
+                <h6 class="mb-0 fw-semibold">Andrew Levin</h6>
+                <p class="mb-0 text-sm text-muted">Account: 7068987377</p>
+                <span class="badge-verified mt-1">
+                    <i class="bi bi-check-circle-fill"></i> Verified
+                </span>
+            </div>
+        </div>
+
+        <!-- Menu Title -->
+        <div class="text-center mb-4">
+            <h5 class="mb-0 fw-bold">Banking Menu</h5>
+            <p class="mb-0 text-sm text-muted">Select an option to continue</p>
+        </div>
+
+        <!-- Grid Menu -->
+        <div class="mobile-menu-grid">
+            <a href="#" class="mobile-menu-item">
+                <div class="icon-circle"><i class="bi bi-house text-primary"></i></div>
+                <span>Home</span>
+            </a>
+            <a href="#" class="mobile-menu-item secondary">
+                <div class="icon-circle"><i class="bi bi-graph-up text-warning"></i></div>
+                <span>Activity</span>
+            </a>
+            <a href="#" class="mobile-menu-item">
+                <div class="icon-circle"><i class="bi bi-credit-card text-primary"></i></div>
+                <span>Cards</span>
+            </a>
+            <a href="#" class="mobile-menu-item secondary">
+                <div class="icon-circle"><i class="bi bi-send text-warning"></i></div>
+                <span>Transfer</span>
+            </a>
+            <a href="#" class="mobile-menu-item secondary">
+                <div class="icon-circle"><i class="bi bi-globe text-warning"></i></div>
+                <span>Int'l Wire</span>
+            </a>
+            <a href="#" class="mobile-menu-item">
+                <div class="icon-circle"><i class="bi bi-download text-primary"></i></div>
+                <span>Deposit</span>
+            </a>
+            <a href="#" class="mobile-menu-item">
+                <div class="icon-circle"><i class="bi bi-phone text-primary"></i></div>
+                <span>Download</span>
+            </a>
+            <a href="#" class="mobile-menu-item secondary">
+                <div class="icon-circle"><i class="bi bi-receipt text-warning"></i></div>
+                <span>Loan</span>
+            </a>
+            <a href="#" class="mobile-menu-item">
+                <div class="icon-circle"><i class="bi bi-file-earmark-text text-primary"></i></div>
+                <span>IRS Refund</span>
+            </a>
+            <a href="#" class="mobile-menu-item">
+                <div class="icon-circle"><i class="bi bi-gear text-primary"></i></div>
+                <span>Settings</span>
+            </a>
+            <a href="#" class="mobile-menu-item secondary">
+                <div class="icon-circle"><i class="bi bi-question-circle text-warning"></i></div>
+                <span>Support</span>
+            </a>
+            <a href="#" class="mobile-menu-item accent">
+                <div class="icon-circle"><i class="bi bi-box-arrow-right text-danger"></i></div>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<!-- Mobile Bottom Navigation -->
+<nav class="mobile-bottom-nav d-md-none">
+    <div class="d-flex justify-content-between align-items-center px-4 position-relative">
+        <a href="#" class="nav-item active">
+            <i class="bi bi-house-door"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="bi bi-bar-chart"></i>
+            <span>Stats</span>
+        </a>
+        <button class="fab-button" id="openMobileMenu">
+            <i class="bi bi-grid-3x3 fs-4"></i>
+        </button>
+        <a href="#" class="nav-item">
+            <i class="bi bi-credit-card"></i>
+            <span>Cards</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="bi bi-phone"></i>
+            <span>App</span>
+        </a>
+    </div>
+</nav>

@@ -1,0 +1,205 @@
+body {
+    background: #eeeeee;
+    font-family: system-ui, sans-serif;
+}
+
+/* MAIN CARD */
+.auth-card {
+    max-width: 480px;
+    margin: auto;
+    border-radius: 24px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* ===================== */
+/* 1. TOP HEADER SECTION */
+/* ===================== */
+.top-section {
+    background: linear-gradient(135deg, #033353, #074c69);
+    height: 240px;
+    position: relative;
+    overflow: hidden;
+    color: white;
+    text-align: center;
+    padding-top: 50px;
+    padding-inline: 35px;
+}
+
+.top-section h4 {
+    font-weight: 700;
+}
+
+.top-section p {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+/* decorative circles */
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.circle.one {
+    width: 120px;
+    height: 120px;
+    top: -30px;
+    left: -30px;
+}
+
+.circle.two {
+    width: 90px;
+    height: 90px;
+    bottom: -20px;
+    right: -20px;
+}
+
+/* ===================== */
+/* 2. IMAGE SECTION */
+/* ===================== */
+.image-section {
+    margin-top: -50px;
+    text-align: center;
+    position: relative;
+}
+
+.avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 4px solid white;
+    object-fit: cover;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    background: white;
+}
+
+/* ===================== */
+/* 3. FORM SECTION */
+/* ===================== */
+.form-section {
+    padding: 25px;
+    margin-top: 10px;
+}
+
+.otp-box {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.otp-box input {
+    width: 52px;
+    height: 55px;
+    text-align: center;
+    font-size: 20px;
+    border-radius: 12px;
+    border: 1px solid #65686d;
+    transition: 0.2s;
+}
+
+.otp-box input:focus {
+    border-color: #033353;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    outline: none;
+    transform: scale(1.05);
+}
+
+.btn-verify {
+    background: linear-gradient(135deg, #033353, #074c69);
+    border: none;
+    color: white;
+    padding: 12px;
+    border-radius: 12px;
+    width: 100%;
+    font-weight: 600;
+    transition: 0.2s;
+    margin-top: 25px;
+}
+
+.btn-verify:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.small-text {
+    text-align: center;
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 12px;
+}
+
+.small-text a {
+    color: #6366f1;
+    text-decoration: none;
+}
+
+
+/* ================= MOBILE KEYPAD ================= */
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.keypad button {
+  height: 55px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  background: #fff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.keypad button:active {
+  transform: scale(0.95);
+}
+
+/* HIDE/SHOW */
+.mobile-only { display: none; }
+.desktop-only { display: block; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .mobile-only { display: block; }
+  .desktop-only { display: none; }
+}
+
+
+/* ================= SUCCESS OVERLAY ================= */
+.success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(11,18,32,0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: white;
+  z-index: 999;
+}
+
+.checkmark {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 5px solid #22c55e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  animation: pop 0.6s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0); }
+  80% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}

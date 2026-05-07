@@ -1,1 +1,334 @@
-my dahshoard
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="flex-grow-1 p-4 pb-5 pb-md-0">
+    <div class="container-fluid px-0">
+
+        <div id="dashboardContent">
+            <!-- Top Stats Bar (Desktop) -->
+            <div class="d-none d-lg-grid grid-cols-4 gap-3 mb-4"
+                style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                <div class="card border-primary bg-gradient-light">
+                    <div class="card-body d-flex align-items-center justify-content-between p-3">
+                        <div>
+                            <p class="mb-0 text-xs text-muted">Current Balance</p>
+                            <p class="mb-0 fw-bold">$0</p>
+                        </div>
+                        <div class="bg-primary-light rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 2.5rem; height: 2.5rem;">
+                            <i class="bi bi-wallet text-dark"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-success bg-gradient-light">
+                    <div class="card-body d-flex align-items-center justify-content-between p-3">
+                        <div>
+                            <p class="mb-0 text-xs text-muted">Monthly Income</p>
+                            <p class="mb-0 fw-bold text-success">$0</p>
+                        </div>
+                        <div class="bg-success-subtle rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 2.5rem; height: 2.5rem;">
+                            <i class="bi bi-graph-up text-success"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-danger bg-gradient-light">
+                    <div class="card-body d-flex align-items-center justify-content-between p-3">
+                        <div>
+                            <p class="mb-0 text-xs text-muted">Monthly Outgoing</p>
+                            <p class="mb-0 fw-bold text-danger">$0</p>
+                        </div>
+                        <div class="bg-danger-subtle rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 2.5rem; height: 2.5rem;">
+                            <i class="bi bi-graph-down text-danger"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-purple bg-gradient-light">
+                    <div class="card-body d-flex align-items-center justify-content-between p-3">
+                        <div>
+                            <p class="mb-0 text-xs text-muted">Transaction Limit</p>
+                            <p class="mb-0 fw-bold text-purple">$500,000.00</p>
+                        </div>
+                        <div class="bg-purple-subtle rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 2.5rem; height: 2.5rem;">
+                            <i class="bi bi-speedometer2 text-purple"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="row g-4">
+                <!-- Left Column -->
+                <div class="col-lg-8">
+                    <!-- Balance Card -->
+                    <div class="balance-card mb-4">
+                        <div class="position-relative z-1 p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="d-flex align-items-center">
+                                    <img src="https://ui-avatars.com/api/?name=Andrew+Levin&background=0147E1&color=fff"
+                                        alt="User" class="rounded-circle border border-2 border-white-50"
+                                        style="width: 3rem; height: 3rem; object-fit: cover;">
+                                    <div class="ms-3">
+                                        <p class="mb-0 text-white-75" id="greeting">Good Morning</p>
+                                        <p class="mb-0 fw-medium">Andrew</p>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <p class="mb-0 fw-bold" id="currentTime">00:00:00</p>
+                                    <p class="mb-0 text-white-75" id="currentDate">Loading...</p>
+                                </div>
+                            </div>
+
+                            <!-- Balance -->
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0 fw-medium">Available Balance</h6>
+                                    <button class="btn btn-link text-white p-0" id="toggleBalance">
+                                        <i class="bi bi-eye-slash" id="balanceIcon"></i>
+                                    </button>
+                                </div>
+                                <h2 class="mb-0 fw-bold" id="balanceDisplay">$0 USD</h2>
+                                <h2 class="mb-0 fw-bold d-none" id="balanceHidden">*******</h2>
+                            </div>
+
+                            <!-- Account Info -->
+                            <div class="bg-white-10 rounded-3 p-3 backdrop-blur">
+                                <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
+                                    <div class="d-flex align-items-center flex-grow-1">
+                                        <div class="bg-white-20 rounded-circle d-flex align-items-center justify-content-center me-3"
+                                            style="width: 2.5rem; height: 2.5rem;">
+                                            <i class="bi bi-shield text-white"></i>
+                                        </div>
+                                        <div>
+                                            <p class="mb-0 text-sm fw-medium">Your Account Number</p>
+                                            <div class="d-flex align-items-center">
+                                                <p class="mb-0 fw-bold me-2">7068987377</p>
+                                                <span class="badge-verified">
+                                                    <span class="bg-success rounded-circle me-1"
+                                                        style="width: 0.375rem; height: 0.375rem; display: inline-block;"></span>
+                                                    Active
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <a href="#" class="btn btn-sm btn-light text-primary">
+                                            <i class="bi bi-graph-up me-1"></i> Transactions
+                                        </a>
+                                        <a href="#" class="btn btn-sm btn-primary">
+                                            <i class="bi bi-wallet me-1"></i> Top up
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="bi bi-cloud cloud-icon fs-1"></i>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div>
+                                    <h5 class="mb-1 fw-bold">What would you like to do today?</h5>
+                                    <p class="mb-0 text-muted">Choose from our popular actions below</p>
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-6 col-md-3">
+                                    <button class="quick-action-btn w-100" data-bs-toggle="modal"
+                                        data-bs-target="#bankAccountModal">
+                                        <div class="icon-circle bg-secondary">
+                                            <i class="bi bi-building text-muted"></i>
+                                        </div>
+                                        <span class="fw-medium">Account Info</span>
+                                    </button>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <button class="quick-action-btn primary w-100" data-bs-toggle="modal"
+                                        data-bs-target="#sendMoneyModal">
+                                        <div class="icon-circle">
+                                            <i class="bi bi-send text-primary"></i>
+                                        </div>
+                                        <span class="fw-medium">Send Money</span>
+                                    </button>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <a href="#"
+                                        class="quick-action-btn success w-100 text-decoration-none d-flex flex-column align-items-center">
+                                        <div class="icon-circle">
+                                            <i class="bi bi-plus text-success"></i>
+                                        </div>
+                                        <span class="fw-medium">Deposit</span>
+                                    </a>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <a href="#"
+                                        class="quick-action-btn purple w-100 text-decoration-none d-flex flex-column align-items-center">
+                                        <div class="icon-circle">
+                                            <i class="bi bi-clock-history text-purple"></i>
+                                        </div>
+                                        <span class="fw-medium">History</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cards Section -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div
+                            class="card-header bg-white border-bottom py-3 px-4 d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-credit-card text-muted me-2"></i>
+                                <h6 class="mb-0 fw-medium">Your Cards</h6>
+                            </div>
+                            <a href="#" class="text-primary text-decoration-none fw-medium">
+                                View all <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </div>
+                        <div class="card-body p-4 text-center">
+                            <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                style="width: 3rem; height: 3rem;">
+                                <i class="bi bi-credit-card text-muted fs-4"></i>
+                            </div>
+                            <h6 class="mb-2 fw-medium">No cards yet</h6>
+                            <p class="text-muted mb-3">You haven't applied for any virtual cards yet.</p>
+                            <a href="#" class="btn btn-primary btn-sm">
+                                <i class="bi bi-plus me-1"></i> Apply for Card
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Recent Transactions -->
+                    <div class="card border-0 shadow-sm">
+                        <div
+                            class="card-header bg-white border-bottom py-3 px-4 d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-list text-muted me-2"></i>
+                                <h6 class="mb-0 fw-medium">Recent Transactions</h6>
+                            </div>
+                            <a href="#" class="text-primary text-decoration-none fw-medium">
+                                View all <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </div>
+                        <div class="card-body p-4 text-center">
+                            <i class="bi bi-inbox text-muted fs-1 mb-3"></i>
+                            <p class="mb-1 fw-medium">No transactions yet</p>
+                            <p class="text-muted mb-3">Your transaction history will appear here</p>
+                            <a href="#" class="btn btn-primary btn-sm">Make your first deposit</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-lg-4">
+                    <!-- Account Stats -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white border-bottom py-3 px-4">
+                            <h6 class="mb-0 fw-medium">Account Statistics</h6>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary-light rounded-circle d-flex align-items-center justify-content-center me-3"
+                                    style="width: 2.5rem; height: 2.5rem;">
+                                    <i class="bi bi-credit-card text-muted"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="mb-0 text-sm text-muted">Transaction Limit</p>
+                                    <p class="mb-0 fw-bold">$500,000.00</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-warning-subtle rounded-circle d-flex align-items-center justify-content-center me-3"
+                                    style="width: 2.5rem; height: 2.5rem;">
+                                    <i class="bi bi-clock text-warning"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="mb-0 text-sm text-muted">Pending Transactions</p>
+                                    <p class="mb-0 fw-bold">$0.00</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-success-subtle rounded-circle d-flex align-items-center justify-content-center me-3"
+                                    style="width: 2.5rem; height: 2.5rem;">
+                                    <i class="bi bi-bar-chart text-success"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="mb-0 text-sm text-muted">Transaction Volume</p>
+                                    <p class="mb-0 fw-bold">$0.00</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-purple-subtle rounded-circle d-flex align-items-center justify-content-center me-3"
+                                    style="width: 2.5rem; height: 2.5rem;">
+                                    <i class="bi bi-calendar text-purple"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="mb-0 text-sm text-muted">Account Age</p>
+                                    <p class="mb-0 fw-bold">4 years</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Transfer -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white border-bottom py-3 px-4">
+                            <h6 class="mb-0 fw-medium">Quick Transfer</h6>
+                        </div>
+                        <div class="card-body p-4">
+                            <a href="#"
+                                class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3 text-decoration-none text-dark mb-2">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary-light rounded-circle d-flex align-items-center justify-content-center me-3"
+                                        style="width: 2.5rem; height: 2.5rem;">
+                                        <i class="bi bi-person text-muted"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0 fw-medium">Local Transfer</p>
+                                        <p class="mb-0 text-sm text-muted">0% Handling charges</p>
+                                    </div>
+                                </div>
+                                <i class="bi bi-chevron-right text-muted"></i>
+                            </a>
+                            <a href="#"
+                                class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3 text-decoration-none text-dark">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary-light rounded-circle d-flex align-items-center justify-content-center me-3"
+                                        style="width: 2.5rem; height: 2.5rem;">
+                                        <i class="bi bi-globe text-muted"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0 fw-medium">International Transfer</p>
+                                        <p class="mb-0 text-sm text-muted">Global reach, 0% fee</p>
+                                    </div>
+                                </div>
+                                <i class="bi bi-chevron-right text-muted"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Help Card -->
+                    <div class="card border-primary-subtle bg-primary-subtle mb-4">
+                        <div class="card-body p-4 text-center">
+                            <div class="bg-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                style="width: 4rem; height: 4rem;">
+                                <i class="bi bi-question-circle text-primary fs-3"></i>
+                            </div>
+                            <h6 class="mb-2 fw-medium">Need Help?</h6>
+                            <p class="text-muted mb-3">Our support team is here to assist you 24/7</p>
+                            <a href="#" class="btn btn-primary btn-sm">
+                                <i class="bi bi-chat-left-text me-1"></i> Contact Support
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

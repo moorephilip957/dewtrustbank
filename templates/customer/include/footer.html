@@ -1,0 +1,164 @@
+{% load static %}
+
+<!-- Footer -->
+<footer class="bg-white border-top py-3 px-4 d-none d-md-block">
+    <div class="container-fluid px-0 d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <div class="bg-primary text-white rounded d-flex align-items-center justify-content-center me-2"
+                style="width: 1.5rem; height: 1.5rem;">
+                <i class="bi bi-building fs-6"></i>
+            </div>
+            <p class="mb-0 text-sm text-muted">© 2026 BANKING DASHBOARD. All rights reserved.</p>
+        </div>
+        <div class="d-flex gap-4">
+            <a href="#" class="text-sm text-muted text-decoration-none">Privacy Policy</a>
+            <a href="#" class="text-sm text-muted text-decoration-none">Terms of Service</a>
+            <a href="#" class="text-sm text-muted text-decoration-none">Contact Support</a>
+        </div>
+    </div>
+</footer>
+
+
+<!-- Bank Account Modal -->
+<div class="modal fade" id="bankAccountModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="text-center w-100">
+                    <div class="bg-primary-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                        style="width: 4rem; height: 4rem;">
+                        <i class="bi bi-building text-primary fs-3"></i>
+                    </div>
+                    <h5 class="modal-title fw-bold">Bank Account Details</h5>
+                    <p class="text-muted mb-0">BANKING DASHBOARD</p>
+                </div>
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3"
+                    data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="bg-light rounded-3 p-3 mb-4">
+                    <p class="fw-medium mb-3"><i class="bi bi-info-circle text-primary me-2"></i>Account Details</p>
+                    <div class="account-detail-item d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex align-items-center">
+                            <span class="bg-primary rounded-circle me-2" style="width: 0.5rem; height: 0.5rem;"></span>
+                            <span class="text-sm">Account Name</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="fw-medium me-2">Andrew Levin</span>
+                            <button class="copy-btn" onclick="copyToClipboard('Andrew Levin', this)">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="account-detail-item d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex align-items-center">
+                            <span class="bg-primary rounded-circle me-2" style="width: 0.5rem; height: 0.5rem;"></span>
+                            <span class="text-sm">Account Number</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="fw-medium me-2">7068987377</span>
+                            <button class="copy-btn" onclick="copyToClipboard('7068987377', this)">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="account-detail-item d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex align-items-center">
+                            <span class="bg-primary rounded-circle me-2" style="width: 0.5rem; height: 0.5rem;"></span>
+                            <span class="text-sm">Payment Reference</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="fw-medium me-2">1234567890</span>
+                            <button class="copy-btn" onclick="copyToClipboard('7068987377', this)">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="account-detail-item d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <span class="bg-primary rounded-circle me-2" style="width: 0.5rem; height: 0.5rem;"></span>
+                            <span class="text-sm">Sort Code</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="fw-medium me-2">388130</span>
+                            <button class="copy-btn" onclick="copyToClipboard('388130', this)">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-primary-subtle rounded-3 p-3 d-flex">
+                    <i class="bi bi-info-circle text-primary me-2 mt-1"></i>
+                    <p class="mb-0 text-sm">Payment reference helps track payments faster. Please include it in wire
+                        transfer description.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Send Money Modal -->
+<div class="modal fade" id="sendMoneyModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="text-center w-100">
+                    <div class="bg-primary-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                        style="width: 4rem; height: 4rem;">
+                        <i class="bi bi-send text-primary fs-3"></i>
+                    </div>
+                    <h5 class="modal-title fw-bold">Send Money</h5>
+                    <p class="text-muted mb-0">Swift and Secure Money Transfer</p>
+                </div>
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3"
+                    data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <a href="#" class="d-block mb-3">
+                    <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3 border">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-primary-light rounded-circle d-flex align-items-center justify-content-center me-3"
+                                style="width: 2.5rem; height: 2.5rem;">
+                                <i class="bi bi-person text-primary"></i>
+                            </div>
+                            <div>
+                                <p class="mb-0 fw-medium">Local Transfer</p>
+                                <p class="mb-0 text-sm text-muted">Easily send money locally</p>
+                                <p class="mb-0 text-xs text-muted">0% Handling charges</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 2rem; height: 2rem;">
+                            <i class="bi bi-chevron-right text-muted"></i>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="d-block">
+                    <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3 border">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-primary-light rounded-circle d-flex align-items-center justify-content-center me-3"
+                                style="width: 2.5rem; height: 2.5rem;">
+                                <i class="bi bi-globe text-primary"></i>
+                            </div>
+                            <div>
+                                <p class="mb-0 fw-medium">International Wire Transfer</p>
+                                <p class="mb-0 text-sm text-muted">Wire transfer is executed under 72 hours</p>
+                                <p class="mb-0 text-xs text-muted">IBAN & SWIFT code required</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 2rem; height: 2rem;">
+                            <i class="bi bi-chevron-right text-muted"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
