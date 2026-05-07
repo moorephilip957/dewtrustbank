@@ -1,0 +1,904 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* ===== Theme Variables ===== */
+    :root {
+        --primary-color: #0147E1;
+        --primary-color-dark: #0039b3;
+        --secondary-color: #FFC107;
+        --success-color: #198754;
+        --text-color: #828282;
+        --bg-color: #f9fafb;
+    }
+
+    /* ===== Bootstrap Overrides ===== */
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+    }
+
+    .text-white-75 {
+        color: rgba(255, 255, 255, 0.75) !important;
+    }
+
+    .hover-shadow:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        transform: translateY(-2px);
+    }
+
+    .transition-all {
+        transition: all 0.2s ease-in-out;
+    }
+
+    /* ===== Blur Utility ===== */
+    .blur-xl {
+        filter: blur(24px);
+        -webkit-filter: blur(24px);
+    }
+
+    .blur-3xl {
+        filter: blur(64px);
+        -webkit-filter: blur(64px);
+    }
+
+    /* ===== Custom Sizes ===== */
+    .w-12 {
+        width: 3rem !important;
+    }
+
+    .h-12 {
+        height: 3rem !important;
+    }
+
+    .w-20 {
+        width: 5rem !important;
+    }
+
+    .h-20 {
+        height: 5rem !important;
+    }
+
+    .w-25 {
+        width: 25% !important;
+    }
+
+    .h-25 {
+        height: 25% !important;
+    }
+
+    .rounded-3 {
+        border-radius: 0.75rem !important;
+    }
+
+    .rounded-4 {
+        border-radius: 1rem !important;
+    }
+
+    /* ===== Spacing Utilities ===== */
+    .space-y-2>*+* {
+        margin-top: 0.5rem;
+    }
+
+    .space-y-3>*+* {
+        margin-top: 0.75rem;
+    }
+
+    /* ===== Form Enhancements ===== */
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(1, 71, 225, 0.15);
+    }
+
+    .input-group-text {
+        background-color: #f8f9fa;
+        border-right: none;
+    }
+
+    .input-group .form-control {
+        border-left: none;
+    }
+
+    /* ===== Responsive Typography ===== */
+    .h3-md {
+        font-size: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .h3-md {
+            font-size: 1.875rem;
+        }
+    }
+
+    /* ===== Animation for Submit Buttons ===== */
+    @keyframes pulse {
+        0% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.7;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .btn:disabled {
+        animation: pulse 1.5s infinite;
+    }
+
+    /* ===== Toast Notifications ===== */
+    .toast {
+        border-left: 4px solid var(--primary-color);
+    }
+
+    .toast-success {
+        border-left-color: var(--success-color);
+    }
+
+    .toast-error {
+        border-left-color: #dc3545;
+    }
+
+    .toast-warning {
+        border-left-color: var(--secondary-color);
+    }
+</style>
+<!-- MAIN CONTENT AREA - Paste inside your <main> or content wrapper -->
+<div class="container-fluid py-4 px-3 px-md-4">
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="position-fixed top-0 end-0 p-3" style="z-index: 1090;"></div>
+
+    <!-- Exchange Header with Gradient -->
+    <div class="position-relative bg-gradient-primary rounded-4 p-4 p-md-5 mb-4 overflow-hidden">
+        <div class="position-absolute top-0 end-0 w-25 h-25 bg-white bg-opacity-10 rounded-circle blur-3xl me-n5 mt-n5">
+        </div>
+        <div
+            class="position-absolute bottom-0 start-0 w-25 h-25 bg-white bg-opacity-10 rounded-circle blur-3xl ms-n5 mb-n5">
+        </div>
+
+        <div
+            class="position-relative d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+            <div class="d-flex align-items-center">
+                <div
+                    class="w-12 h-12 rounded-3 bg-white bg-opacity-20 backdrop-blur-sm d-flex align-items-center justify-center me-3 shadow">
+                    <i data-lucide="piggy-bank" class="text-white" style="width:24px;height:24px;"></i>
+                </div>
+                <div>
+                    <h1 class="h4 h3-md fw-bold text-white mb-0">Save and Invest</h1>
+                    <p class="text-white-75 small mb-0">Grow your wealth with our curated Save and Invest plans</p>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 flex-wrap">
+                <button type="button" class="btn btn-light btn-sm d-flex align-items-center gap-2"
+                    data-bs-toggle="modal" data-bs-target="#depositModal">
+                    <i data-lucide="circle-arrow-up" class="text-success" style="width:16px;height:16px;"></i>
+                    Deposit
+                </button>
+                <button type="button" class="btn btn-light btn-sm d-flex align-items-center gap-2"
+                    data-bs-toggle="modal" data-bs-target="#withdrawModal">
+                    <i data-lucide="circle-arrow-down" class="text-danger" style="width:16px;height:16px;"></i>
+                    Withdraw
+                </button>
+                <a href="/dashboard/myshares" class="btn btn-light btn-sm d-flex align-items-center gap-2">
+                    <i data-lucide="briefcase" class="text-success" style="width:16px;height:16px;"></i>
+                    Portfolios
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crypto Balances Grid -->
+    <div class="row g-3 mb-4">
+        <!-- Account Balance - Highlighted Card -->
+        <div class="col-12 col-md-6">
+            <div class="card border-0 bg-gradient-primary text-white h-100 position-relative overflow-hidden">
+                <div
+                    class="position-absolute top-0 end-0 w-20 h-20 bg-white bg-opacity-10 rounded-circle blur-xl me-n3 mt-n3">
+                </div>
+                <div class="card-body d-flex align-items-center justify-content-between position-relative">
+                    <div>
+                        <p class="text-white-75 small text-uppercase fw-medium mb-1">Account Balance</p>
+                        <p class="h4 fw-bold mb-0">$0.00</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-3 bg-white d-flex align-items-center justify-center shadow">
+                        <i data-lucide="wallet" class="text-primary" style="width:24px;height:24px;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROI Card -->
+        <div class="col-12 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <p class="text-muted small text-uppercase fw-medium mb-1">Total ROI</p>
+                        <p class="h4 fw-bold text-dark mb-0">$0.00</p>
+                        <p class="text-muted small mb-0" id="roiDisplay">0% return</p>
+                    </div>
+                    <div
+                        class="w-12 h-12 rounded-3 bg-warning bg-opacity-10 d-flex align-items-center justify-center border border-warning-subtle">
+                        <i data-lucide="trending-up" class="text-warning" style="width:24px;height:24px;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Investment Plans Grid -->
+    <div class="row g-4" id="plansContainer">
+
+        <!-- Plan Card Template (Repeat for each plan) -->
+        <!-- Plan 1: SecureSave -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <form action="/dashboard/joinplan" method="POST" class="plan-form h-100" data-plan-id="10">
+                <input type="hidden" name="_token" value="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+                <input type="hidden" name="id" value="10">
+
+                <div class="card border-2 border-primary-subtle h-100 shadow-sm hover-shadow transition-all">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h3 class="h5 fw-bold text-dark mb-0">SecureSave</h3>
+                            <i data-lucide="shield-check" class="text-success" style="width:20px;height:20px;"></i>
+                        </div>
+
+                        <ul class="list-unstyled small text-muted mb-4 space-y-2">
+                            <li class="mb-1"><strong>Min Investment:</strong> $200</li>
+                            <li class="mb-1"><strong>Max Investment:</strong> $20,000</li>
+                            <li class="mb-1"><strong>Expected Return:</strong> 20% every 10 min</li>
+                            <li><strong>Duration:</strong> 6 Days</li>
+                        </ul>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-medium text-dark">Enter Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">$</span>
+                                <input type="number" class="form-control plan-amount" name="iamount" min="200"
+                                    max="20000" placeholder="200 - 20000" required aria-label="Investment amount">
+                            </div>
+                            <div class="invalid-feedback">Please enter an amount between $200 and $20,000</div>
+                        </div>
+
+                        <button type="submit"
+                            class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+                            <i data-lucide="circle-dollar-sign" style="width:18px;height:18px;"></i>
+                            Invest Now
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Plan 2: FutureFund -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <form action="/dashboard/joinplan" method="POST" class="plan-form h-100" data-plan-id="11">
+                <input type="hidden" name="_token" value="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+                <input type="hidden" name="id" value="11">
+
+                <div class="card border-2 border-primary-subtle h-100 shadow-sm hover-shadow transition-all">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h3 class="h5 fw-bold text-dark mb-0">FutureFund</h3>
+                            <i data-lucide="shield-check" class="text-success" style="width:20px;height:20px;"></i>
+                        </div>
+
+                        <ul class="list-unstyled small text-muted mb-4 space-y-2">
+                            <li class="mb-1"><strong>Min Investment:</strong> $30,000</li>
+                            <li class="mb-1"><strong>Max Investment:</strong> $90,000</li>
+                            <li class="mb-1"><strong>Expected Return:</strong> 3% daily</li>
+                            <li><strong>Duration:</strong> 20 Days</li>
+                        </ul>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-medium text-dark">Enter Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">$</span>
+                                <input type="number" class="form-control plan-amount" name="iamount" min="30000"
+                                    max="90000" placeholder="30000 - 90000" required aria-label="Investment amount">
+                            </div>
+                            <div class="invalid-feedback">Please enter an amount between $30,000 and $90,000</div>
+                        </div>
+
+                        <button type="submit"
+                            class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+                            <i data-lucide="circle-dollar-sign" style="width:18px;height:18px;"></i>
+                            Invest Now
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Plan 3: GoalGuard Savings -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <form action="/dashboard/joinplan" method="POST" class="plan-form h-100" data-plan-id="12">
+                <input type="hidden" name="_token" value="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+                <input type="hidden" name="id" value="12">
+
+                <div class="card border-2 border-primary-subtle h-100 shadow-sm hover-shadow transition-all">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h3 class="h5 fw-bold text-dark mb-0">GoalGuard Savings</h3>
+                            <i data-lucide="shield-check" class="text-success" style="width:20px;height:20px;"></i>
+                        </div>
+
+                        <ul class="list-unstyled small text-muted mb-4 space-y-2">
+                            <li class="mb-1"><strong>Min Investment:</strong> $100,000</li>
+                            <li class="mb-1"><strong>Max Investment:</strong> $1,000,000,000</li>
+                            <li class="mb-1"><strong>Expected Return:</strong> 80% daily</li>
+                            <li><strong>Duration:</strong> 30 Days</li>
+                        </ul>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-medium text-dark">Enter Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">$</span>
+                                <input type="number" class="form-control plan-amount" name="iamount" min="100000"
+                                    max="1000000000" placeholder="100000 - 1000000000" required
+                                    aria-label="Investment amount">
+                            </div>
+                            <div class="invalid-feedback">Please enter a valid amount</div>
+                        </div>
+
+                        <button type="submit"
+                            class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+                            <i data-lucide="circle-dollar-sign" style="width:18px;height:18px;"></i>
+                            Invest Now
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Plan 4: DynamicPortfolio -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <form action="/dashboard/joinplan" method="POST" class="plan-form h-100" data-plan-id="13">
+                <input type="hidden" name="_token" value="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+                <input type="hidden" name="id" value="13">
+
+                <div class="card border-2 border-primary-subtle h-100 shadow-sm hover-shadow transition-all">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h3 class="h5 fw-bold text-dark mb-0">DynamicPortfolio</h3>
+                            <i data-lucide="shield-check" class="text-success" style="width:20px;height:20px;"></i>
+                        </div>
+
+                        <ul class="list-unstyled small text-muted mb-4 space-y-2">
+                            <li class="mb-1"><strong>Min Investment:</strong> $50,000</li>
+                            <li class="mb-1"><strong>Max Investment:</strong> $5,000,000,000,000</li>
+                            <li class="mb-1"><strong>Expected Return:</strong> 80% daily</li>
+                            <li><strong>Duration:</strong> 60 Days</li>
+                        </ul>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-medium text-dark">Enter Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">$</span>
+                                <input type="number" class="form-control plan-amount" name="iamount" min="50000"
+                                    max="5000000000000" placeholder="50000 - 5000000000000" required
+                                    aria-label="Investment amount">
+                            </div>
+                            <div class="invalid-feedback">Please enter a valid amount</div>
+                        </div>
+
+                        <button type="submit"
+                            class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+                            <i data-lucide="circle-dollar-sign" style="width:18px;height:18px;"></i>
+                            Invest Now
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Plan 5: SafeHaven Account -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <form action="/dashboard/joinplan" method="POST" class="plan-form h-100" data-plan-id="14">
+                <input type="hidden" name="_token" value="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+                <input type="hidden" name="id" value="14">
+
+                <div class="card border-2 border-primary-subtle h-100 shadow-sm hover-shadow transition-all">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h3 class="h5 fw-bold text-dark mb-0">SafeHaven Account</h3>
+                            <i data-lucide="shield-check" class="text-success" style="width:20px;height:20px;"></i>
+                        </div>
+
+                        <ul class="list-unstyled small text-muted mb-4 space-y-2">
+                            <li class="mb-1"><strong>Min Investment:</strong> $100,000</li>
+                            <li class="mb-1"><strong>Max Investment:</strong> $100,000,000</li>
+                            <li class="mb-1"><strong>Expected Return:</strong> 50% daily</li>
+                            <li><strong>Duration:</strong> 20 Days</li>
+                        </ul>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-medium text-dark">Enter Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">$</span>
+                                <input type="number" class="form-control plan-amount" name="iamount" min="100000"
+                                    max="100000000" placeholder="100000 - 100000000" required
+                                    aria-label="Investment amount">
+                            </div>
+                            <div class="invalid-feedback">Please enter a valid amount</div>
+                        </div>
+
+                        <button type="submit"
+                            class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+                            <i data-lucide="circle-dollar-sign" style="width:18px;height:18px;"></i>
+                            Invest Now
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Plan 6: DualWealth Plan -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <form action="/dashboard/joinplan" method="POST" class="plan-form h-100" data-plan-id="23">
+                <input type="hidden" name="_token" value="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+                <input type="hidden" name="id" value="23">
+
+                <div class="card border-2 border-primary-subtle h-100 shadow-sm hover-shadow transition-all">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h3 class="h5 fw-bold text-dark mb-0">DualWealth Plan</h3>
+                            <i data-lucide="shield-check" class="text-success" style="width:20px;height:20px;"></i>
+                        </div>
+
+                        <ul class="list-unstyled small text-muted mb-4 space-y-2">
+                            <li class="mb-1"><strong>Min Investment:</strong> $200</li>
+                            <li class="mb-1"><strong>Max Investment:</strong> $20,000</li>
+                            <li class="mb-1"><strong>Expected Return:</strong> 20% every 10 min</li>
+                            <li><strong>Duration:</strong> 6 Days</li>
+                        </ul>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-medium text-dark">Enter Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">$</span>
+                                <input type="number" class="form-control plan-amount" name="iamount" min="200"
+                                    max="20000" placeholder="200 - 20000" required aria-label="Investment amount">
+                            </div>
+                            <div class="invalid-feedback">Please enter an amount between $200 and $20,000</div>
+                        </div>
+
+                        <button type="submit"
+                            class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+                            <i data-lucide="circle-dollar-sign" style="width:18px;height:18px;"></i>
+                            Invest Now
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Plan 7: PROFESSIONAL AI -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <form action="/dashboard/joinplan" method="POST" class="plan-form h-100" data-plan-id="24">
+                <input type="hidden" name="_token" value="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+                <input type="hidden" name="id" value="24">
+
+                <div class="card border-2 border-primary-subtle h-100 shadow-sm hover-shadow transition-all">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h3 class="h5 fw-bold text-dark mb-0">PROFESSIONAL AI</h3>
+                            <i data-lucide="shield-check" class="text-success" style="width:20px;height:20px;"></i>
+                        </div>
+
+                        <ul class="list-unstyled small text-muted mb-4 space-y-2">
+                            <li class="mb-1"><strong>Min Investment:</strong> $30,000</li>
+                            <li class="mb-1"><strong>Max Investment:</strong> $90,000</li>
+                            <li class="mb-1"><strong>Expected Return:</strong> 3% daily</li>
+                            <li><strong>Duration:</strong> 20 Days</li>
+                        </ul>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-medium text-dark">Enter Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">$</span>
+                                <input type="number" class="form-control plan-amount" name="iamount" min="30000"
+                                    max="90000" placeholder="30000 - 90000" required aria-label="Investment amount">
+                            </div>
+                            <div class="invalid-feedback">Please enter an amount between $30,000 and $90,000</div>
+                        </div>
+
+                        <button type="submit"
+                            class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+                            <i data-lucide="circle-dollar-sign" style="width:18px;height:18px;"></i>
+                            Invest Now
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Plan 8: BalancedPath -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <form action="/dashboard/joinplan" method="POST" class="plan-form h-100" data-plan-id="25">
+                <input type="hidden" name="_token" value="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+                <input type="hidden" name="id" value="25">
+
+                <div class="card border-2 border-primary-subtle h-100 shadow-sm hover-shadow transition-all">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h3 class="h5 fw-bold text-dark mb-0">BalancedPath</h3>
+                            <i data-lucide="shield-check" class="text-success" style="width:20px;height:20px;"></i>
+                        </div>
+
+                        <ul class="list-unstyled small text-muted mb-4 space-y-2">
+                            <li class="mb-1"><strong>Min Investment:</strong> $100,000</li>
+                            <li class="mb-1"><strong>Max Investment:</strong> $1,000,000,000</li>
+                            <li class="mb-1"><strong>Expected Return:</strong> 80% daily</li>
+                            <li><strong>Duration:</strong> 30 Days</li>
+                        </ul>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-medium text-dark">Enter Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">$</span>
+                                <input type="number" class="form-control plan-amount" name="iamount" min="100000"
+                                    max="1000000000" placeholder="100000 - 1000000000" required
+                                    aria-label="Investment amount">
+                            </div>
+                            <div class="invalid-feedback">Please enter a valid amount</div>
+                        </div>
+
+                        <button type="submit"
+                            class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+                            <i data-lucide="circle-dollar-sign" style="width:18px;height:18px;"></i>
+                            Invest Now
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Plan 9: SteadyWealth -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <form action="/dashboard/joinplan" method="POST" class="plan-form h-100" data-plan-id="26">
+                <input type="hidden" name="_token" value="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+                <input type="hidden" name="id" value="26">
+
+                <div class="card border-2 border-primary-subtle h-100 shadow-sm hover-shadow transition-all">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h3 class="h5 fw-bold text-dark mb-0">SteadyWealth</h3>
+                            <i data-lucide="shield-check" class="text-success" style="width:20px;height:20px;"></i>
+                        </div>
+
+                        <ul class="list-unstyled small text-muted mb-4 space-y-2">
+                            <li class="mb-1"><strong>Min Investment:</strong> $50,000</li>
+                            <li class="mb-1"><strong>Max Investment:</strong> $5,000,000,000,000</li>
+                            <li class="mb-1"><strong>Expected Return:</strong> 80% daily</li>
+                            <li><strong>Duration:</strong> 60 Days</li>
+                        </ul>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-medium text-dark">Enter Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">$</span>
+                                <input type="number" class="form-control plan-amount" name="iamount" min="50000"
+                                    max="5000000000000" placeholder="50000 - 5000000000000" required
+                                    aria-label="Investment amount">
+                            </div>
+                            <div class="invalid-feedback">Please enter a valid amount</div>
+                        </div>
+
+                        <button type="submit"
+                            class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+                            <i data-lucide="circle-dollar-sign" style="width:18px;height:18px;"></i>
+                            Invest Now
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Plan 10: FortuneTrack -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <form action="/dashboard/joinplan" method="POST" class="plan-form h-100" data-plan-id="27">
+                <input type="hidden" name="_token" value="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+                <input type="hidden" name="id" value="27">
+
+                <div class="card border-2 border-primary-subtle h-100 shadow-sm hover-shadow transition-all">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h3 class="h5 fw-bold text-dark mb-0">FortuneTrack</h3>
+                            <i data-lucide="shield-check" class="text-success" style="width:20px;height:20px;"></i>
+                        </div>
+
+                        <ul class="list-unstyled small text-muted mb-4 space-y-2">
+                            <li class="mb-1"><strong>Min Investment:</strong> $100,000</li>
+                            <li class="mb-1"><strong>Max Investment:</strong> $100,000,000</li>
+                            <li class="mb-1"><strong>Expected Return:</strong> 50% daily</li>
+                            <li><strong>Duration:</strong> 20 Days</li>
+                        </ul>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-medium text-dark">Enter Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">$</span>
+                                <input type="number" class="form-control plan-amount" name="iamount" min="100000"
+                                    max="100000000" placeholder="100000 - 100000000" required
+                                    aria-label="Investment amount">
+                            </div>
+                            <div class="invalid-feedback">Please enter a valid amount</div>
+                        </div>
+
+                        <button type="submit"
+                            class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+                            <i data-lucide="circle-dollar-sign" style="width:18px;height:18px;"></i>
+                            Invest Now
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Security Notice -->
+    <div class="text-center text-muted small mt-4" style="max-width: 600px; margin: 1rem auto;">
+        <i data-lucide="shield-check" class="me-1 text-success" style="width:14px;height:14px;"></i>
+        All investments are secured with 256-bit SSL encryption. Past performance does not guarantee future results.
+    </div>
+</div>
+
+<!-- Deposit Modal -->
+<div class="modal fade" id="depositModal" tabindex="-1" aria-labelledby="depositModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <div class="mx-auto bg-primary bg-opacity-10 rounded-circle p-3">
+                    <i data-lucide="circle-arrow-up" class="text-primary" style="width:24px;height:24px;"></i>
+                </div>
+                <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center pt-0">
+                <h5 class="modal-title fw-bold mb-2" id="depositModalLabel">Fund Your Account</h5>
+                <p class="text-muted small mb-4">Add funds to your account to start investing.</p>
+
+                <form id="depositForm" action="/dashboard/fundcard" method="POST">
+                    <input type="hidden" name="_token" value="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+
+                    <div class="mb-3 text-start">
+                        <label for="depositAmount" class="form-label small fw-medium">Amount</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" id="depositAmount" name="amount"
+                                placeholder="0.00" min="1" step="0.01" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 text-start">
+                        <label for="depositFrom" class="form-label small fw-medium">From</label>
+                        <select class="form-select" id="depositFrom" name="from" required>
+                            <option value="account_bal">Account Balance</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="spinner-border spinner-border-sm d-none me-2" id="depositSpinner"></span>
+                            Fund Account
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Withdraw Modal -->
+<div class="modal fade" id="withdrawModal" tabindex="-1" aria-labelledby="withdrawModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <div class="mx-auto bg-primary bg-opacity-10 rounded-circle p-3">
+                    <i data-lucide="circle-arrow-down" class="text-primary" style="width:24px;height:24px;"></i>
+                </div>
+                <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center pt-0">
+                <h5 class="modal-title fw-bold mb-2" id="withdrawModalLabel">Withdraw to Bank</h5>
+                <p class="text-muted small mb-4">Transfer funds from your investment account to your bank.</p>
+
+                <form id="withdrawForm" action="/dashboard/withdrawcard" method="POST">
+                    <input type="hidden" name="_token" value="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+
+                    <div class="mb-3 text-start">
+                        <label for="withdrawAmount" class="form-label small fw-medium">Amount</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" id="withdrawAmount" name="amount"
+                                placeholder="0.00" min="1" step="0.01" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 text-start">
+                        <label for="withdrawTo" class="form-label small fw-medium">To</label>
+                        <select class="form-select" id="withdrawTo" name="from" required>
+                            <option value="account_bal">Bank Balance</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="spinner-border spinner-border-sm d-none me-2" id="withdrawSpinner"></span>
+                            Withdraw Funds
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Lucide icons
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    
+    // ===== Toast Notification System =====
+    function showToast(message, type = 'info', duration = 5000) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center text-bg-${type} border-0 shadow`;
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+        
+        const icons = {
+            success: 'check-circle',
+            error: 'alert-circle',
+            warning: 'alert-triangle',
+            info: 'info'
+        };
+        
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    <i data-lucide="${icons[type] || 'info'}" style="width:18px;height:18px;"></i>
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+        
+        container.appendChild(toast);
+        
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        
+        const bsToast = new bootstrap.Toast(toast, { delay: duration });
+        bsToast.show();
+        
+        toast.addEventListener('hidden.bs.toast', () => toast.remove());
+    }
+    
+    // ===== Plan Form Validation =====
+    document.querySelectorAll('.plan-form').forEach(form => {
+        const amountInput = form.querySelector('.plan-amount');
+        const min = parseFloat(amountInput.min) || 0;
+        const max = parseFloat(amountInput.max) || Infinity;
+        
+        amountInput.addEventListener('input', function() {
+            const value = parseFloat(this.value) || 0;
+            if (value < min || value > max) {
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+            }
+        });
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const amount = parseFloat(amountInput.value) || 0;
+            
+            if (amount < min || amount > max) {
+                amountInput.classList.add('is-invalid');
+                showToast(`Amount must be between $${min.toLocaleString()} and $${max.toLocaleString()}`, 'error');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+            
+            // Simulate form submission (replace with actual fetch)
+            setTimeout(() => {
+                showToast('✓ Investment request submitted!', 'success');
+                form.reset();
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+                
+                // In production: form.submit();
+            }, 1500);
+        });
+    });
+    
+    // ===== Modal Form Handling =====
+    function setupModalForm(formId, spinnerId, successMsg) {
+        const form = document.getElementById(formId);
+        if (!form) return;
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const spinner = document.getElementById(spinnerId);
+            const submitBtn = form.querySelector('button[type="submit"]');
+            
+            submitBtn.disabled = true;
+            spinner.classList.remove('d-none');
+            
+            // Simulate API call
+            setTimeout(() => {
+                showToast(successMsg, 'success');
+                bootstrap.Modal.getInstance(form.closest('.modal'))?.hide();
+                form.reset();
+                submitBtn.disabled = false;
+                spinner.classList.add('d-none');
+                
+                // In production: form.submit();
+            }, 1500);
+        });
+    }
+    
+    setupModalForm('depositForm', 'depositSpinner', '✓ Funds added successfully!');
+    setupModalForm('withdrawForm', 'withdrawSpinner', '✓ Withdrawal request submitted!');
+    
+    // ===== ROI Display Update (Demo) =====
+    function updateROIDisplay() {
+        const roiElement = document.getElementById('roiDisplay');
+        if (roiElement) {
+            // Demo: Random ROI for display purposes
+            const roi = (Math.random() * 15).toFixed(2);
+            roiElement.textContent = `${roi}% total return`;
+            roiElement.className = roi >= 10 ? 'text-success small mb-0' : 'text-muted small mb-0';
+        }
+    }
+    updateROIDisplay();
+    
+    // ===== Input Number Formatting =====
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.value) {
+                const num = parseFloat(this.value);
+                if (!isNaN(num)) {
+                    this.value = num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                }
+            }
+        });
+        
+        input.addEventListener('focus', function() {
+            if (this.value) {
+                const num = parseFloat(this.value.replace(/,/g, ''));
+                if (!isNaN(num)) {
+                    this.value = num;
+                }
+            }
+        });
+    });
+    
+    // ===== Auto-close alerts after 5 seconds =====
+    document.querySelectorAll('.alert-dismissible').forEach(alert => {
+        setTimeout(() => {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }, 5000);
+    });
+});
+</script>
+{% endblock %}

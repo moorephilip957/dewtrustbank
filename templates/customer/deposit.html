@@ -1,0 +1,420 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* ===== Theme Variables ===== */
+    :root {
+        --primary-color: #0147E1;
+        --primary-color-dark: #0039b3;
+        --primary-color-light: #3369e7;
+        --secondary-color: #FFC107;
+        --text-color: #828282;
+        --bg-color: #f9fafb;
+    }
+
+    /* ===== Bootstrap Overrides & Utilities ===== */
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+    }
+
+    .hover-primary:hover {
+        color: var(--primary-color) !important;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .transition-all {
+        transition: all 0.2s ease-in-out;
+    }
+
+    /* ===== Payment Method Cards ===== */
+    .payment-method-card {
+        background: #fff;
+        border: 2px solid #e5e7eb !important;
+    }
+
+    .payment-method-card:hover,
+    .payment-method-card.selected {
+        border-color: var(--primary-color) !important;
+        background-color: rgba(1, 71, 225, 0.05);
+        box-shadow: 0 0 0 4px rgba(1, 71, 225, 0.1);
+    }
+
+    .payment-method-card.selected .checkmark {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .payment-method-card.selected .checkmark::after {
+        display: block;
+    }
+
+    /* ===== Custom Checkbox Styling ===== */
+    .form-check-custom {
+        width: 20px;
+        height: 20px;
+        position: relative;
+    }
+
+    .checkmark {
+        width: 18px;
+        height: 18px;
+        border: 2px solid #d1d5db;
+        border-radius: 50%;
+        position: relative;
+        transition: all 0.2s;
+    }
+
+    .checkmark::after {
+        content: '';
+        position: absolute;
+        left: 5px;
+        top: 2px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+        display: none;
+    }
+
+    /* ===== Form Enhancements ===== */
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(1, 71, 225, 0.15);
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: var(--primary-color-dark);
+        border-color: var(--primary-color-dark);
+    }
+
+    /* ===== Responsive Typography ===== */
+    .h3-md {
+        font-size: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .h3-md {
+            font-size: 1.875rem;
+        }
+    }
+
+    /* ===== Backdrop Blur Support ===== */
+    .backdrop-blur-sm {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    /* ===== Animation for Submit ===== */
+    @keyframes pulse {
+        0% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.7;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .btn-primary:disabled {
+        animation: pulse 1.5s infinite;
+    }
+</style>
+<!-- MAIN CONTENT AREA - Paste this inside your <main> or content wrapper -->
+<div class="container-fluid py-4 px-3 px-md-4">
+
+    <!-- Page Header with Breadcrumbs -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <div>
+            <h1 class="h4 h3-md fw-bold text-dark mb-1">Deposit Funds</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 small">
+                    <li class="breadcrumb-item"><a href="/dashboard"
+                            class="text-decoration-none text-muted hover-primary">Dashboard</a></li>
+                    <li class="breadcrumb-item active text-secondary" aria-current="page">Deposit</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="mt-3 mt-md-0">
+            <span class="badge bg-light text-dark border">
+                <i data-lucide="wallet" class="me-1" style="width:14px;height:14px;"></i>
+                Balance: $0.00
+            </span>
+        </div>
+    </div>
+
+    <!-- Deposit Card -->
+    <div class="card border-0 shadow-sm overflow-hidden mb-5" style="max-width: 900px; margin: 0 auto;">
+        <!-- Card Header with Gradient & Wave -->
+        <div class="card-header bg-gradient-primary border-0 position-relative text-white text-center py-5 px-4">
+            <div class="position-relative z-2">
+                <div
+                    class="bg-white bg-opacity-20 backdrop-blur-sm d-inline-flex align-items-center justify-content-center rounded-circle p-3 mb-3">
+                    <i data-lucide="piggy-bank" class="text-white" style="width:28px;height:28px;"></i>
+                </div>
+                <h2 class="h4 fw-bold mb-1">Fund Your Account</h2>
+                <p class="mb-0 opacity-75 small">Choose your preferred deposit method and amount</p>
+            </div>
+            <!-- Wave SVG Decoration -->
+            <div class="position-absolute bottom-0 start-0 end-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" class="w-100"
+                    style="height:48px;">
+                    <path
+                        d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
+                        opacity=".25" fill="currentColor"></path>
+                    <path
+                        d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
+                        opacity=".5" fill="currentColor"></path>
+                    <path
+                        d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"
+                        fill="currentColor"></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Card Body: Form -->
+        <div class="card-body p-4 p-md-5">
+            <form id="depositForm" novalidate>
+                <input type="hidden" name="_token" value="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+
+                <!-- Payment Method Selection -->
+                <div class="mb-4">
+                    <label class="form-label fw-medium text-dark mb-3">Select Deposit Method</label>
+                    <div class="row g-3">
+                        <!-- USDT Option -->
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <div class="payment-method-card border rounded-3 p-3 h-100 cursor-pointer transition-all"
+                                data-method="USDT" role="button" tabindex="0">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                                            style="width:40px;height:40px;">
+                                            <i data-lucide="wallet" class="text-success"
+                                                style="width:20px;height:20px;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0 fw-medium text-dark">USDT</h6>
+                                    </div>
+                                    <div class="flex-shrink-0 ms-2">
+                                        <div class="form-check-custom">
+                                            <div class="checkmark"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bank Transfer Option -->
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <div class="payment-method-card border rounded-3 p-3 h-100 cursor-pointer transition-all"
+                                data-method="Bank Transfer" role="button" tabindex="0">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                                            style="width:40px;height:40px;">
+                                            <i data-lucide="building-2" class="text-primary"
+                                                style="width:20px;height:20px;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0 fw-medium text-dark">Bank Transfer</h6>
+                                    </div>
+                                    <div class="flex-shrink-0 ms-2">
+                                        <div class="form-check-custom">
+                                            <div class="checkmark"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PayPal Option -->
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <div class="payment-method-card border rounded-3 p-3 h-100 cursor-pointer transition-all"
+                                data-method="Paypal" role="button" tabindex="0">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                                            style="width:40px;height:40px;">
+                                            <i data-lucide="paypal" class="text-info"
+                                                style="width:20px;height:20px;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0 fw-medium text-dark">PayPal</h6>
+                                    </div>
+                                    <div class="flex-shrink-0 ms-2">
+                                        <div class="form-check-custom">
+                                            <div class="checkmark"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="paymentMethod" name="payment_method" required>
+                    <div class="invalid-feedback d-block" id="methodError">Please select a deposit method</div>
+                </div>
+
+                <!-- Amount Input -->
+                <div class="mb-4">
+                    <label for="amount" class="form-label fw-medium text-dark">Deposit Amount (USD)</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">$</span>
+                        <input type="number" class="form-control border-start-0 ps-0" id="amount" name="amount"
+                            placeholder="0.00" min="0" step="0.01" required aria-label="Amount">
+                    </div>
+                    <div class="form-text">Minimum deposit: $10.00 • Maximum: $50,000.00</div>
+                    <div class="invalid-feedback" id="amountError">Please enter a valid amount between $10 and $50,000
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-end mt-5">
+                    <button type="button" class="btn btn-outline-secondary px-4" onclick="window.history.back()">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary px-5" id="submitBtn">
+                        <span class="spinner-border spinner-border-sm d-none" role="status" id="submitSpinner"
+                            aria-hidden="true"></span>
+                        <span id="submitText">Proceed to Deposit</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Security Notice -->
+    <div class="text-center text-muted small" style="max-width: 600px; margin: 0 auto;">
+        <i data-lucide="shield-check" class="me-1 text-success" style="width:14px;height:14px;"></i>
+        All transactions are secured with 256-bit SSL encryption. Your funds are protected.
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Lucide icons
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+
+    // Payment Method Selection
+    const methodCards = document.querySelectorAll('.payment-method-card');
+    const methodInput = document.getElementById('paymentMethod');
+    const methodError = document.getElementById('methodError');
+
+    methodCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove selected state from all
+            methodCards.forEach(c => c.classList.remove('selected'));
+            // Add to clicked
+            this.classList.add('selected');
+            // Update hidden input
+            methodInput.value = this.dataset.method;
+            // Clear error
+            if (methodError) methodError.style.display = 'none';
+        });
+
+        // Keyboard accessibility
+        card.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+            }
+        });
+    });
+
+    // Form Validation & Submission
+    const form = document.getElementById('depositForm');
+    const amountInput = document.getElementById('amount');
+    const amountError = document.getElementById('amountError');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitSpinner = document.getElementById('submitSpinner');
+    const submitText = document.getElementById('submitText');
+
+    // Real-time amount validation
+    amountInput.addEventListener('input', function() {
+        const value = parseFloat(this.value);
+        if (this.value && (isNaN(value) || value < 10 || value > 50000)) {
+            this.classList.add('is-invalid');
+            if (amountError) amountError.style.display = 'block';
+        } else {
+            this.classList.remove('is-invalid');
+            if (amountError) amountError.style.display = 'none';
+        }
+    });
+
+    // Form submit handler
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let isValid = true;
+        
+        // Validate payment method
+        if (!methodInput.value) {
+            if (methodError) methodError.style.display = 'block';
+            isValid = false;
+        }
+        
+        // Validate amount
+        const amount = parseFloat(amountInput.value);
+        if (!amountInput.value || isNaN(amount) || amount < 10 || amount > 50000) {
+            amountInput.classList.add('is-invalid');
+            if (amountError) amountError.style.display = 'block';
+            isValid = false;
+        }
+        
+        if (!isValid) return;
+        
+        // Show loading state
+        submitBtn.disabled = true;
+        submitSpinner.classList.remove('d-none');
+        submitText.textContent = 'Processing...';
+        
+        // Simulate form submission (replace with actual fetch/axios call)
+        setTimeout(() => {
+            // For demo: show success message
+            alert(`✓ Deposit request submitted!\n\nMethod: ${methodInput.value}\nAmount: $${amount.toFixed(2)}`);
+            
+            // Reset form
+            form.reset();
+            methodCards.forEach(c => c.classList.remove('selected'));
+            methodInput.value = '';
+            
+            // Restore button
+            submitBtn.disabled = false;
+            submitSpinner.classList.add('d-none');
+            submitText.textContent = 'Proceed to Deposit';
+            
+            // In production, redirect or update UI:
+            // window.location.href = '/dashboard/deposits/confirmation';
+        }, 1500);
+    });
+
+    // Auto-hide alerts after 5 seconds (if you add alert functionality later)
+    window.hideAlert = function(alertId) {
+        const alert = document.getElementById(alertId);
+        if (alert) {
+            alert.classList.add('fade');
+            setTimeout(() => alert.remove(), 300);
+        }
+    };
+});
+</script>
+{% endblock %}

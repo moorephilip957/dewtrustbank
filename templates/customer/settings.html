@@ -1,0 +1,762 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    :root {
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --light-bg: #f8f9fa;
+        --card-bg: #ffffff;
+        --text-dark: #212529;
+        --text-muted: #6c757d;
+        --border-color: #e9ecef;
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Settings Layout */
+    .settings-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    @media (min-width: 992px) {
+        .settings-grid {
+            grid-template-columns: 380px 1fr;
+        }
+    }
+
+    /* Profile Card */
+    .profile-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        padding: 2rem 1.5rem;
+        text-align: center;
+        position: relative;
+        color: white;
+    }
+
+    .profile-avatar {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        object-fit: cover;
+        margin-bottom: 1rem;
+        background: white;
+    }
+
+    .profile-name {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+
+    .profile-id {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    .edit-avatar-btn {
+        position: absolute;
+        bottom: 12px;
+        right: calc(50% - 48px);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: white;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .edit-avatar-btn:hover {
+        transform: scale(1.05);
+    }
+
+    .profile-nav {
+        padding: 0.75rem;
+    }
+
+    .profile-nav .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        color: var(--text-dark);
+        border-radius: 10px;
+        margin-bottom: 0.35rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .profile-nav .nav-link:hover,
+    .profile-nav .nav-link.active {
+        background: rgba(67, 97, 238, 0.12);
+        color: var(--primary);
+    }
+
+    .profile-nav .nav-link.active {
+        border-left: 3px solid var(--primary);
+        padding-left: 0.75rem;
+    }
+
+    .profile-nav i {
+        width: 20px;
+        margin-right: 0.75rem;
+        font-size: 1.1rem;
+    }
+
+    .support-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        box-shadow: var(--shadow-md);
+        padding: 1.25rem;
+    }
+
+    .support-card .card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .support-card .card-text {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+
+    .support-link {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .support-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Form Card */
+    .form-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+    }
+
+    .form-card-header {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .form-card-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-card-title i {
+        color: var(--primary);
+    }
+
+    .form-card-subtitle {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+    }
+
+    .form-card-body {
+        padding: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--text-dark);
+    }
+
+    .form-control-readonly {
+        background: var(--light-bg);
+        border-color: var(--border-color);
+        color: var(--text-dark);
+        font-weight: 500;
+    }
+
+    .form-control-readonly:focus {
+        background: var(--light-bg);
+        box-shadow: none;
+    }
+
+    .input-icon {
+        position: relative;
+    }
+
+    .input-icon i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        z-index: 10;
+    }
+
+    .input-icon .form-control {
+        padding-left: 2.75rem;
+    }
+
+    .input-icon-end {
+        position: relative;
+    }
+
+    .input-icon-end .form-control {
+        padding-right: 2.75rem;
+    }
+
+    .input-icon-end-btn {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 4px;
+        transition: color 0.2s;
+    }
+
+    .input-icon-end-btn:hover {
+        color: var(--primary);
+        background: rgba(67, 97, 238, 0.1);
+    }
+
+    .form-help {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: 0.35rem;
+    }
+
+    .info-alert {
+        background: #dbeafe;
+        border: 1px solid #bfdbfe;
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 1.5rem 0;
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .info-alert i {
+        color: #2563eb;
+        font-size: 1.1rem;
+        margin-top: 2px;
+    }
+
+    .info-alert-content h4 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #1e40af;
+        margin-bottom: 0.25rem;
+    }
+
+    .info-alert-content p {
+        font-size: 0.9rem;
+        color: #1e3a8a;
+        margin: 0;
+        line-height: 1.4;
+    }
+
+    /* Modals */
+    .modal-content {
+        border-radius: 16px;
+        border: none;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid var(--border-color);
+        padding: 1.25rem 1.5rem;
+    }
+
+    .modal-title {
+        font-weight: 600;
+        font-size: 1.25rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--border-color);
+        padding: 1rem 1.5rem;
+    }
+
+    .upload-area {
+        border: 2px dashed var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: var(--light-bg);
+    }
+
+    .upload-area:hover {
+        border-color: var(--primary);
+        background: rgba(67, 97, 238, 0.05);
+    }
+
+    .upload-area i {
+        font-size: 2rem;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+    }
+
+    .upload-area p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+
+    .upload-area .highlight {
+        color: var(--primary);
+        font-weight: 500;
+    }
+
+    .security-alert {
+        background: #fef3c7;
+        border: 1px solid #fde68a;
+        border-radius: 12px;
+        padding: 1rem;
+        display: flex;
+        gap: 0.75rem;
+        margin: 1rem 0;
+    }
+
+    .security-alert i {
+        color: #d97706;
+        font-size: 1.1rem;
+        margin-top: 2px;
+    }
+
+    .security-alert-content h4 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #92400e;
+        margin-bottom: 0.25rem;
+    }
+
+    .security-alert-content p {
+        font-size: 0.9rem;
+        color: #78350f;
+        margin: 0;
+        line-height: 1.4;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 4px;
+    }
+
+    .password-toggle:hover {
+        color: var(--primary);
+        background: rgba(67, 97, 238, 0.1);
+    }
+
+    /* Utilities */
+    .text-primary {
+        color: var(--primary) !important;
+    }
+
+    .bg-primary-light {
+        background: rgba(67, 97, 238, 0.1) !important;
+    }
+
+    .rounded-xl {
+        border-radius: 16px !important;
+    }
+
+    .shadow-soft {
+        box-shadow: var(--shadow-md) !important;
+    }
+</style>
+
+
+<!-- Page Header with Breadcrumbs -->
+<div class="mb-4 px-5 pt-3">
+    <h1 class="h4 fw-bold mb-1">Account Settings</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted">Dashboard</a></li>
+            <li class="breadcrumb-item active text-dark fw-medium" aria-current="page">Settings</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Main Content Grid -->
+<div class="settings-grid px-5">
+
+    <!-- Left Column: Profile Card + Navigation + Support -->
+    <div>
+        <!-- Profile Card -->
+        <div class="profile-card">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="position-relative mb-3">
+                    <img src="https://i.pravatar.cc/150?img=12" alt="Profile" class="profile-avatar">
+                    <button class="edit-avatar-btn" data-bs-toggle="modal" data-bs-target="#profilePictureModal"
+                        title="Change photo">
+                        <i class="bi bi-camera"></i>
+                    </button>
+                </div>
+                <h2 class="profile-name">Alex Morgan</h2>
+                <p class="profile-id mb-0">Account #USR-8842901</p>
+
+                <!-- Decorative wave -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"
+                    class="position-absolute bottom-0 start-0 w-100"
+                    style="height: 24px; color: white; fill: currentColor;">
+                    <path
+                        d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
+                        opacity=".25"></path>
+                    <path
+                        d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
+                        opacity=".5"></path>
+                    <path
+                        d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z">
+                    </path>
+                </svg>
+            </div>
+
+            <!-- Navigation -->
+            <div class="profile-nav">
+                <nav class="nav flex-column">
+                    <a href="#" class="nav-link active">
+                        <i class="bi bi-person"></i>
+                        <span>Profile Information</span>
+                    </a>
+                    <a href="#" class="nav-link">
+                        <i class="bi bi-shield-lock"></i>
+                        <span>Security Settings</span>
+                    </a>
+                    <button class="nav-link border-0 bg-transparent w-100 text-start" data-bs-toggle="modal"
+                        data-bs-target="#transactionPinModal">
+                        <i class="bi bi-key"></i>
+                        <span>Transaction PIN</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Support Card -->
+        <div class="support-card">
+            <h3 class="card-title">
+                <i class="bi bi-question-circle text-primary"></i>
+                Need Help?
+            </h3>
+            <p class="card-text">
+                Contact our support team if you need assistance with your account settings or have any questions.
+            </p>
+            <a href="#" class="support-link">
+                Contact Support
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Right Column: Profile Form -->
+    <div>
+        <div class="form-card">
+            <!-- Form Header -->
+            <div class="form-card-header">
+                <h2 class="form-card-title">
+                    <i class="bi bi-person"></i>
+                    Profile Information
+                </h2>
+                <p class="form-card-subtitle">Your personal information and account details</p>
+            </div>
+
+            <!-- Form Body -->
+            <div class="form-card-body">
+                <form>
+                    <!-- Name Fields -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <div class="input-icon">
+                                <i class="bi bi-person"></i>
+                                <input type="text" class="form-control form-control-readonly" id="firstName"
+                                    value="Alex" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <div class="input-icon">
+                                <i class="bi bi-person"></i>
+                                <input type="text" class="form-control form-control-readonly" id="lastName"
+                                    value="Morgan" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Number -->
+                    <div class="mb-4">
+                        <label for="accountNumber" class="form-label">Account Number</label>
+                        <div class="input-icon-end">
+                            <div class="input-icon">
+                                <i class="bi bi-hash"></i>
+                                <input type="text" class="form-control form-control-readonly" id="accountNumber"
+                                    value="USR-8842901" readonly>
+                            </div>
+                            <button type="button" class="input-icon-end-btn" onclick="copyToClipboard('USR-8842901')"
+                                title="Copy">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                        <small class="form-help">This is your unique account identifier</small>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-4">
+                        <label for="email" class="form-label">Email Address</label>
+                        <div class="input-icon">
+                            <i class="bi bi-envelope"></i>
+                            <input type="email" class="form-control form-control-readonly" id="email"
+                                value="alex.morgan@example.com" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div class="mb-4">
+                        <label for="dob" class="form-label">Date of Birth</label>
+                        <div class="input-icon">
+                            <i class="bi bi-calendar"></i>
+                            <input type="date" class="form-control form-control-readonly" id="dob" value="1990-05-15"
+                                readonly>
+                        </div>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="mb-4">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <div class="input-icon">
+                            <i class="bi bi-telephone"></i>
+                            <input type="tel" class="form-control form-control-readonly" id="phone"
+                                value="+1 (555) 234-5678" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="mb-4">
+                        <label for="address" class="form-label">Address</label>
+                        <div class="input-icon">
+                            <i class="bi bi-geo-alt" style="top: 1.1rem;"></i>
+                            <textarea class="form-control form-control-readonly" id="address" rows="3"
+                                readonly>123 Main Street, Apt 4B, New York, NY 10001</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Info Alert -->
+                    <div class="info-alert">
+                        <i class="bi bi-info-circle-fill"></i>
+                        <div class="info-alert-content">
+                            <h4>Account Information</h4>
+                            <p>To update your personal information, please contact our customer support team with
+                                your request.</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Profile Picture Upload Modal -->
+<div class="modal fade" id="profilePictureModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Profile Picture</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="profilePictureForm">
+                    <div class="mb-4">
+                        <label class="form-label">Select New Profile Picture</label>
+                        <label for="photoUpload" class="upload-area d-block">
+                            <i class="bi bi-cloud-upload"></i>
+                            <p><span class="highlight">Click to upload</span> or drag and drop</p>
+                            <p class="small mb-0">PNG, JPG or JPEG (MAX. 2MB)</p>
+                            <input type="file" id="photoUpload" name="photo" class="d-none" accept="image/*" required>
+                        </label>
+                        <div id="imagePreview" class="mt-3 d-none text-center">
+                            <img src="" alt="Preview" class="rounded-circle"
+                                style="width: 120px; height: 120px; object-fit: cover;">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2">
+                        <i class="bi bi-upload me-2"></i>Upload Profile Picture
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Transaction PIN Modal -->
+<div class="modal fade" id="transactionPinModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Change Transaction PIN</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="pinForm">
+                    <!-- New PIN -->
+                    <div class="mb-4">
+                        <label for="newPin" class="form-label">New Transaction PIN</label>
+                        <div class="input-icon">
+                            <i class="bi bi-key"></i>
+                            <input type="password" class="form-control" id="newPin" name="pin"
+                                placeholder="Enter new PIN" required maxlength="6" pattern="[0-9]{6}">
+                        </div>
+                        <small class="form-help">Create a secure 6-digit PIN that you can remember</small>
+                    </div>
+
+                    <!-- Current Password -->
+                    <div class="mb-4">
+                        <label for="currentPassword" class="form-label">Current Password</label>
+                        <div class="input-icon-end">
+                            <div class="input-icon">
+                                <i class="bi bi-lock"></i>
+                                <input type="password" class="form-control" id="currentPassword" name="current_password"
+                                    placeholder="Enter your password" required>
+                            </div>
+                            <button type="button" class="input-icon-end-btn password-toggle"
+                                onclick="togglePassword('currentPassword', this)">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <small class="form-help">For security verification</small>
+                    </div>
+
+                    <!-- Security Alert -->
+                    <div class="security-alert">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <div class="security-alert-content">
+                            <h4>Security Alert</h4>
+                            <p>Keep your transaction PIN confidential. Never share your PIN with anyone, including
+                                support staff.</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2">
+                        <i class="bi bi-arrow-clockwise me-2"></i>Update Transaction PIN
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Copy to clipboard functionality
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            // Show temporary feedback
+            const btn = event.currentTarget;
+            const originalIcon = btn.innerHTML;
+            btn.innerHTML = '<i class="bi bi-check-lg text-success"></i>';
+            setTimeout(() => {
+                btn.innerHTML = originalIcon;
+            }, 1500);
+        });
+    }
+
+    // Toggle password visibility
+    function togglePassword(inputId, toggleBtn) {
+        const input = document.getElementById(inputId);
+        const icon = toggleBtn.querySelector('i');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.replace('bi-eye', 'bi-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.replace('bi-eye-slash', 'bi-eye');
+        }
+    }
+
+    // Profile picture preview
+    document.getElementById('photoUpload').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const preview = document.getElementById('imagePreview');
+                const img = preview.querySelector('img');
+                img.src = event.target.result;
+                preview.classList.remove('d-none');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Form submission handlers (demo only)
+    document.getElementById('profilePictureForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        alert('Profile picture upload would be processed here.');
+        bootstrap.Modal.getInstance(document.getElementById('profilePictureModal')).hide();
+    });
+
+    document.getElementById('pinForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const pin = document.getElementById('newPin').value;
+        if (/^\d{6}$/.test(pin)) {
+            alert('Transaction PIN updated successfully!');
+            bootstrap.Modal.getInstance(document.getElementById('transactionPinModal')).hide();
+            this.reset();
+        } else {
+            alert('Please enter a valid 6-digit PIN.');
+        }
+    });
+
+    // Initialize Bootstrap icons if using CDN version that requires it
+    // (Most Bootstrap Icons CDN versions auto-initialize)
+</script>
+{% endblock %}

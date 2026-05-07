@@ -1,0 +1,531 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* ===== EXACT Theme Variables from Original ===== */
+:root {
+    --primary-color: #0147E1;
+    --primary-color-dark: #0147E1;
+    --primary-color-light: #E0E0E0;
+    --primary-color-lightest: #E0E0E0;
+    --secondary-color: #FFC107;
+    --secondary-color-dark: #CC9900;
+    --secondary-color-light: #FFECB3;
+    --accent-color: #ec4899;
+    --text-color: #828282;
+    --bg-color: #f9fafb;
+    --sidebar-bg-color: #F4F5F7;
+    --sidebar-text-color: #0047AB;
+    --card-bg-color: #F4F5F7;
+}
+
+/* ===== Bootstrap Overrides for Exact Match ===== */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+}
+
+.text-white-75 { color: rgba(255,255,255,0.75) !important; }
+.opacity-75 { opacity: 0.75 !important; }
+
+/* Table enhancements */
+.table > :not(caption) > * > * {
+    padding: 0.75rem 1rem;
+    border-bottom-color: #e5e7eb;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(1, 71, 225, 0.03);
+}
+
+/* Form enhancements */
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(1, 71, 225, 0.15);
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+}
+
+/* Blur effect for header */
+.backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* Responsive typography */
+.h3-md { font-size: 1.5rem; }
+@media (min-width: 768px) {
+    .h3-md { font-size: 1.875rem; }
+}
+
+/* Custom sizes matching original */
+.w-8 { width: 2rem !important; }
+.h-8 { height: 2rem !important; }
+.rounded-3 { border-radius: 0.75rem !important; }
+.rounded-4 { border-radius: 1rem !important; }
+
+/* Max width utility */
+.max-w-4xl { max-width: 56rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+/* Hover link */
+.hover-primary:hover { color: var(--primary-color) !important; }
+
+/* Toast notifications */
+.toast {
+    border-left: 4px solid var(--primary-color);
+    border-radius: 0.5rem;
+}
+.toast-success { border-left-color: #198754; }
+.toast-error { border-left-color: #dc3545; }
+.toast-warning { border-left-color: var(--secondary-color); }
+
+/* Animation for empty state */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+#emptyState { animation: fadeIn 0.3s ease-out; }
+
+/* Pagination active state */
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.pagination .page-link {
+    color: var(--primary-color);
+}
+
+.pagination .page-link:hover {
+    color: var(--primary-color-dark);
+}
+</style>
+<!-- MAIN CONTENT AREA - Paste inside your <main> wrapper -->
+<div class="container-fluid py-4 px-3 px-md-4">
+    
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="position-fixed top-0 end-0 p-3" style="z-index: 1100;"></div>
+
+    <!-- Page Header with Breadcrumbs -->
+    <div class="d-flex flex-column mb-4">
+        <h1 class="h4 fw-bold text-dark mb-1">Loan History</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item"><a href="/dashboard" class="text-decoration-none text-muted hover-primary">Dashboard</a></li>
+                <li class="breadcrumb-item active text-secondary">Loan History</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Main Card Container -->
+    <div class="max-w-4xl mx-auto" style="max-width: 900px; margin: 0 auto;">
+        
+        <div class="card border-0 shadow-sm overflow-hidden mb-4">
+            <!-- Card Header with Gradient & Wave -->
+            <div class="card-header bg-gradient-primary border-0 position-relative text-white py-4 px-4">
+                <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-circle p-2 me-3">
+                            <i data-lucide="history" class="text-white" style="width:24px;height:24px;"></i>
+                        </div>
+                        <div>
+                            <h2 class="h5 fw-bold mb-0">Your Loan Applications</h2>
+                            <p class="mb-0 opacity-75 small">Track and manage your loan requests</p>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button type="button" class="btn btn-light btn-sm d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#filterModal">
+                            <i data-lucide="filter" style="width:16px;height:16px;"></i>
+                            Filter
+                        </button>
+                        <button type="button" class="btn btn-light btn-sm d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#exportModal">
+                            <i data-lucide="download" style="width:16px;height:16px;"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Wave SVG -->
+                <div class="position-absolute bottom-0 start-0 end-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" class="w-100" style="height:24px;">
+                        <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="currentColor"></path>
+                        <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="currentColor"></path>
+                        <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="currentColor"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="card-body p-4 p-md-5">
+                
+                <!-- Search Bar -->
+                <div class="mb-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i data-lucide="search" style="width:18px;height:18px;"></i>
+                        </span>
+                        <input type="search" class="form-control border-start-0 ps-0" id="loanSearch" placeholder="Search by loan purpose or amount..." aria-label="Search loans">
+                    </div>
+                </div>
+                
+                <!-- Loan Applications Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="py-3 px-4 text-start text-uppercase small fw-medium text-muted">Type</th>
+                                <th class="py-3 px-4 text-start text-uppercase small fw-medium text-muted">Amount</th>
+                                <th class="py-3 px-4 text-start text-uppercase small fw-medium text-muted">Purpose</th>
+                                <th class="py-3 px-4 text-start text-uppercase small fw-medium text-muted">Duration</th>
+                                <th class="py-3 px-4 text-start text-uppercase small fw-medium text-muted">Status</th>
+                                <th class="py-3 px-4 text-start text-uppercase small fw-medium text-muted">Date Applied</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loanTableBody">
+                            <!-- Empty State (shown when no loans) -->
+                            <tr id="emptyState">
+                                <td colspan="6" class="py-5 px-4 text-center">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mb-3" style="width:64px;height:64px;">
+                                            <i data-lucide="file-question" class="text-muted" style="width:32px;height:32px;"></i>
+                                        </div>
+                                        <p class="text-muted fw-medium mb-1">No loan applications found</p>
+                                        <p class="text-muted small mb-3">Try adjusting your search or filter criteria</p>
+                                        <a href="/dashboard/loan" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-2">
+                                            <i data-lucide="plus" style="width:14px;height:14px;"></i>
+                                            Apply for a Loan
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Dynamic rows will be inserted here by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination (if applicable) -->
+                <nav id="pagination" class="mt-4 d-none" aria-label="Loan history pagination">
+                    <ul class="pagination pagination-sm justify-content-center mb-0">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Security Notice -->
+        <div class="text-center text-muted small mt-3" style="max-width: 600px; margin: 1rem auto;">
+            <i data-lucide="shield-check" class="me-1 text-success" style="width:14px;height:14px;"></i>
+            All loan data is encrypted and stored securely. Your financial information is protected.
+        </div>
+    </div>
+</div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="filterModalLabel">Filter Loans</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-3">
+                <form id="filterForm">
+                    <div class="mb-3">
+                        <label for="dateRange" class="form-label small fw-medium">Date Range</label>
+                        <input type="text" class="form-control" id="dateRange" placeholder="Select date range">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="filterStatus" class="form-label small fw-medium">Status</label>
+                        <select class="form-select" id="filterStatus">
+                            <option value="">All statuses</option>
+                            <option value="PROCESSED">Processed</option>
+                            <option value="PENDING">Pending</option>
+                            <option value="APPROVED">Approved</option>
+                            <option value="REJECTED">Rejected</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="orderBy" class="form-label small fw-medium">Sort by</label>
+                        <select class="form-select" id="orderBy">
+                            <option value="desc">Newest first</option>
+                            <option value="asc">Oldest first</option>
+                            <option value="amount-desc">Amount: High to Low</option>
+                            <option value="amount-asc">Amount: Low to High</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="perPage" class="form-label small fw-medium">Items per page</label>
+                        <select class="form-select" id="perPage">
+                            <option value="10">10 items</option>
+                            <option value="25">25 items</option>
+                            <option value="50">50 items</option>
+                            <option value="100">100 items</option>
+                        </select>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i data-lucide="filter" class="me-2" style="width:16px;height:16px;"></i>
+                            Apply Filters
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Export Modal -->
+<div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="exportModalLabel">Export Loans</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-3">
+                <form id="exportForm">
+                    <input type="hidden" name="_token" value="JVJHIkK2HapcnxrkNIyJ9ywXYoaQlt7Mzq6zlADO">
+                    
+                    <div class="mb-3">
+                        <label for="exportType" class="form-label small fw-medium">File Format</label>
+                        <select class="form-select" id="exportType" name="exportType" required>
+                            <option value="">Select file type</option>
+                            <option value="csv">CSV</option>
+                            <option value="excel">Excel</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="exportAs" class="form-label small fw-medium">Export as</label>
+                        <select class="form-select" id="exportAs" name="exportAs" required>
+                            <option value="">How do you want to receive this file?</option>
+                            <option value="download">Download file</option>
+                            <option value="email">Send file to email</option>
+                        </select>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary" id="exportBtn">
+                            <span class="spinner-border spinner-border-sm d-none me-2" id="exportSpinner"></span>
+                            <i data-lucide="download" class="me-2" id="exportIcon" style="width:16px;height:16px;"></i>
+                            <span id="exportText">Export</span>
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Lucide icons
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    
+    // ===== Toast Notification System =====
+    function showToast(message, type = 'info', duration = 5000) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center text-bg-${type} border-0 shadow`;
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+        
+        const icons = {
+            success: 'check-circle',
+            error: 'alert-circle',
+            warning: 'alert-triangle',
+            info: 'info'
+        };
+        
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    <i data-lucide="${icons[type] || 'info'}" style="width:18px;height:18px;"></i>
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+        
+        container.appendChild(toast);
+        
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        
+        const bsToast = new bootstrap.Toast(toast, { delay: duration });
+        bsToast.show();
+        
+        toast.addEventListener('hidden.bs.toast', () => toast.remove());
+    }
+    
+    // ===== Sample Loan Data (Replace with actual API call) =====
+    const sampleLoans = [
+        { id: 1, type: 'Personal Home Loan', amount: 25000, purpose: 'Home renovation', duration: '24 months', status: 'APPROVED', date: '2026-04-15' },
+        { id: 2, type: 'Automobile Loan', amount: 15000, purpose: 'Vehicle purchase', duration: '36 months', status: 'PENDING', date: '2026-04-20' },
+        { id: 3, type: 'Business Loan', amount: 50000, purpose: 'Equipment financing', duration: '48 months', status: 'PROCESSED', date: '2026-03-10' }
+    ];
+    
+    // ===== Render Loan Table =====
+    function renderLoans(loans) {
+        const tbody = document.getElementById('loanTableBody');
+        const emptyState = document.getElementById('emptyState');
+        const pagination = document.getElementById('pagination');
+        
+        if (loans.length === 0) {
+            emptyState.classList.remove('d-none');
+            pagination.classList.add('d-none');
+            return;
+        }
+        
+        emptyState.classList.add('d-none');
+        pagination.classList.remove('d-none');
+        
+        tbody.innerHTML = loans.map(loan => {
+            const statusBadge = getStatusBadge(loan.status);
+            const formattedDate = formatDate(loan.date);
+            const formattedAmount = formatCurrency(loan.amount);
+            
+            return `
+                <tr>
+                    <td class="fw-medium text-dark">${loan.type}</td>
+                    <td class="fw-medium">${formattedAmount}</td>
+                    <td class="text-muted small">${loan.purpose}</td>
+                    <td>${loan.duration}</td>
+                    <td>${statusBadge}</td>
+                    <td class="text-muted small">${formattedDate}</td>
+                </tr>
+            `;
+        }).join('');
+        
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+    
+    // ===== Helper Functions =====
+    function getStatusBadge(status) {
+        const badges = {
+            'APPROVED': '<span class="badge bg-success bg-opacity-10 text-success border border-success-subtle">Approved</span>',
+            'PENDING': '<span class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle">Pending</span>',
+            'PROCESSED': '<span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle">Processed</span>',
+            'REJECTED': '<span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle">Rejected</span>'
+        };
+        return badges[status] || '<span class="badge bg-secondary">Unknown</span>';
+    }
+    
+    function formatDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+    
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(amount);
+    }
+    
+    // ===== Search Functionality =====
+    const searchInput = document.getElementById('loanSearch');
+    searchInput?.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        const filtered = sampleLoans.filter(loan => 
+            loan.purpose.toLowerCase().includes(query) || 
+            loan.type.toLowerCase().includes(query) ||
+            loan.amount.toString().includes(query)
+        );
+        renderLoans(filtered);
+    });
+    
+    // ===== Filter Form =====
+    document.getElementById('filterForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const status = document.getElementById('filterStatus').value;
+        const orderBy = document.getElementById('orderBy').value;
+        
+        let filtered = [...sampleLoans];
+        
+        // Filter by status
+        if (status) {
+            filtered = filtered.filter(loan => loan.status === status);
+        }
+        
+        // Sort
+        if (orderBy === 'asc') {
+            filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+        } else if (orderBy === 'desc') {
+            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+        } else if (orderBy === 'amount-asc') {
+            filtered.sort((a, b) => a.amount - b.amount);
+        } else if (orderBy === 'amount-desc') {
+            filtered.sort((a, b) => b.amount - a.amount);
+        }
+        
+        renderLoans(filtered);
+        showToast(`Showing ${filtered.length} loan(s)`, 'success', 3000);
+        
+        // Close modal
+        bootstrap.Modal.getInstance(document.getElementById('filterModal'))?.hide();
+    });
+    
+    // ===== Export Form =====
+    document.getElementById('exportForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const exportType = document.getElementById('exportType').value;
+        const exportAs = document.getElementById('exportAs').value;
+        
+        if (!exportType || !exportAs) {
+            showToast('Please select both file format and export method', 'warning');
+            return;
+        }
+        
+        // Show loading state
+        const exportBtn = document.getElementById('exportBtn');
+        const exportSpinner = document.getElementById('exportSpinner');
+        const exportIcon = document.getElementById('exportIcon');
+        const exportText = document.getElementById('exportText');
+        
+        exportBtn.disabled = true;
+        exportSpinner.classList.remove('d-none');
+        exportIcon.classList.add('d-none');
+        exportText.textContent = 'Exporting...';
+        
+        // Simulate export
+        setTimeout(() => {
+            showToast(`✓ Export successful! File will be ${exportAs === 'download' ? 'downloaded' : 'sent to your email'}`, 'success');
+            
+            // Reset button
+            exportBtn.disabled = false;
+            exportSpinner.classList.add('d-none');
+            exportIcon.classList.remove('d-none');
+            exportText.textContent = 'Export';
+            
+            // Reset form and close modal
+            this.reset();
+            bootstrap.Modal.getInstance(document.getElementById('exportModal'))?.hide();
+        }, 2000);
+    });
+    
+    // ===== Initialize =====
+    // For demo: show empty state (replace with actual API call to fetch loans)
+    renderLoans([]);
+    
+    // ===== For Demo: Uncomment below to show sample data =====
+    // renderLoans(sampleLoans);
+});
+</script>
+{% endblock %}

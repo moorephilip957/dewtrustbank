@@ -1,0 +1,765 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- CSS Variables & Custom Styles -->
+<style>
+    :root {
+        --primary-color: #0147E1;
+        --primary-color-dark: #0147E1;
+        --primary-color-light: #E0E0E0;
+        --secondary-color: #FFC107;
+        --secondary-color-dark: #CC9900;
+        --accent-color: #ec4899;
+        --text-color: #828282;
+        --bg-color: #f9fafb;
+    }
+
+    body {
+        background-color: var(--bg-color);
+    }
+
+    /* Page Header & Breadcrumbs */
+    .page-header {
+        margin-bottom: 1.5rem;
+    }
+    .page-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #111827;
+    }
+    .breadcrumb-link {
+        color: #6b7280;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .breadcrumb-link:hover {
+        color: var(--primary-color);
+    }
+
+    /* Stats Cards */
+    .stat-card {
+        background: white;
+        border-radius: 0.75rem;
+        border: 1px solid #f3f4f6;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .stat-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    .stat-icon.primary { background: rgba(1, 71, 225, 0.1); color: var(--primary-color); }
+    .stat-icon.blue { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+    .stat-icon.green { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+    .stat-label {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 0.25rem;
+    }
+    .stat-value {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #111827;
+        margin: 0;
+    }
+
+    /* Info/Hero Box */
+    .info-box {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #0039b3 100%);
+        border-radius: 0.75rem;
+        color: white;
+        overflow: hidden;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    .info-box-content {
+        padding: 1.5rem;
+    }
+    .info-box-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    .info-box-text {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+    .feature-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    .feature-icon {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 0.375rem;
+        background: rgba(255, 255, 255, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    .feature-title {
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.125rem;
+    }
+    .feature-desc {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.8);
+    }
+    .info-box-visual {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        background: rgba(0, 0, 0, 0.1);
+    }
+    @media (min-width: 768px) {
+        .info-box-visual {
+            display: flex;
+        }
+    }
+    .card-visual {
+        position: relative;
+        width: 12rem;
+        height: 7.5rem;
+        border-radius: 0.75rem;
+        background: linear-gradient(135deg, #1f2937, #111827);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        transform: rotate(3deg);
+    }
+    .card-visual::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 0.75rem;
+        background: linear-gradient(135deg, var(--primary-color), #0056b3);
+        opacity: 0.9;
+    }
+    .card-visual-content {
+        position: relative;
+        z-index: 1;
+        padding: 1rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: white;
+    }
+    .card-chip {
+        width: 2rem;
+        height: 1.5rem;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 0.25rem;
+    }
+    .card-number {
+        font-family: monospace;
+        font-size: 0.875rem;
+        letter-spacing: 0.1em;
+    }
+    .card-meta {
+        font-size: 0.7rem;
+        opacity: 0.8;
+    }
+
+    /* Cards List */
+    .cards-card {
+        background: white;
+        border-radius: 0.75rem;
+        border: 1px solid #f3f4f6;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        margin-bottom: 1.5rem;
+    }
+    .cards-header {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .cards-title {
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: #111827;
+        margin: 0;
+    }
+    .cards-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        transition: color 0.2s;
+    }
+    .cards-link:hover {
+        color: #0039b3;
+    }
+    .empty-state {
+        padding: 3rem 1rem;
+        text-align: center;
+    }
+    .empty-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        color: #9ca3af;
+    }
+    .empty-title {
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: #111827;
+        margin-bottom: 0.5rem;
+    }
+    .empty-text {
+        color: #6b7280;
+        font-size: 0.875rem;
+        max-width: 28rem;
+        margin: 0 auto 1.5rem;
+    }
+
+    /* How It Works */
+    .steps-section {
+        margin-bottom: 1.5rem;
+    }
+    .steps-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 1.5rem;
+    }
+    .step-card {
+        background: white;
+        border-radius: 0.75rem;
+        border: 1px solid #f3f4f6;
+        padding: 1.5rem;
+        text-align: center;
+        height: 100%;
+        transition: transform 0.2s;
+    }
+    .step-card:hover {
+        transform: translateY(-2px);
+    }
+    .step-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: rgba(1, 71, 225, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        color: var(--primary-color);
+    }
+    .step-title {
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: #111827;
+        margin-bottom: 0.5rem;
+    }
+    .step-desc {
+        color: #6b7280;
+        font-size: 0.875rem;
+        margin: 0;
+    }
+
+    /* FAQ */
+    .faq-card {
+        background: white;
+        border-radius: 0.75rem;
+        border: 1px solid #f3f4f6;
+        margin-bottom: 1.5rem;
+    }
+    .faq-header {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .faq-title {
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: #111827;
+        margin: 0;
+    }
+    .faq-body {
+        padding: 1.5rem;
+    }
+    .faq-item {
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid #f3f4f6;
+    }
+    .faq-item:last-child {
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+    .faq-question {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #111827;
+        margin-bottom: 0.5rem;
+    }
+    .faq-answer {
+        color: #6b7280;
+        font-size: 0.875rem;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    /* Buttons */
+    .btn-apply {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.2s;
+        text-decoration: none;
+    }
+    .btn-apply:hover {
+        background: #0039b3;
+        border-color: #0039b3;
+        color: white;
+    }
+    .btn-apply-white {
+        background: white;
+        border-color: transparent;
+        color: var(--primary-color);
+    }
+    .btn-apply-white:hover {
+        background: #f9fafb;
+        color: #0039b3;
+    }
+
+    /* Utility */
+    .text-primary { color: var(--primary-color) !important; }
+    .bg-primary-light { background: rgba(1, 71, 225, 0.1) !important; }
+    .rounded-xl { border-radius: 0.75rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 0.75rem; }
+</style>
+
+<!-- Page Content -->
+<div class="container-fluid px-3 px-md-4 py-4">
+    
+    <!-- Header with Breadcrumbs -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start mb-4 page-header">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-2 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'customer:dashboard' %}" class="breadcrumb-link">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Cards</li>
+                </ol>
+            </nav>
+            <h1 class="page-title mb-0">Virtual Cards</h1>
+        </div>
+        <a href="" class="btn-apply mt-3 mt-md-0">
+            <i class="bi bi-plus-lg" style="width:1rem;height:1rem;"></i> Apply for Card
+        </a>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="stat-card d-flex align-items-center p-3">
+                <div class="stat-icon primary me-3">
+                    <i class="bi bi-credit-card" style="width:1.5rem;height:1.5rem;"></i>
+                </div>
+                <div>
+                    <p class="stat-label mb-0">Active Cards</p>
+                    <p class="stat-value mb-0">{{ active_cards|default:0 }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card d-flex align-items-center p-3">
+                <div class="stat-icon blue me-3">
+                    <i class="bi bi-hourglass-split" style="width:1.5rem;height:1.5rem;"></i>
+                </div>
+                <div>
+                    <p class="stat-label mb-0">Pending Applications</p>
+                    <p class="stat-value mb-0">{{ pending_applications|default:0 }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card d-flex align-items-center p-3">
+                <div class="stat-icon green me-3">
+                    <i class="bi bi-wallet2" style="width:1.5rem;height:1.5rem;"></i>
+                </div>
+                <div>
+                    <p class="stat-label mb-0">Total Card Balance</p>
+                    <p class="stat-value mb-0">${{ total_balance|default:"0.00" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info/Hero Box -->
+    <div class="info-box mb-4">
+        <div class="row g-0">
+            <div class="col-lg-8 info-box-content">
+                <h2 class="info-box-title">Virtual Cards Made Easy</h2>
+                <p class="info-box-text">Create virtual cards for secure online payments, subscription management, and more. Our virtual cards offer enhanced security and control over your spending.</p>
+                
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="bi bi-shield-check" style="width:1rem;height:1rem;"></i>
+                            </div>
+                            <div>
+                                <p class="feature-title mb-0">Secure Payments</p>
+                                <p class="feature-desc mb-0">Protect your main account</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="bi bi-globe" style="width:1rem;height:1rem;"></i>
+                            </div>
+                            <div>
+                                <p class="feature-title mb-0">Global Acceptance</p>
+                                <p class="feature-desc mb-0">Use anywhere online</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="bi bi-sliders" style="width:1rem;height:1rem;"></i>
+                            </div>
+                            <div>
+                                <p class="feature-title mb-0">Spending Controls</p>
+                                <p class="feature-desc mb-0">Set limits & monitor</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="bi bi-zap" style="width:1rem;height:1rem;"></i>
+                            </div>
+                            <div>
+                                <p class="feature-title mb-0">Instant Issuance</p>
+                                <p class="feature-desc mb-0">Create in minutes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="" class="btn-apply btn-apply-white mt-3">
+                    Apply Now
+                </a>
+            </div>
+            <div class="col-lg-4 info-box-visual">
+                <div class="card-visual">
+                    <div class="card-visual-content">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <span class="card-meta">Virtual Card</span>
+                            <i class="bi bi-wifi" style="transform: rotate(90deg); opacity: 0.8;"></i>
+                        </div>
+                        <div>
+                            <div class="card-chip mb-2"></div>
+                            <p class="card-number mb-0">•••• •••• •••• 1234</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div>
+                                <p class="card-meta mb-0">VALID THRU</p>
+                                <p class="mb-0" style="font-family: monospace;">12/25</p>
+                            </div>
+                            <i class="bi bi-credit-card" style="width:2rem;height:2rem;opacity:0.8;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cards List -->
+    <div class="cards-card">
+        <div class="cards-header">
+            <h2 class="cards-title">Your Cards</h2>
+            <a href="" class="cards-link">
+                <i class="bi bi-plus-circle" style="width:1rem;height:1rem;"></i> New Card
+            </a>
+        </div>
+        
+        {% if cards %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Card Name</th>
+                            <th>Card Number</th>
+                            <th>Status</th>
+                            <th>Balance</th>
+                            <th>Expiry</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for card in cards %}
+                        <tr>
+                            <td>
+                                <div class="fw-medium">{{ card.name|default:"Virtual Card" }}</div>
+                                <small class="text-muted">{{ card.type|default:"Standard" }}</small>
+                            </td>
+                            <td><code class="small">•••• •••• •••• {{ card.last_four|default:"0000" }}</code></td>
+                            <td>
+                                {% if card.status == "ACTIVE" %}
+                                    <span class="badge bg-success bg-opacity-10 text-success">Active</span>
+                                {% elif card.status == "PENDING" %}
+                                    <span class="badge bg-warning bg-opacity-10 text-warning">Pending</span>
+                                {% else %}
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td class="fw-medium">${{ card.balance|default:"0.00" }}</td>
+                            <td>{{ card.expiry|default:"12/25" }}</td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-secondary" onclick="viewCard('{{ card.id }}')">View</button>
+                                    <button class="btn btn-outline-secondary" onclick="manageCard('{{ card.id }}')">Manage</button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="bi bi-credit-card" style="width:1.5rem;height:1.5rem;"></i>
+                </div>
+                <h3 class="empty-title">No cards yet</h3>
+                <p class="empty-text">You haven't applied for any virtual cards yet. Apply for a new card to get started with secure online payments.</p>
+                <a href="" class="btn-apply">
+                    <i class="bi bi-plus-lg me-1"></i> Apply for Card
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- How It Works -->
+    <div class="steps-section">
+        <h2 class="steps-title">How Virtual Cards Work</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="bi bi-file-earmark-text" style="width:1.5rem;height:1.5rem;"></i>
+                    </div>
+                    <h3 class="step-title">1. Apply</h3>
+                    <p class="step-desc">Complete the application form for your virtual card. Select your preferred card type and set your spending limits.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="bi bi-check-circle" style="width:1.5rem;height:1.5rem;"></i>
+                    </div>
+                    <h3 class="step-title">2. Activate</h3>
+                    <p class="step-desc">Once approved, your virtual card will be ready to use. View the card details and activate it from your dashboard.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="bi bi-cart" style="width:1.5rem;height:1.5rem;"></i>
+                    </div>
+                    <h3 class="step-title">3. Use</h3>
+                    <p class="step-desc">Use your virtual card for online transactions anywhere major credit cards are accepted. Monitor transactions in real-time.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-card">
+        <div class="faq-header">
+            <h2 class="faq-title">Frequently Asked Questions</h2>
+        </div>
+        <div class="faq-body">
+            <div class="faq-item">
+                <h4 class="faq-question">What is a virtual card?</h4>
+                <p class="faq-answer">A virtual card is a digital payment card that can be used for online transactions. It works just like a physical card but exists only in digital form, providing enhanced security for online purchases.</p>
+            </div>
+            <div class="faq-item">
+                <h4 class="faq-question">How secure are virtual cards?</h4>
+                <p class="faq-answer">Virtual cards offer additional security as they're separate from your primary account. You can create cards with specific spending limits and even create single-use cards for enhanced protection against fraud.</p>
+            </div>
+            <div class="faq-item">
+                <h4 class="faq-question">Can I have multiple virtual cards?</h4>
+                <p class="faq-answer">Yes, you can apply for multiple virtual cards for different purposes - such as one for subscriptions, another for shopping, etc. Each card can have its own limits and settings.</p>
+            </div>
+            <div class="faq-item">
+                <h4 class="faq-question">How long does it take to get a virtual card?</h4>
+                <p class="faq-answer">Virtual cards are typically issued within minutes after approval. Once approved, you can immediately view and use the card details for online transactions.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- View Card Modal -->
+<div class="modal fade" id="viewCardModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">Card Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="text-center mb-4">
+                    <div class="card-visual mx-auto" style="transform: none;">
+                        <div class="card-visual-content">
+                            <div class="d-flex justify-content-between">
+                                <span class="card-meta">Virtual Card</span>
+                                <i class="bi bi-wifi" style="transform: rotate(90deg); opacity: 0.8;"></i>
+                            </div>
+                            <div>
+                                <div class="card-chip mb-2"></div>
+                                <p class="card-number mb-0" id="modalCardNumber">•••• •••• •••• 1234</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="card-meta mb-0">VALID THRU</p>
+                                    <p class="mb-0" style="font-family: monospace;" id="modalCardExpiry">12/25</p>
+                                </div>
+                                <i class="bi bi-credit-card" style="width:2rem;height:2rem;opacity:0.8;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-light rounded-3 p-3 mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted small">Cardholder Name</span>
+                        <span class="fw-medium" id="modalCardName">Andrew Levin</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted small">Card Number</span>
+                        <div>
+                            <code class="small me-2" id="modalCardFullNumber">4532 •••• •••• 1234</code>
+                            <button class="btn btn-sm btn-link p-0 text-primary" onclick="copyToClipboard('4532123412341234', this)">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted small">CVV</span>
+                        <div>
+                            <code class="small me-2">•••</code>
+                            <button class="btn btn-sm btn-link p-0 text-primary" onclick="showCVV(this)">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info small mb-0">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Never share your card details. We will never ask for your CVV via email or phone.
+                </div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="freezeCard()">Freeze Card</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    // View card details
+    function viewCard(cardId) {
+        // In production, fetch card details from API
+        // For demo, show modal with placeholder data
+        const modal = new bootstrap.Modal(document.getElementById('viewCardModal'));
+        
+        // Populate with demo data (replace with API call)
+        document.getElementById('modalCardNumber').textContent = '•••• •••• •••• 1234';
+        document.getElementById('modalCardExpiry').textContent = '12/25';
+        document.getElementById('modalCardName').textContent = 'Andrew Levin';
+        document.getElementById('modalCardFullNumber').textContent = '4532 •••• •••• 1234';
+        
+        modal.show();
+    }
+
+    // Manage card (edit settings, limits, etc.)
+    function manageCard(cardId) {
+        window.location.href = `${cardId}/`;
+    }
+
+    // Copy to clipboard
+    function copyToClipboard(text, btn) {
+        navigator.clipboard.writeText(text).then(() => {
+            const icon = btn.querySelector('i');
+            icon.className = 'bi bi-check-lg text-success';
+            setTimeout(() => {
+                icon.className = 'bi bi-clipboard';
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+            alert('Failed to copy to clipboard');
+        });
+    }
+
+    // Show/hide CVV
+    function showCVV(btn) {
+        const icon = btn.querySelector('i');
+        if (icon.className.includes('eye')) {
+            icon.className = 'bi bi-eye-slash';
+            btn.nextElementSibling.textContent = '123'; // Demo CVV
+        } else {
+            icon.className = 'bi bi-eye';
+            btn.nextElementSibling.textContent = '•••';
+        }
+    }
+
+    // Freeze card action
+    function freezeCard() {
+        if (confirm('Are you sure you want to freeze this card? It will be temporarily disabled for all transactions.')) {
+            // In production, make API call to freeze card
+            alert('Card has been frozen. You can unfreeze it anytime from card settings.');
+            bootstrap.Modal.getInstance(document.getElementById('viewCardModal')).hide();
+        }
+    }
+
+    // Initialize Bootstrap components
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto-initialize any tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
+{% endblock %}

@@ -18,20 +18,43 @@ function updateDateTime() {
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
-    document.getElementById('currentTime').textContent = `${hours}:${minutes}:${seconds}`;
+
+    const currentTime = document.getElementById('currentTime');
+    if (currentTime) {
+        currentTime.textContent = `${hours}:${minutes}:${seconds}`;
+    }
 
     // Greeting
     const hour = now.getHours();
     let greeting = 'Good Evening';
+
     if (hour < 12) greeting = 'Good Morning';
     else if (hour < 18) greeting = 'Good Afternoon';
-    document.getElementById('greeting').textContent = greeting;
+
+    const greetingEl = document.getElementById('greeting');
+    if (greetingEl) {
+        greetingEl.textContent = greeting;
+    }
 
     // Date
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
+
     const dateString = now.toLocaleDateString(undefined, options);
-    document.getElementById('currentDate').textContent = dateString;
-    document.getElementById('headerDate').textContent = dateString;
+
+    const currentDate = document.getElementById('currentDate');
+    if (currentDate) {
+        currentDate.textContent = dateString;
+    }
+
+    const headerDate = document.getElementById('headerDate');
+    if (headerDate) {
+        headerDate.textContent = dateString;
+    }
 }
 
 updateDateTime();
@@ -39,22 +62,28 @@ setInterval(updateDateTime, 1000);
 
 // Balance Toggle
 let balanceVisible = true;
-document.getElementById('toggleBalance').addEventListener('click', function () {
-    balanceVisible = !balanceVisible;
-    const display = document.getElementById('balanceDisplay');
-    const hidden = document.getElementById('balanceHidden');
-    const icon = document.getElementById('balanceIcon');
 
-    if (balanceVisible) {
-        display.classList.remove('d-none');
-        hidden.classList.add('d-none');
-        icon.className = 'bi bi-eye-slash';
-    } else {
-        display.classList.add('d-none');
-        hidden.classList.remove('d-none');
-        icon.className = 'bi bi-eye';
-    }
-});
+const toggleBtn = document.getElementById('toggleBalance');
+
+if (toggleBtn) {
+    toggleBtn.addEventListener('click', function () {
+        balanceVisible = !balanceVisible;
+
+        const display = document.getElementById('balanceDisplay');
+        const hidden = document.getElementById('balanceHidden');
+        const icon = document.getElementById('balanceIcon');
+
+        if (balanceVisible) {
+            display?.classList.remove('d-none');
+            hidden?.classList.add('d-none');
+            if (icon) icon.className = 'bi bi-eye-slash';
+        } else {
+            display?.classList.add('d-none');
+            hidden?.classList.remove('d-none');
+            if (icon) icon.className = 'bi bi-eye';
+        }
+    });
+}
 
 // Mobile Menu Toggle
 const mobileMenuModal = document.getElementById('mobileMenuModal');

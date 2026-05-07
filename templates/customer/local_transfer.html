@@ -1,0 +1,1254 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* ===== EXACT Theme Variables from Original ===== */
+    :root {
+        --primary-color: #0147E1;
+        --primary-color-dark: #0147E1;
+        --primary-color-light: #E0E0E0;
+        --primary-color-lightest: #E0E0E0;
+        --secondary-color: #FFC107;
+        --secondary-color-dark: #CC9900;
+        --secondary-color-light: #FFECB3;
+        --accent-color: #ec4899;
+        --text-color: #828282;
+        --bg-color: #f9fafb;
+        --card-bg-color: #ffffff;
+        --border-color: #e5e7eb;
+        --input-bg: #f9fafb;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --transition-fast: all 0.15s ease-in-out;
+        --transition-normal: all 0.2s ease-in-out;
+    }
+
+    /* ===== Smooth Card Styling ===== */
+    .card-transfer {
+        background: var(--card-bg-color);
+        border-radius: 1rem;
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        transition: var(--transition-normal);
+    }
+    
+    .card-transfer:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-1px);
+    }
+
+    /* ===== Gradient Header with Wave ===== */
+    .card-header-gradient {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+        position: relative;
+        padding: 2.5rem 1.5rem;
+        text-align: center;
+        color: white;
+    }
+
+    .header-icon-container {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        transition: var(--transition-fast);
+    }
+    
+    .card-header-gradient:hover .header-icon-container {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+    }
+
+    .wave-decoration {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3rem;
+        line-height: 0;
+    }
+    
+    .wave-decoration svg {
+        display: block;
+        width: 100%;
+        height: 3rem;
+        fill: white;
+    }
+
+    /* ===== Form Styling - Exact Match ===== */
+    .form-card-body {
+        padding: 1.5rem;
+    }
+    
+    @media (min-width: 768px) {
+        .form-card-body {
+            padding: 2rem;
+        }
+    }
+
+    .form-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 0.375rem;
+        line-height: 1.25;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        z-index: 10;
+        transition: var(--transition-fast);
+    }
+    
+    .input-icon.textarea-icon {
+        top: 1.125rem;
+        transform: none;
+    }
+
+    .form-control-custom,
+    .form-select-custom {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 2.75rem;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.25;
+        color: #1f2937;
+        background-color: var(--input-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        transition: var(--transition-normal);
+    }
+    
+    .form-control-custom.amount-input {
+        padding-left: 3rem;
+        padding-right: 4rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .form-control-custom:focus,
+    .form-select-custom:focus {
+        border-color: var(--primary-color);
+        outline: 0;
+        box-shadow: 0 0 0 3px rgba(1, 71, 225, 0.15);
+        background-color: #ffffff;
+    }
+
+    .form-control-custom::placeholder {
+        color: #9ca3af;
+        opacity: 1;
+    }
+
+    /* Currency Symbol */
+    .currency-symbol {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6b7280;
+        font-size: 1.25rem;
+        font-weight: 600;
+        pointer-events: none;
+        z-index: 10;
+    }
+    
+    .currency-decimal {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        font-size: 1.25rem;
+        font-weight: 600;
+        pointer-events: none;
+    }
+
+    /* Select Chevron */
+    .select-wrapper {
+        position: relative;
+    }
+    
+    .select-chevron {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        pointer-events: none;
+        transition: var(--transition-fast);
+    }
+    
+    .form-select-custom:focus + .select-chevron,
+    .select-wrapper:focus-within .select-chevron {
+        color: var(--primary-color);
+    }
+
+    /* Password Toggle */
+    .password-toggle {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #9ca3af;
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 0.25rem;
+        transition: var(--transition-fast);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+    }
+
+    .password-toggle:hover {
+        color: var(--primary-color);
+        background: rgba(1, 71, 225, 0.1);
+    }
+
+    /* Quick Amount Buttons */
+    .quick-amount-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #374151;
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        transition: var(--transition-fast);
+        cursor: pointer;
+    }
+    
+    .quick-amount-btn:hover {
+        background: #e5e7eb;
+        border-color: #d1d5db;
+        color: #1f2937;
+    }
+
+    /* Balance Card */
+    .balance-card {
+        background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+        border: 1px solid #bfdbfe;
+        border-radius: 1rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .balance-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 9999px;
+        background: #dbeafe;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.75rem;
+    }
+    
+    .balance-amount {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1f2937;
+    }
+    
+    .balance-label {
+        font-size: 0.875rem;
+        color: #6b7280;
+    }
+    
+    .balance-status {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        background: #dcfce7;
+        color: #166534;
+        border-radius: 9999px;
+        font-weight: 500;
+    }
+
+    /* Section Header */
+    .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .section-icon {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 9999px;
+        background: rgba(1, 71, 225, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.75rem;
+    }
+    
+    .section-title {
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: #1f2937;
+    }
+
+    /* Beneficiary Card */
+    .beneficiary-card {
+        background: var(--card-bg-color);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Summary Card */
+    .summary-card {
+        background: linear-gradient(135deg, rgba(1, 71, 225, 0.05) 0%, #ffffff 100%);
+        border: 1px solid rgba(1, 71, 225, 0.2);
+        border-radius: 1rem;
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .summary-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        color: var(--primary-color);
+        font-weight: 500;
+        font-size: 0.875rem;
+    }
+    
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.375rem 0;
+        font-size: 0.875rem;
+    }
+    
+    .summary-row.total {
+        border-top: 1px solid var(--border-color);
+        padding-top: 0.75rem;
+        margin-top: 0.5rem;
+    }
+    
+    .summary-row.total .label {
+        font-weight: 500;
+        color: #1f2937;
+    }
+    
+    .summary-row.total .value {
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: #1f2937;
+    }
+    
+    .summary-row.new-balance {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-top: 0.25rem;
+    }
+
+    /* Buttons */
+    .btn-preview {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #ffffff;
+        background: var(--primary-color);
+        border: none;
+        border-radius: 0.5rem;
+        transition: var(--transition-normal);
+        cursor: pointer;
+        box-shadow: var(--shadow-sm);
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+    }
+    
+    @media (min-width: 640px) {
+        .btn-preview {
+            width: auto;
+        }
+    }
+    
+    .btn-preview:hover:not(:disabled) {
+        background: #0039b3;
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .btn-preview:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .btn-preview .btn-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .btn-preview .btn-glow {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, var(--primary-color), var(--primary-color-dark));
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-out;
+    }
+    
+    .btn-preview:not(:disabled):hover .btn-glow {
+        transform: translateX(0);
+    }
+
+    .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #374151;
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        border-radius: 0.5rem;
+        transition: var(--transition-normal);
+        cursor: pointer;
+        width: 100%;
+        text-decoration: none;
+    }
+    
+    @media (min-width: 640px) {
+        .btn-secondary {
+            width: auto;
+        }
+    }
+    
+    .btn-secondary:hover {
+        background: #f9fafb;
+        border-color: #9ca3af;
+        color: #1f2937;
+    }
+
+    .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        padding-top: 0.5rem;
+    }
+
+    /* Security Notice */
+    .security-notice {
+        background: #ffffff;
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        padding: 1.25rem;
+        margin: 1.5rem 0;
+        display: flex;
+        gap: 0.75rem;
+    }
+    
+    .security-notice-icon {
+        flex-shrink: 0;
+        color: var(--primary-color);
+        margin-top: 0.125rem;
+    }
+    
+    .security-notice-title {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #1f2937;
+        margin-bottom: 0.25rem;
+    }
+    
+    .security-notice-text {
+        font-size: 0.875rem;
+        color: #6b7280;
+        line-height: 1.4;
+        margin: 0;
+    }
+
+    /* Modal Styling */
+    .modal-content-custom {
+        border-radius: 1rem;
+        border: none;
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .modal-header-custom {
+        border-bottom: 1px solid var(--border-color);
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .modal-title-custom {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #1f2937;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .modal-body-custom {
+        padding: 1.5rem;
+    }
+    
+    .modal-footer-custom {
+        border-top: 1px solid var(--border-color);
+        padding: 1rem 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: flex-end;
+    }
+
+    /* Preview Summary in Modal */
+    .preview-summary {
+        background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .preview-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.375rem 0;
+        font-size: 0.875rem;
+    }
+    
+    .preview-row.label {
+        color: #6b7280;
+    }
+    
+    .preview-row.value {
+        font-weight: 500;
+        color: #1f2937;
+    }
+    
+    .preview-row.total {
+        border-top: 1px solid var(--border-color);
+        padding-top: 0.75rem;
+        margin-top: 0.5rem;
+        font-weight: 600;
+    }
+
+    /* Alert in Modal */
+    .modal-alert {
+        background: #fffbeb;
+        border-left: 4px solid #f59e0b;
+        border-radius: 0 0.5rem 0.5rem 0;
+        padding: 0.75rem 1rem;
+        margin: 1rem 0;
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.875rem;
+        color: #92400e;
+    }
+    
+    .modal-alert-icon {
+        flex-shrink: 0;
+        color: #f59e0b;
+        margin-top: 0.125rem;
+    }
+
+    /* Toast Notifications */
+    .toast-container {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 1100;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        max-width: 24rem;
+    }
+
+    .toast-custom {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.875rem 1rem;
+        background: #ffffff;
+        border-left: 4px solid var(--primary-color);
+        border-radius: 0.5rem;
+        box-shadow: var(--shadow-lg);
+        animation: slideIn 0.3s ease-out;
+    }
+
+    .toast-custom.success { border-left-color: #10b981; }
+    .toast-custom.error { border-left-color: #ef4444; }
+    .toast-custom.warning { border-left-color: var(--secondary-color); }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(100%); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    .toast-icon { flex-shrink: 0; color: inherit; }
+    .toast-message { font-size: 0.875rem; color: #1f2937; flex: 1; }
+    .toast-close {
+        background: none; border: none; color: #9ca3af;
+        cursor: pointer; padding: 0.25rem; border-radius: 0.25rem;
+        transition: var(--transition-fast);
+    }
+    .toast-close:hover { color: #374151; background: #f3f4f6; }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(0.5rem); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn { animation: fadeIn 0.3s ease-out forwards; }
+
+    /* Utilities */
+    .max-w-4xl { max-width: 56rem; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .hidden { display: none !important; }
+    
+    *:focus:not(:focus-visible) { outline: none; }
+    *:focus-visible { outline: none; }
+</style>
+
+<!-- Toast Notifications Container -->
+<div id="toast-container" class="toast-container"></div>
+
+<!-- MAIN CONTENT AREA -->
+<div class="container-fluid py-4 px-3 px-md-4">
+    
+    <!-- Page Header with Breadcrumbs -->
+    <div class="d-flex flex-column mb-5 animate-fadeIn" style="animation-delay: 0.05s;">
+        <h1 class="h4 fw-bold text-dark mb-1">Local Transfer</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item">
+                    <a href="/dashboard" class="text-decoration-none text-muted" style="transition: var(--transition-fast);">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active text-secondary">Local Transfer</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-4xl mx-auto animate-fadeIn" style="animation-delay: 0.1s; max-width: 900px;">
+        
+        <!-- Transfer Card -->
+        <div class="card-transfer">
+            <!-- Card Header with Gradient & Wave -->
+            <div class="card-header-gradient">
+                <div class="position-relative">
+                    <div class="header-icon-container">
+                        <i data-lucide="send" style="width:1.75rem;height:1.75rem;"></i>
+                    </div>
+                    <h2 class="h4 fw-bold mb-1">Local Bank Transfer</h2>
+                    <p class="mb-0 opacity-75 small">Send money to any local bank account securely</p>
+                </div>
+                <!-- Wave SVG -->
+                <div class="wave-decoration">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                        <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"></path>
+                        <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5"></path>
+                        <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Form Body -->
+            <div class="form-card-body">
+                <form id="transferForm" novalidate>
+                    <input type="hidden" name="_token" value="{{ csrf_token }}">
+                    
+                    <!-- Balance Card -->
+                    <div class="balance-card">
+                        <div class="d-flex align-items-center">
+                            <div class="balance-icon">
+                                <i data-lucide="wallet" style="width:1.25rem;height:1.25rem;color:#2563eb;"></i>
+                            </div>
+                            <div>
+                                <div class="balance-label">Available Balance</div>
+                                <div class="balance-amount">$<span id="availableBalance">0.00</span></div>
+                            </div>
+                        </div>
+                        <span class="balance-status">Available</span>
+                    </div>
+
+                    <!-- Amount Section -->
+                    <div class="mb-4 p-4 rounded-xl border" style="background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%); border-color: var(--border-color);">
+                        <label for="amount" class="form-label">Transfer Amount<span class="text-danger">*</span></label>
+                        <div class="input-wrapper">
+                            <span class="currency-symbol">$</span>
+                            <input 
+                                type="number" 
+                                id="amount" 
+                                name="amount"
+                                class="form-control-custom amount-input"
+                                placeholder="0.00"
+                                min="1"
+                                step="0.01"
+                                required
+                            />
+                            <span class="currency-decimal">.00</span>
+                        </div>
+                        
+                        <!-- Quick Amount Buttons -->
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+                            <button type="button" class="quick-amount-btn" data-amount="100">$100</button>
+                            <button type="button" class="quick-amount-btn" data-amount="500">$500</button>
+                            <button type="button" class="quick-amount-btn" data-amount="1000">$1000</button>
+                            <button type="button" class="quick-amount-btn" id="btnAll">All</button>
+                        </div>
+                    </div>
+
+                    <!-- Beneficiary Details -->
+                    <div class="mb-4">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <i data-lucide="user" style="width:1rem;height:1rem;color:#6b7280;"></i>
+                            </div>
+                            <h3 class="section-title">Beneficiary Details</h3>
+                        </div>
+
+                        <div class="beneficiary-card">
+                            <div class="row g-4">
+                                <!-- Account Name -->
+                                <div class="col-md-6">
+                                    <label for="accountname" class="form-label">Beneficiary Account Name<span class="text-danger">*</span></label>
+                                    <div class="input-wrapper">
+                                        <span class="input-icon">
+                                            <i data-lucide="user" style="width:1.25rem;height:1.25rem;"></i>
+                                        </span>
+                                        <input 
+                                            type="text" 
+                                            id="accountname" 
+                                            name="accountname"
+                                            class="form-control-custom"
+                                            placeholder="Enter beneficiary's full name"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                
+                                <!-- Account Number -->
+                                <div class="col-md-6">
+                                    <label for="accountnumber" class="form-label">Beneficiary Account Number<span class="text-danger">*</span></label>
+                                    <div class="input-wrapper">
+                                        <span class="input-icon">
+                                            <i data-lucide="hash" style="width:1.25rem;height:1.25rem;"></i>
+                                        </span>
+                                        <input 
+                                            type="text" 
+                                            id="accountnumber" 
+                                            name="accountnumber"
+                                            class="form-control-custom"
+                                            placeholder="Enter account number"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                
+                                <!-- Bank Name -->
+                                <div class="col-md-6">
+                                    <label for="bankname" class="form-label">Bank Name<span class="text-danger">*</span></label>
+                                    <div class="input-wrapper">
+                                        <span class="input-icon">
+                                            <i data-lucide="building" style="width:1.25rem;height:1.25rem;"></i>
+                                        </span>
+                                        <input 
+                                            type="text" 
+                                            id="bankname" 
+                                            name="bankname"
+                                            class="form-control-custom"
+                                            placeholder="Enter bank name"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                
+                                <!-- Account Type -->
+                                <div class="col-md-6">
+                                    <label for="Accounttype" class="form-label">Transfer Type<span class="text-danger">*</span></label>
+                                    <div class="select-wrapper">
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">
+                                                <i data-lucide="credit-card" style="width:1.25rem;height:1.25rem;"></i>
+                                            </span>
+                                            <select 
+                                                id="Accounttype" 
+                                                name="Accounttype"
+                                                class="form-select-custom"
+                                                required
+                                            >
+                                                <option value="Online Banking">Online Banking</option>
+                                                <option value="Joint Account">Joint Account</option>
+                                                <option value="Checking">Checking</option>
+                                                <option value="Savings Account">Savings Account</option>
+                                            </select>
+                                        </div>
+                                        <span class="select-chevron">
+                                            <i data-lucide="chevron-down" style="width:1.25rem;height:1.25rem;"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Information -->
+                    <div class="mb-4">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <i data-lucide="info" style="width:1rem;height:1rem;color:#6b7280;"></i>
+                            </div>
+                            <h3 class="section-title">Additional Information</h3>
+                        </div>
+
+                        <div class="beneficiary-card">
+                            <!-- Description -->
+                            <div class="mb-4">
+                                <label for="Description" class="form-label">Description/Memo</label>
+                                <div class="input-wrapper">
+                                    <span class="input-icon textarea-icon">
+                                        <i data-lucide="message-square" style="width:1.25rem;height:1.25rem;"></i>
+                                    </span>
+                                    <textarea 
+                                        id="Description" 
+                                        name="Description"
+                                        class="form-control-custom"
+                                        placeholder="Enter transaction description or purpose of payment"
+                                        rows="3"
+                                        style="padding-top: 0.875rem; padding-bottom: 0.875rem; min-height: 100px; resize: vertical;"
+                                    ></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Transaction PIN -->
+                            <div>
+                                <label for="pin" class="form-label">Transaction PIN<span class="text-danger">*</span></label>
+                                <div class="input-wrapper">
+                                    <span class="input-icon">
+                                        <i data-lucide="lock" style="width:1.25rem;height:1.25rem;"></i>
+                                    </span>
+                                    <input 
+                                        type="password" 
+                                        id="pin" 
+                                        name="pin"
+                                        class="form-control-custom"
+                                        placeholder="Enter your transaction PIN"
+                                        required
+                                        autocomplete="off"
+                                    />
+                                    <button type="button" class="password-toggle" id="pinToggle" aria-label="Toggle PIN visibility">
+                                        <i data-lucide="eye" id="pinToggleIcon" style="width:1.25rem;height:1.25rem;"></i>
+                                    </button>
+                                </div>
+                                <small class="form-text text-muted">This is your transaction PIN, not your login password</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transaction Summary (shown when amount > 0) -->
+                    <div id="summaryCard" class="summary-card hidden">
+                        <div class="summary-header">
+                            <i data-lucide="clipboard-list" style="width:1.25rem;height:1.25rem;margin-right:0.5rem;"></i>
+                            Transaction Summary
+                        </div>
+                        <div class="summary-row">
+                            <span class="label">Amount</span>
+                            <span class="value">$<span id="summaryAmount">0.00</span></span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="label">Fee</span>
+                            <span class="value">$0.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span class="label">Total</span>
+                            <span class="value">$<span id="summaryTotal">0.00</span></span>
+                        </div>
+                        <div class="summary-row new-balance">
+                            <span>New Balance After Transfer</span>
+                            <span>$<span id="newBalance">0.00</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="button-group">
+                        <button type="submit" class="btn-preview" id="previewBtn" disabled>
+                            <span class="btn-content">
+                                <i data-lucide="eye" style="width:1.25rem;height:1.25rem;"></i>
+                                Preview Transfer
+                            </span>
+                            <span class="btn-glow"></span>
+                        </button>
+                        <a href="/dashboard" class="btn-secondary">
+                            <i data-lucide="arrow-left" style="width:1.25rem;height:1.25rem;"></i>
+                            Back to Dashboard
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Security Notice -->
+        <div class="security-notice">
+            <div class="security-notice-icon">
+                <i data-lucide="shield" style="width:1.25rem;height:1.25rem;"></i>
+            </div>
+            <div>
+                <h6 class="security-notice-title">Secure Transaction</h6>
+                <p class="security-notice-text">All transfers are encrypted and processed securely. Your financial information is never stored on our servers.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-custom">
+            <div class="modal-header modal-header-custom">
+                <h5 class="modal-title modal-title-custom">
+                    <i data-lucide="file-check" style="width:1.25rem;height:1.25rem;color:var(--primary-color);"></i>
+                    Confirm Transfer Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body modal-body-custom">
+                <!-- Preview Summary -->
+                <div class="preview-summary">
+                    <div class="preview-row">
+                        <span class="label">Amount</span>
+                        <span class="value">$<span id="modalAmount">0.00</span></span>
+                    </div>
+                    <div class="preview-row">
+                        <span class="label">Recipient</span>
+                        <span class="value" id="modalRecipient">-</span>
+                    </div>
+                    <div class="preview-row">
+                        <span class="label">Account Number</span>
+                        <span class="value" id="modalAccountNumber">-</span>
+                    </div>
+                    <div class="preview-row">
+                        <span class="label">Bank</span>
+                        <span class="value" id="modalBank">-</span>
+                    </div>
+                    <div class="preview-row">
+                        <span class="label">Account Type</span>
+                        <span class="value" id="modalAccountType">-</span>
+                    </div>
+                    <div class="preview-row" id="modalDescriptionRow">
+                        <span class="label">Description</span>
+                        <span class="value" id="modalDescription">-</span>
+                    </div>
+                    <div class="preview-row total">
+                        <span class="label">Total</span>
+                        <span class="value">$<span id="modalTotal">0.00</span></span>
+                    </div>
+                    <div class="preview-row" style="font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem;">
+                        <span>New Balance After Transfer</span>
+                        <span>$<span id="modalNewBalance">0.00</span></span>
+                    </div>
+                </div>
+
+                <!-- Security Alert -->
+                <div class="modal-alert">
+                    <span class="modal-alert-icon">
+                        <i data-lucide="alert-triangle" style="width:1.25rem;height:1.25rem;"></i>
+                    </span>
+                    <span>Please verify the transfer details carefully before proceeding. Once confirmed, transfers cannot be reversed.</span>
+                </div>
+            </div>
+            <div class="modal-footer modal-footer-custom">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i data-lucide="x" style="width:1.125rem;height:1.125rem;margin-right:0.375rem;"></i>
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-primary" id="confirmTransferBtn">
+                    <span id="confirmBtnContent">
+                        <i data-lucide="check-circle" style="width:1.125rem;height:1.125rem;margin-right:0.375rem;"></i>
+                        Confirm Transfer
+                    </span>
+                    <span id="confirmBtnSpinner" class="spinner-border spinner-border-sm d-none me-2" style="width:1rem;height:1rem;border-width:2px;"></span>
+                    <span id="confirmBtnText">Confirm Transfer</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Lucide icons
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        
+        // ===== State =====
+        const state = {
+            amount: '',
+            accountname: '',
+            accountnumber: '',
+            bankname: '',
+            Accounttype: 'Online Banking',
+            Description: '',
+            pin: '',
+            availableBalance: 0,
+            isSubmitting: false
+        };
+        
+        // ===== DOM Elements =====
+        const amountInput = document.getElementById('amount');
+        const accountnameInput = document.getElementById('accountname');
+        const accountnumberInput = document.getElementById('accountnumber');
+        const banknameInput = document.getElementById('bankname');
+        const accounttypeSelect = document.getElementById('Accounttype');
+        const descriptionInput = document.getElementById('Description');
+        const pinInput = document.getElementById('pin');
+        const summaryCard = document.getElementById('summaryCard');
+        const previewBtn = document.getElementById('previewBtn');
+        const previewModal = new bootstrap.Modal(document.getElementById('previewModal'));
+        const confirmTransferBtn = document.getElementById('confirmTransferBtn');
+        const confirmBtnContent = document.getElementById('confirmBtnContent');
+        const confirmBtnSpinner = document.getElementById('confirmBtnSpinner');
+        const confirmBtnText = document.getElementById('confirmBtnText');
+        
+        // ===== Toast Notification System =====
+        function showToast(message, type = 'info', duration = 5000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast-custom ${type}`;
+            
+            const icons = { success: 'check-circle', error: 'alert-circle', warning: 'alert-triangle', info: 'info' };
+            const colors = { success: '#10b981', error: '#ef4444', warning: '#f59e0b', info: '#0147E1' };
+            
+            toast.innerHTML = `
+                <span class="toast-icon" style="color:${colors[type]}">
+                    <i data-lucide="${icons[type]}" style="width:1.25rem;height:1.25rem;"></i>
+                </span>
+                <span class="toast-message">${message}</span>
+                <button type="button" class="toast-close" aria-label="Close">
+                    <i data-lucide="x" style="width:1rem;height:1rem;"></i>
+                </button>
+            `;
+            
+            container.appendChild(toast);
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            
+            toast.querySelector('.toast-close').addEventListener('click', () => {
+                toast.style.animation = 'slideIn 0.2s ease-in reverse';
+                setTimeout(() => toast.remove(), 200);
+            });
+            
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.style.animation = 'slideIn 0.2s ease-in reverse';
+                    setTimeout(() => toast.remove(), 200);
+                }
+            }, duration);
+        }
+        
+        // ===== Format Currency =====
+        function formatCurrency(value) {
+            return parseFloat(value || 0).toFixed(2);
+        }
+        
+        // ===== Update Summary =====
+        function updateSummary() {
+            const amount = parseFloat(state.amount) || 0;
+            const fee = 0;
+            const total = amount + fee;
+            const newBalance = state.availableBalance - total;
+            
+            // Update summary card
+            document.getElementById('summaryAmount').textContent = formatCurrency(amount);
+            document.getElementById('summaryTotal').textContent = formatCurrency(total);
+            document.getElementById('newBalance').textContent = formatCurrency(newBalance);
+            
+            // Show/hide summary
+            if (amount > 0) {
+                summaryCard.classList.remove('hidden');
+            } else {
+                summaryCard.classList.add('hidden');
+            }
+            
+            // Update modal preview
+            document.getElementById('modalAmount').textContent = formatCurrency(amount);
+            document.getElementById('modalTotal').textContent = formatCurrency(total);
+            document.getElementById('modalNewBalance').textContent = formatCurrency(newBalance);
+            document.getElementById('modalRecipient').textContent = state.accountname || '-';
+            document.getElementById('modalAccountNumber').textContent = state.accountnumber || '-';
+            document.getElementById('modalBank').textContent = state.bankname || '-';
+            document.getElementById('modalAccountType').textContent = state.Accounttype;
+            
+            const descRow = document.getElementById('modalDescriptionRow');
+            const descValue = document.getElementById('modalDescription');
+            if (state.Description.trim()) {
+                descRow.classList.remove('hidden');
+                descValue.textContent = state.Description;
+            } else {
+                descRow.classList.add('hidden');
+            }
+        }
+        
+        // ===== Validate Form =====
+        function isFormValid() {
+            return state.amount && parseFloat(state.amount) > 0 && 
+                   state.accountname && state.accountnumber && state.bankname && state.pin;
+        }
+        
+        // ===== Update Button State =====
+        function updateButtonState() {
+            previewBtn.disabled = !isFormValid();
+        }
+        
+        // ===== Input Event Handlers =====
+        function setupInputListeners() {
+            // Amount input
+            amountInput?.addEventListener('input', function() {
+                state.amount = this.value;
+                // Validate max balance
+                if (parseFloat(state.amount) > state.availableBalance) {
+                    state.amount = state.availableBalance.toString();
+                    this.value = state.amount;
+                }
+                updateSummary();
+                updateButtonState();
+            });
+            
+            // Quick amount buttons
+            document.querySelectorAll('.quick-amount-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const amount = this.getAttribute('data-amount');
+                    if (amount === 'all') {
+                        state.amount = state.availableBalance.toString();
+                    } else {
+                        state.amount = amount;
+                    }
+                    amountInput.value = state.amount;
+                    updateSummary();
+                    updateButtonState();
+                });
+            });
+            
+            // Other inputs
+            accountnameInput?.addEventListener('input', (e) => { state.accountname = e.target.value; updateButtonState(); });
+            accountnumberInput?.addEventListener('input', (e) => { state.accountnumber = e.target.value; updateButtonState(); });
+            banknameInput?.addEventListener('input', (e) => { state.bankname = e.target.value; updateButtonState(); });
+            accounttypeSelect?.addEventListener('change', (e) => { state.Accounttype = e.target.value; });
+            descriptionInput?.addEventListener('input', (e) => { state.Description = e.target.value; updateSummary(); });
+            pinInput?.addEventListener('input', (e) => { state.pin = e.target.value; updateButtonState(); });
+        }
+        
+        // ===== PIN Toggle =====
+        document.getElementById('pinToggle')?.addEventListener('click', function() {
+            const isPassword = pinInput.type === 'password';
+            pinInput.type = isPassword ? 'text' : 'password';
+            document.getElementById('pinToggleIcon').setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        });
+        
+        // ===== Preview Button =====
+        document.getElementById('transferForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!isFormValid()) return;
+            
+            updateSummary();
+            previewModal.show();
+        });
+        
+        // ===== Confirm Transfer =====
+        confirmTransferBtn?.addEventListener('click', function() {
+            if (state.isSubmitting) return;
+            
+            // Validate PIN length (example: 4-6 digits)
+            if (!/^\d{4,6}$/.test(state.pin)) {
+                showToast('Please enter a valid 4-6 digit PIN', 'error');
+                return;
+            }
+            
+            // Show loading state
+            state.isSubmitting = true;
+            confirmBtnContent.classList.add('d-none');
+            confirmBtnSpinner.classList.remove('d-none');
+            confirmBtnText.textContent = 'Processing...';
+            confirmTransferBtn.disabled = true;
+            
+            // Simulate API call (replace with actual fetch)
+            setTimeout(() => {
+                showToast('✓ Transfer submitted successfully! Reference: TXN-' + Date.now().toString().slice(-6), 'success');
+                
+                // Reset form
+                document.getElementById('transferForm').reset();
+                state.amount = state.accountname = state.accountnumber = state.bankname = state.Description = state.pin = '';
+                state.Accounttype = 'Online Banking';
+                summaryCard.classList.add('hidden');
+                updateButtonState();
+                
+                // Close modal
+                previewModal.hide();
+                
+                // Restore button
+                state.isSubmitting = false;
+                confirmBtnContent.classList.remove('d-none');
+                confirmBtnSpinner.classList.add('d-none');
+                confirmBtnText.textContent = 'Confirm Transfer';
+                confirmTransferBtn.disabled = false;
+                
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                
+                // In production, submit form:
+                // document.getElementById('transferForm').submit();
+            }, 2500);
+        });
+        
+        // ===== Input Focus Effects =====
+        document.querySelectorAll('.form-control-custom, .form-select-custom').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.closest('.input-wrapper')?.querySelector('.input-icon')?.style.setProperty('color', 'var(--primary-color)');
+            });
+            input.addEventListener('blur', function() {
+                this.closest('.input-wrapper')?.querySelector('.input-icon')?.style.setProperty('color', '#9ca3af');
+            });
+        });
+        
+        // ===== Initialize =====
+        setupInputListeners();
+        updateSummary();
+        updateButtonState();
+        
+        // Set available balance from backend (example)
+        state.availableBalance = 0; // Replace with {{ user.balance|floatformat:2 }}
+        document.getElementById('availableBalance').textContent = formatCurrency(state.availableBalance);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,846 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* ===== EXACT Theme Variables from Original ===== */
+    :root {
+        --primary-color: #0147E1;
+        --primary-color-dark: #0147E1;
+        --primary-color-light: #E0E0E0;
+        --primary-color-lightest: #E0E0E0;
+        --secondary-color: #FFC107;
+        --secondary-color-dark: #CC9900;
+        --secondary-color-light: #FFECB3;
+        --accent-color: #ec4899;
+        --text-color: #828282;
+        --bg-color: #f9fafb;
+        --sidebar-bg-color: #F4F5F7;
+        --sidebar-text-color: #0047AB;
+        --card-bg-color: #F4F5F7;
+
+        /* Additional colors for features */
+        --purple: #8b5cf6;
+        --pink: #ec4899;
+        --indigo: #6366f1;
+        --cyan: #06b6d4;
+        --amber: #f59e0b;
+        --blue: #3b82f6;
+        --green: #10b981;
+    }
+
+    /* ===== Bootstrap Overrides for Exact Match ===== */
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+    }
+
+    .bg-gradient-primary-subtle {
+        background: linear-gradient(135deg, rgba(1, 71, 225, 0.05) 0%, rgba(1, 71, 225, 0.1) 100%);
+    }
+
+    .text-white-75 {
+        color: rgba(255, 255, 255, 0.75) !important;
+    }
+
+    .opacity-75 {
+        opacity: 0.75 !important;
+    }
+
+    /* Color utility classes */
+    .bg-purple {
+        background-color: var(--purple) !important;
+    }
+
+    .bg-pink {
+        background-color: var(--pink) !important;
+    }
+
+    .bg-indigo {
+        background-color: var(--indigo) !important;
+    }
+
+    .bg-cyan {
+        background-color: var(--cyan) !important;
+    }
+
+    .bg-amber {
+        background-color: var(--amber) !important;
+    }
+
+    .text-purple {
+        color: var(--purple) !important;
+    }
+
+    .text-pink {
+        color: var(--pink) !important;
+    }
+
+    .text-indigo {
+        color: var(--indigo) !important;
+    }
+
+    .text-cyan {
+        color: var(--cyan) !important;
+    }
+
+    /* Card enhancements */
+    .card {
+        border-radius: 1rem !important;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+        transition: all 0.2s ease-in-out;
+    }
+
+    /* Form enhancements */
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(1, 71, 225, 0.15);
+    }
+
+    /* Blur effect for header */
+    .backdrop-blur-sm {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    /* Responsive typography */
+    .lead {
+        font-size: 1.1rem;
+    }
+
+    @media (min-width: 768px) {
+        .lead {
+            font-size: 1.25rem;
+        }
+    }
+
+    /* Custom sizes matching original */
+    .rounded-3 {
+        border-radius: 0.75rem !important;
+    }
+
+    .rounded-4 {
+        border-radius: 1rem !important;
+    }
+
+    /* Spacing utilities */
+    .space-y-3>*+* {
+        margin-top: 0.75rem;
+    }
+
+    .space-y-4>*+* {
+        margin-top: 1rem;
+    }
+
+    /* Max width utility */
+    .max-w-4xl {
+        max-width: 56rem;
+    }
+
+    .mx-auto {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Hover link */
+    .hover-primary:hover {
+        color: var(--primary-color) !important;
+    }
+
+    /* Toast notifications */
+    .toast {
+        border-left: 4px solid var(--primary-color);
+        border-radius: 0.5rem;
+    }
+
+    .toast-success {
+        border-left-color: #198754;
+    }
+
+    .toast-error {
+        border-left-color: #dc3545;
+    }
+
+    .toast-warning {
+        border-left-color: var(--secondary-color);
+    }
+
+    /* Animation for instructions */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    #manual-instructions {
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    /* Tab pills */
+    .nav-pills .nav-link.active {
+        background-color: var(--primary-color);
+    }
+
+    .nav-pills .nav-link {
+        color: var(--primary-color);
+    }
+
+    .nav-pills .nav-link:hover {
+        color: var(--primary-color-dark);
+    }
+
+    /* Button enhancements */
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: var(--primary-color-dark);
+        border-color: var(--primary-color-dark);
+    }
+
+    /* Cursor pointer for interactive elements */
+    .cursor-pointer {
+        cursor: pointer;
+    }
+</style>
+<!-- MAIN CONTENT AREA - Paste inside your <main> wrapper -->
+<div class="container-fluid py-4 px-3 px-md-4">
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="position-fixed top-0 end-0 p-3" style="z-index: 1100;"></div>
+
+    <!-- Page Header -->
+    <div class="max-w-4xl mx-auto px-4" style="max-width: 900px; margin: 0 auto;">
+
+        <!-- Header Section -->
+        <div class="text-center mb-5">
+            <div class="d-flex justify-center mb-4">
+                <div class="bg-primary bg-opacity-10 rounded-circle p-4">
+                    <i data-lucide="smartphone" class="text-primary" style="width:48px;height:48px;"></i>
+                </div>
+            </div>
+            <h1 class="h3 fw-bold text-dark mb-3">Download Our Banking App</h1>
+            <p class="text-muted lead mb-0" style="max-width: 600px; margin: 0 auto;">
+                Experience secure and convenient banking on the go with our Progressive Web App.
+                Access all your banking services offline with enhanced security and performance.
+            </p>
+        </div>
+
+        <!-- App Features Grid -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-center">
+                    <div class="card-body p-4">
+                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                            style="width:64px;height:64px;">
+                            <i data-lucide="shield-check" class="text-success" style="width:32px;height:32px;"></i>
+                        </div>
+                        <h3 class="h6 fw-semibold text-dark mb-2">Bank-Grade Security</h3>
+                        <p class="text-muted small mb-0">End-to-end encryption and multi-factor authentication keep your
+                            money safe.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-center">
+                    <div class="card-body p-4">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                            style="width:64px;height:64px;">
+                            <i data-lucide="wifi-off" class="text-primary" style="width:32px;height:32px;"></i>
+                        </div>
+                        <h3 class="h6 fw-semibold text-dark mb-2">Works Offline</h3>
+                        <p class="text-muted small mb-0">Access your account balance and transaction history even
+                            without internet.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-center">
+                    <div class="card-body p-4">
+                        <div class="bg-purple bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                            style="width:64px;height:64px;">
+                            <i data-lucide="zap" class="text-purple" style="width:32px;height:32px;"></i>
+                        </div>
+                        <h3 class="h6 fw-semibold text-dark mb-2">Lightning Fast</h3>
+                        <p class="text-muted small mb-0">Instant loading and smooth performance for all your banking
+                            needs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download Call-to-Action Section -->
+        <div class="bg-gradient-primary-subtle rounded-4 p-5 mb-5">
+            <div class="text-center">
+                <h2 class="h5 fw-bold text-dark mb-3">Get Started in Seconds</h2>
+                <p class="text-muted mb-4">Click the button below to instantly install our banking app on your device.
+                </p>
+
+                <!-- Main Install Button -->
+                <div class="mb-4">
+                    <button id="main-install-button"
+                        class="btn btn-primary btn-lg px-5 py-3 rounded-4 d-inline-flex align-items-center gap-3 shadow">
+                        <i data-lucide="download" style="width:24px;height:24px;"></i>
+                        <span id="install-button-text">Install Banking App</span>
+                    </button>
+                </div>
+
+                <!-- Device Detection Info -->
+                <div id="device-info" class="text-muted small mb-3">
+                    <span id="detected-device">Detecting your device...</span>
+                </div>
+
+                <!-- Alternative Instructions Toggle -->
+                <div class="text-center">
+                    <button id="show-instructions"
+                        class="btn btn-link text-decoration-none p-0 text-primary fw-medium small">
+                        Need help? View manual installation steps
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manual Installation Instructions (Hidden by default) -->
+        <div id="manual-instructions" class="bg-light rounded-4 p-5 mb-5 d-none">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h2 class="h5 fw-bold text-dark mb-0">Manual Installation Guide</h2>
+                <button id="hide-instructions" class="btn btn-link text-decoration-none p-0 text-muted">
+                    <i data-lucide="x" style="width:20px;height:20px;"></i>
+                </button>
+            </div>
+
+            <!-- Tab Navigation -->
+            <ul class="nav nav-pills justify-content-center mb-4" id="platformTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active rounded-pill px-4 py-2 me-2" id="android-tab" data-bs-toggle="pill"
+                        data-bs-target="#android" type="button" role="tab">
+                        <i data-lucide="smartphone" class="me-2" style="width:16px;height:16px;"></i>Android
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-pill px-4 py-2 me-2" id="ios-tab" data-bs-toggle="pill"
+                        data-bs-target="#ios" type="button" role="tab">
+                        <i data-lucide="smartphone" class="me-2" style="width:16px;height:16px;"></i>iOS
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-pill px-4 py-2" id="desktop-tab" data-bs-toggle="pill"
+                        data-bs-target="#desktop" type="button" role="tab">
+                        <i data-lucide="monitor" class="me-2" style="width:16px;height:16px;"></i>Desktop
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Android Instructions -->
+                <div class="tab-pane fade show active" id="android" role="tabpanel">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="h6 fw-semibold mb-3 d-flex align-items-center">
+                                <i data-lucide="smartphone" class="text-success me-2"
+                                    style="width:20px;height:20px;"></i>
+                                Android Installation
+                            </h3>
+                            <ol class="list-unstyled space-y-3 text-muted">
+                                <li class="d-flex">
+                                    <span
+                                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                                        style="width:24px;height:24px;font-size:12px;font-weight:600;">1</span>
+                                    <span>Open Chrome browser and visit this banking website</span>
+                                </li>
+                                <li class="d-flex">
+                                    <span
+                                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                                        style="width:24px;height:24px;font-size:12px;font-weight:600;">2</span>
+                                    <span>Tap the menu (three dots) in the top-right corner</span>
+                                </li>
+                                <li class="d-flex">
+                                    <span
+                                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                                        style="width:24px;height:24px;font-size:12px;font-weight:600;">3</span>
+                                    <span>Select "Add to Home screen" or "Install app"</span>
+                                </li>
+                                <li class="d-flex">
+                                    <span
+                                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                                        style="width:24px;height:24px;font-size:12px;font-weight:600;">4</span>
+                                    <span>Tap "Add" to install the app on your home screen</span>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- iOS Instructions -->
+                <div class="tab-pane fade" id="ios" role="tabpanel">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="h6 fw-semibold mb-3 d-flex align-items-center">
+                                <i data-lucide="smartphone" class="text-primary me-2"
+                                    style="width:20px;height:20px;"></i>
+                                iOS Installation
+                            </h3>
+                            <ol class="list-unstyled space-y-3 text-muted">
+                                <li class="d-flex">
+                                    <span
+                                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                                        style="width:24px;height:24px;font-size:12px;font-weight:600;">1</span>
+                                    <span>Open Safari browser and visit this banking website</span>
+                                </li>
+                                <li class="d-flex">
+                                    <span
+                                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                                        style="width:24px;height:24px;font-size:12px;font-weight:600;">2</span>
+                                    <span>Tap the Share button (square with arrow pointing up)</span>
+                                </li>
+                                <li class="d-flex">
+                                    <span
+                                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                                        style="width:24px;height:24px;font-size:12px;font-weight:600;">3</span>
+                                    <span>Scroll down and tap "Add to Home Screen"</span>
+                                </li>
+                                <li class="d-flex">
+                                    <span
+                                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                                        style="width:24px;height:24px;font-size:12px;font-weight:600;">4</span>
+                                    <span>Tap "Add" to install the app on your home screen</span>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desktop Instructions -->
+                <div class="tab-pane fade" id="desktop" role="tabpanel">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="h6 fw-semibold mb-3 d-flex align-items-center">
+                                <i data-lucide="monitor" class="text-purple me-2" style="width:20px;height:20px;"></i>
+                                Desktop Installation
+                            </h3>
+                            <ol class="list-unstyled space-y-3 text-muted">
+                                <li class="d-flex">
+                                    <span
+                                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                                        style="width:24px;height:24px;font-size:12px;font-weight:600;">1</span>
+                                    <span>Open Chrome, Edge, or Firefox browser</span>
+                                </li>
+                                <li class="d-flex">
+                                    <span
+                                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                                        style="width:24px;height:24px;font-size:12px;font-weight:600;">2</span>
+                                    <span>Visit this banking website</span>
+                                </li>
+                                <li class="d-flex">
+                                    <span
+                                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                                        style="width:24px;height:24px;font-size:12px;font-weight:600;">3</span>
+                                    <span>Look for the "Install" button in the address bar or click the menu</span>
+                                </li>
+                                <li class="d-flex">
+                                    <span
+                                        class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                                        style="width:24px;height:24px;font-size:12px;font-weight:600;">4</span>
+                                    <span>Select "Install [App Name]" to add it to your desktop</span>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PWA Install Prompt (shown when beforeinstallprompt fires) -->
+        <div id="pwa-install-prompt" class="card border-2 border-primary-subtle shadow-sm mb-5 d-none">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary bg-opacity-10 rounded-3 p-3 me-3">
+                            <i data-lucide="download" class="text-primary" style="width:24px;height:24px;"></i>
+                        </div>
+                        <div>
+                            <h3 class="h6 fw-semibold text-dark mb-1">Install Banking App</h3>
+                            <p class="text-muted small mb-0">Get the full app experience with offline access and push
+                                notifications.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button id="pwa-install-later" class="btn btn-outline-secondary btn-sm px-3">Later</button>
+                        <button id="pwa-install-button" class="btn btn-primary btn-sm px-4">Install</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- App Benefits -->
+        <div class="card border-0 shadow-sm mb-5">
+            <div class="card-body p-5">
+                <h2 class="h5 fw-bold text-dark mb-4 text-center">Why Use Our Banking App?</h2>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start mb-3">
+                            <i data-lucide="check-circle" class="text-success me-3 mt-1"
+                                style="width:24px;height:24px;"></i>
+                            <div>
+                                <h4 class="fw-semibold text-dark mb-1">Instant Access</h4>
+                                <p class="text-muted small mb-0">One-tap access from your home screen, no app store
+                                    required</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start mb-3">
+                            <i data-lucide="check-circle" class="text-success me-3 mt-1"
+                                style="width:24px;height:24px;"></i>
+                            <div>
+                                <h4 class="fw-semibold text-dark mb-1">Always Updated</h4>
+                                <p class="text-muted small mb-0">Automatically stays up-to-date with the latest features
+                                </p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start">
+                            <i data-lucide="check-circle" class="text-success me-3 mt-1"
+                                style="width:24px;height:24px;"></i>
+                            <div>
+                                <h4 class="fw-semibold text-dark mb-1">Cross-Platform</h4>
+                                <p class="text-muted small mb-0">Works seamlessly on all devices and operating systems
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start mb-3">
+                            <i data-lucide="check-circle" class="text-success me-3 mt-1"
+                                style="width:24px;height:24px;"></i>
+                            <div>
+                                <h4 class="fw-semibold text-dark mb-1">Lightweight</h4>
+                                <p class="text-muted small mb-0">Takes up minimal storage space compared to native apps
+                                </p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start mb-3">
+                            <i data-lucide="check-circle" class="text-success me-3 mt-1"
+                                style="width:24px;height:24px;"></i>
+                            <div>
+                                <h4 class="fw-semibold text-dark mb-1">Push Notifications</h4>
+                                <p class="text-muted small mb-0">Get alerts for transactions, payments, and important
+                                    updates</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start">
+                            <i data-lucide="check-circle" class="text-success me-3 mt-1"
+                                style="width:24px;height:24px;"></i>
+                            <div>
+                                <h4 class="fw-semibold text-dark mb-1">Secure by Design</h4>
+                                <p class="text-muted small mb-0">Built with modern web security standards and encryption
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support Section -->
+        <div class="bg-light rounded-4 p-4 text-center">
+            <h3 class="h6 fw-semibold text-dark mb-2">Need Help Installing?</h3>
+            <p class="text-muted small mb-3">Our support team is here to help you get started with the banking app.</p>
+            <a href="/dashboard/support" class="btn btn-primary px-4 py-2 d-inline-flex align-items-center gap-2">
+                <i data-lucide="help-circle" style="width:18px;height:18px;"></i>
+                Contact Support
+            </a>
+        </div>
+
+        <!-- Security Notice -->
+        <div class="text-center text-muted small mt-4" style="max-width: 600px; margin: 1rem auto;">
+            <i data-lucide="shield-check" class="me-1 text-success" style="width:14px;height:14px;"></i>
+            All app installations are verified and secure. Your data is protected with bank-level encryption.
+        </div>
+    </div>
+</div>
+
+<!-- iOS Installation Modal -->
+<div class="modal fade" id="iosInstallModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <div class="mx-auto bg-primary bg-opacity-10 rounded-circle p-3">
+                    <i data-lucide="smartphone" class="text-primary" style="width:24px;height:24px;"></i>
+                </div>
+                <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center pt-0">
+                <h5 class="modal-title fw-bold mb-3">Install on iOS</h5>
+                <div class="text-start space-y-3 text-muted small mb-4">
+                    <div class="d-flex align-items-center">
+                        <span
+                            class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                            style="width:24px;height:24px;font-size:12px;font-weight:600;">1</span>
+                        <span>Tap the Share button <i data-lucide="share" class="ms-1"
+                                style="width:14px;height:14px;"></i> in Safari</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span
+                            class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                            style="width:24px;height:24px;font-size:12px;font-weight:600;">2</span>
+                        <span>Scroll down and tap "Add to Home Screen"</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span
+                            class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center me-3"
+                            style="width:24px;height:24px;font-size:12px;font-weight:600;">3</span>
+                        <span>Tap "Add" to install the app</span>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">Got it!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize Lucide icons
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+
+        // ===== Toast Notification System =====
+        function showToast(message, type = 'info', duration = 5000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-bg-${type} border-0 shadow`;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+
+            const icons = {
+                success: 'check-circle',
+                error: 'alert-circle',
+                warning: 'alert-triangle',
+                info: 'info'
+            };
+
+            toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    <i data-lucide="${icons[type] || 'info'}" style="width:18px;height:18px;"></i>
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+
+            container.appendChild(toast);
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            const bsToast = new bootstrap.Toast(toast, { delay: duration });
+            bsToast.show();
+
+            toast.addEventListener('hidden.bs.toast', () => toast.remove());
+        }
+
+        // ===== PWA Installation Variables =====
+        let deferredPrompt;
+        const installPrompt = document.getElementById('pwa-install-prompt');
+        const installButton = document.getElementById('pwa-install-button');
+        const laterButton = document.getElementById('pwa-install-later');
+        const mainInstallButton = document.getElementById('main-install-button');
+        const installButtonText = document.getElementById('install-button-text');
+        const deviceInfo = document.getElementById('detected-device');
+        const showInstructionsBtn = document.getElementById('show-instructions');
+        const hideInstructionsBtn = document.getElementById('hide-instructions');
+        const manualInstructions = document.getElementById('manual-instructions');
+
+        // ===== Device Detection =====
+        function detectDevice() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isAndroid = /android/.test(userAgent);
+            const isIOS = /iphone|ipad|ipod/.test(userAgent);
+            const isWindows = /windows/.test(userAgent);
+            const isMac = /macintosh|mac os x/.test(userAgent);
+            const isChrome = /chrome/.test(userAgent);
+            const isSafari = /safari/.test(userAgent) && !/chrome/.test(userAgent);
+            const isEdge = /edge/.test(userAgent);
+            const isFirefox = /firefox/.test(userAgent);
+
+            let device = 'Unknown';
+            let canInstall = false;
+
+            if (isAndroid) {
+                device = 'Android device';
+                canInstall = isChrome;
+            } else if (isIOS) {
+                device = 'iOS device';
+                canInstall = isSafari;
+            } else if (isWindows || isMac) {
+                device = isWindows ? 'Windows PC' : 'Mac';
+                canInstall = isChrome || isEdge || isFirefox;
+            }
+
+            return { device, canInstall, isAndroid, isIOS };
+        }
+
+        // ===== Update Device Info Display =====
+        function updateDeviceInfo() {
+            const { device, canInstall, isAndroid, isIOS } = detectDevice();
+
+            if (deviceInfo) {
+                if (canInstall) {
+                    deviceInfo.innerHTML = `✅ <strong>${device}</strong> detected - Ready to install!`;
+                    deviceInfo.className = 'text-success small mb-3';
+                } else {
+                    deviceInfo.innerHTML = `⚠️ <strong>${device}</strong> detected - Manual installation required`;
+                    deviceInfo.className = 'text-warning small mb-3';
+                }
+            }
+
+            if (installButtonText) {
+                if (isAndroid) {
+                    installButtonText.textContent = 'Add to Home Screen';
+                } else if (isIOS) {
+                    installButtonText.textContent = 'Add to Home Screen';
+                } else {
+                    installButtonText.textContent = 'Install Banking App';
+                }
+            }
+        }
+
+        // ===== Handle Main Install Button Click =====
+        function handleMainInstallClick() {
+            const { canInstall, isIOS } = detectDevice();
+
+            if (deferredPrompt && canInstall) {
+                // Use the deferred prompt for supported browsers
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showToast('✓ App installation started!', 'success');
+                    }
+                    deferredPrompt = null;
+                    updateMainButtonState();
+                });
+            } else if (isIOS) {
+                // For iOS, show specific Safari instructions modal
+                const iosModal = new bootstrap.Modal(document.getElementById('iosInstallModal'));
+                iosModal.show();
+            } else if (canInstall) {
+                // For browsers that support PWA but no prompt was triggered
+                showManualInstallation();
+            } else {
+                // For unsupported browsers, show manual instructions
+                showManualInstallation();
+            }
+        }
+
+        // ===== Show Manual Installation Section =====
+        function showManualInstallation() {
+            if (manualInstructions) {
+                manualInstructions.classList.remove('d-none');
+                manualInstructions.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // ===== Update Main Button State =====
+        function updateMainButtonState() {
+            if (!mainInstallButton) return;
+
+            const { canInstall } = detectDevice();
+
+            if (deferredPrompt && canInstall) {
+                mainInstallButton.disabled = false;
+                mainInstallButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else if (canInstall) {
+                mainInstallButton.disabled = false;
+                if (installButtonText) installButtonText.textContent = 'Get Installation Help';
+            } else {
+                mainInstallButton.disabled = false;
+                if (installButtonText) installButtonText.textContent = 'View Install Guide';
+            }
+        }
+
+        // ===== Event Listeners =====
+
+        // Listen for the beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            updateMainButtonState();
+
+            // Also show the smaller prompt if it exists
+            if (installPrompt) {
+                installPrompt.classList.remove('d-none');
+            }
+        });
+
+        // Main install button
+        mainInstallButton?.addEventListener('click', handleMainInstallClick);
+
+        // Original install button (in prompt)
+        installButton?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                installPrompt?.classList.add('d-none');
+
+                if (outcome === 'accepted') {
+                    showToast('✓ Banking app installed successfully!', 'success');
+                }
+            }
+        });
+
+        // Later button
+        laterButton?.addEventListener('click', () => {
+            installPrompt?.classList.add('d-none');
+        });
+
+        // Show/hide instructions
+        showInstructionsBtn?.addEventListener('click', () => {
+            manualInstructions?.classList.remove('d-none');
+            manualInstructions?.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        hideInstructionsBtn?.addEventListener('click', () => {
+            manualInstructions?.classList.add('d-none');
+        });
+
+        // Listen for app installation
+        window.addEventListener('appinstalled', () => {
+            installPrompt?.classList.add('d-none');
+            showToast('✓ Banking app installed successfully! Check your home screen.', 'success');
+
+            // Update button state
+            if (mainInstallButton && installButtonText) {
+                installButtonText.textContent = '✅ App Installed';
+                mainInstallButton.disabled = true;
+                mainInstallButton.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        });
+
+        // Listen for orientation change to re-detect device
+        window.addEventListener('orientationchange', () => {
+            setTimeout(updateDeviceInfo, 500);
+        });
+
+        // ===== Initialize =====
+        updateDeviceInfo();
+        updateMainButtonState();
+
+        // Re-init icons after DOM changes
+        const observer = new MutationObserver(() => {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    });
+</script>
+{% endblock %}
