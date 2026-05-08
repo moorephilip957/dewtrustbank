@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # external apps
     'django_countries',
+    'django.contrib.humanize',
 
     # my apps
     'frontend',

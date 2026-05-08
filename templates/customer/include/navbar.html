@@ -15,9 +15,9 @@
         </div>
 
         <!-- Desktop: Date -->
-        <div class="d-none d-md-flex align-items-center">
+        <div class="d-none d-md-flex align-items-center" style="margin-left: 250px;">
             <i class="bi bi-calendar me-2 text-muted"></i>
-            <span class="text-sm text-muted" id="headerDate">Thursday, May 7, 2026</span>
+            <span class="text-sm text-dark" id="headerDate">{% now "l, F j, Y" %}</span>
         </div>
 
         <!-- Right Actions -->
@@ -25,7 +25,7 @@
             <!-- Balance (Desktop) -->
             <div class="d-none d-md-flex align-items-center px-2 py-1 bg-primary-light rounded-pill">
                 <i class="bi bi-wallet me-1 text-dark"></i>
-                <span class="text-sm fw-medium text-dark">$0</span>
+                <span class="text-sm fw-medium text-dark">${{request.user.bank_account.balance}}</span>
             </div>
 
             <!-- Notifications -->
@@ -68,8 +68,8 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-end p-0" style="width: 12rem;">
                     <div class="p-3 border-bottom">
-                        <p class="mb-0 fw-medium text-dark">Andrew Levin</p>
-                        <p class="mb-0 text-xs text-muted">ID: 7068987377</p>
+                        <p class="mb-0 fw-medium text-dark">{{request.user.full_name}}</p>
+                        <p class="mb-0 text-xs text-muted">ID: {{request.user.id}}</p>
                         <span class="badge-verified mt-1">
                             <i class="bi bi-check-circle-fill"></i> Verified
                         </span>
@@ -103,8 +103,8 @@
                 class="rounded-circle border border-2 border-primary-light"
                 style="width: 3rem; height: 3rem; object-fit: cover;">
             <div class="ms-3">
-                <h6 class="mb-0 fw-semibold">Andrew Levin</h6>
-                <p class="mb-0 text-sm text-muted">Account: 7068987377</p>
+                <h6 class="mb-0 fw-semibold">{{request.user.full_name}}</h6>
+                <p class="mb-0 text-sm text-muted">Account: {{request.user.bank_account.account_number}}</p>
                 <span class="badge-verified mt-1">
                     <i class="bi bi-check-circle-fill"></i> Verified
                 </span>
@@ -119,51 +119,51 @@
 
         <!-- Grid Menu -->
         <div class="mobile-menu-grid">
-            <a href="#" class="mobile-menu-item">
+            <a href="{% url 'customer:dashboard' %}" class="mobile-menu-item">
                 <div class="icon-circle"><i class="bi bi-house text-primary"></i></div>
                 <span>Home</span>
             </a>
-            <a href="#" class="mobile-menu-item secondary">
+            <a href="{% url 'customer:transactions' %}" class="mobile-menu-item secondary">
                 <div class="icon-circle"><i class="bi bi-graph-up text-warning"></i></div>
                 <span>Activity</span>
             </a>
-            <a href="#" class="mobile-menu-item">
+            <a href="{% url 'customer:cards' %}" class="mobile-menu-item">
                 <div class="icon-circle"><i class="bi bi-credit-card text-primary"></i></div>
                 <span>Cards</span>
             </a>
-            <a href="#" class="mobile-menu-item secondary">
+            <a href="{% url 'customer:local_transfer' %}" class="mobile-menu-item secondary">
                 <div class="icon-circle"><i class="bi bi-send text-warning"></i></div>
                 <span>Transfer</span>
             </a>
-            <a href="#" class="mobile-menu-item secondary">
+            <a href="{% url 'customer:international_transfer' %}" class="mobile-menu-item secondary">
                 <div class="icon-circle"><i class="bi bi-globe text-warning"></i></div>
                 <span>Int'l Wire</span>
             </a>
-            <a href="#" class="mobile-menu-item">
+            <a href="{% url 'customer:deposit' %}" class="mobile-menu-item">
                 <div class="icon-circle"><i class="bi bi-download text-primary"></i></div>
                 <span>Deposit</span>
             </a>
-            <a href="#" class="mobile-menu-item">
+            <a href="{% url 'customer:download_app' %}" class="mobile-menu-item">
                 <div class="icon-circle"><i class="bi bi-phone text-primary"></i></div>
                 <span>Download</span>
             </a>
-            <a href="#" class="mobile-menu-item secondary">
+            <a href="{% url 'customer:loan' %}" class="mobile-menu-item secondary">
                 <div class="icon-circle"><i class="bi bi-receipt text-warning"></i></div>
                 <span>Loan</span>
             </a>
-            <a href="#" class="mobile-menu-item">
+            <!-- <a href="#" class="mobile-menu-item">
                 <div class="icon-circle"><i class="bi bi-file-earmark-text text-primary"></i></div>
                 <span>IRS Refund</span>
-            </a>
-            <a href="#" class="mobile-menu-item">
+            </a> -->
+            <a href="{% url 'customer:settings' %}" class="mobile-menu-item">
                 <div class="icon-circle"><i class="bi bi-gear text-primary"></i></div>
                 <span>Settings</span>
             </a>
-            <a href="#" class="mobile-menu-item secondary">
+            <a href="{% url 'customer:support' %}" class="mobile-menu-item secondary">
                 <div class="icon-circle"><i class="bi bi-question-circle text-warning"></i></div>
                 <span>Support</span>
             </a>
-            <a href="#" class="mobile-menu-item accent">
+            <a href="{% url 'account:logout' %}" class="mobile-menu-item accent">
                 <div class="icon-circle"><i class="bi bi-box-arrow-right text-danger"></i></div>
                 <span>Logout</span>
             </a>
@@ -175,24 +175,24 @@
 <!-- Mobile Bottom Navigation -->
 <nav class="mobile-bottom-nav d-md-none">
     <div class="d-flex justify-content-between align-items-center px-4 position-relative">
-        <a href="#" class="nav-item active">
+        <a href="{% url 'customer:dashboard' %}" class="nav-item active">
             <i class="bi bi-house-door"></i>
             <span>Home</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="{% url 'customer:transactions' %}" class="nav-item">
             <i class="bi bi-bar-chart"></i>
             <span>Stats</span>
         </a>
         <button class="fab-button" id="openMobileMenu">
             <i class="bi bi-grid-3x3 fs-4"></i>
         </button>
-        <a href="#" class="nav-item">
+        <a href="{% url 'customer:cards' %}" class="nav-item">
             <i class="bi bi-credit-card"></i>
             <span>Cards</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="{% url 'customer:loan' %}" class="nav-item">
             <i class="bi bi-phone"></i>
-            <span>App</span>
+            <span>loan</span>
         </a>
     </div>
 </nav>

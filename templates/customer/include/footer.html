@@ -3,12 +3,12 @@
 <!-- Footer -->
 <footer class="bg-white border-top py-3 px-4 d-none d-md-block fixed-bottom">
     <div class="container-fluid px-0 d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center" style="margin-left: 240px;">
             <div class="bg-primary text-white rounded d-flex align-items-center justify-content-center me-2"
                 style="width: 1.5rem; height: 1.5rem;">
                 <i class="bi bi-building fs-6"></i>
             </div>
-            <p class="mb-0 text-sm text-muted">© 2026 BANKING DASHBOARD. All rights reserved.</p>
+            <p class="mb-0 text-sm text-muted">© {% now "Y" %} DEW TRUST BANK. All rights reserved.</p>
         </div>
         <div class="d-flex gap-4">
             <a href="#" class="text-sm text-muted text-decoration-none">Privacy Policy</a>
@@ -44,7 +44,7 @@
                             <span class="text-sm">Account Name</span>
                         </div>
                         <div class="d-flex align-items-center">
-                            <span class="fw-medium me-2">Andrew Levin</span>
+                            <span class="fw-medium me-2">{{request.user.full_name}}</span>
                             <button class="copy-btn" onclick="copyToClipboard('Andrew Levin', this)">
                                 <i class="bi bi-clipboard"></i>
                             </button>
@@ -56,7 +56,7 @@
                             <span class="text-sm">Account Number</span>
                         </div>
                         <div class="d-flex align-items-center">
-                            <span class="fw-medium me-2">7068987377</span>
+                            <span class="fw-medium me-2">{{request.user.bank_account.account_number}}</span>
                             <button class="copy-btn" onclick="copyToClipboard('7068987377', this)">
                                 <i class="bi bi-clipboard"></i>
                             </button>
@@ -68,7 +68,7 @@
                             <span class="text-sm">Payment Reference</span>
                         </div>
                         <div class="d-flex align-items-center">
-                            <span class="fw-medium me-2">1234567890</span>
+                            <span class="fw-medium me-2">{{request.user.id}}</span>
                             <button class="copy-btn" onclick="copyToClipboard('7068987377', this)">
                                 <i class="bi bi-clipboard"></i>
                             </button>
@@ -80,7 +80,7 @@
                             <span class="text-sm">Sort Code</span>
                         </div>
                         <div class="d-flex align-items-center">
-                            <span class="fw-medium me-2">388130</span>
+                            <span class="fw-medium me-2">{{request.user.id}}</span>
                             <button class="copy-btn" onclick="copyToClipboard('388130', this)">
                                 <i class="bi bi-clipboard"></i>
                             </button>

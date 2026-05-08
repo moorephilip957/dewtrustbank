@@ -9,10 +9,16 @@ from .models import UserBankAccount
 
 @login_required
 def dashboard(request):
-
+    bank_account = UserBankAccount.objects.select_related('user').get(
+                        user=request.user
+                    )
+    context = {
+        'bank_account': bank_account,
+    }
     return render(
         request,
         'customer/dashboard.html',
+        context
     )
 
 @login_required
