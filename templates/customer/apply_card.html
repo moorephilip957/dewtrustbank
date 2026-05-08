@@ -1,585 +1,12 @@
 {% extends './base.html' %}
 {% load static %}
+{% load humanize %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'customer/custom_css/apply_card.css' %}">
+{% endblock %}
 
 {% block content %}
-<style>
-    /* ===== EXACT Theme Variables from Original ===== */
-    :root {
-        --primary-color: #0147E1;
-        --primary-color-dark: #0147E1;
-        --primary-color-light: #E0E0E0;
-        --primary-color-lightest: #E0E0E0;
-        --secondary-color: #FFC107;
-        --secondary-color-dark: #CC9900;
-        --secondary-color-light: #FFECB3;
-        --accent-color: #ec4899;
-        --text-color: #828282;
-        --bg-color: #f9fafb;
-        --card-bg-color: #ffffff;
-        --border-color: #e5e7eb;
-        --input-bg: #f9fafb;
-        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        --transition-fast: all 0.15s ease-in-out;
-        --transition-normal: all 0.2s ease-in-out;
-    }
-
-    /* ===== Smooth Card Styling ===== */
-    .card-application {
-        background: var(--card-bg-color);
-        border-radius: 1rem;
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--border-color);
-        overflow: hidden;
-        transition: var(--transition-normal);
-    }
-    
-    .card-application:hover {
-        box-shadow: var(--shadow-lg);
-        transform: translateY(-1px);
-    }
-
-    /* ===== Gradient Header with Wave ===== */
-    .card-header-gradient {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
-        position: relative;
-        padding: 1.5rem;
-        color: white;
-    }
-
-    .header-icon-container {
-        width: 4rem;
-        height: 4rem;
-        border-radius: 9999px;
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        transition: var(--transition-fast);
-    }
-    
-    .card-header-gradient:hover .header-icon-container {
-        background: rgba(255, 255, 255, 0.3);
-        transform: scale(1.05);
-    }
-
-    .wave-decoration {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 3rem;
-        line-height: 0;
-    }
-    
-    .wave-decoration svg {
-        display: block;
-        width: 100%;
-        height: 3rem;
-        fill: white;
-    }
-
-    /* ===== Form Styling ===== */
-    .form-card-body {
-        padding: 1.5rem;
-    }
-    
-    @media (min-width: 768px) {
-        .form-card-body {
-            padding: 2rem;
-        }
-    }
-
-    .form-label {
-        display: block;
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #374151;
-        margin-bottom: 0.375rem;
-        line-height: 1.25;
-    }
-
-    .form-label .required {
-        color: #ef4444;
-        margin-left: 0.125rem;
-    }
-
-    .input-wrapper {
-        position: relative;
-    }
-
-    .input-icon {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #9ca3af;
-        pointer-events: none;
-        display: flex;
-        align-items: center;
-        z-index: 10;
-        transition: var(--transition-fast);
-    }
-
-    .form-control-custom,
-    .form-select-custom {
-        display: block;
-        width: 100%;
-        padding: 0.75rem 1rem;
-        font-size: 0.875rem;
-        font-weight: 400;
-        line-height: 1.25;
-        color: #1f2937;
-        background-color: var(--input-bg);
-        border: 1px solid var(--border-color);
-        border-radius: 0.5rem;
-        transition: var(--transition-normal);
-    }
-
-    .form-control-custom:focus,
-    .form-select-custom:focus {
-        border-color: var(--primary-color);
-        outline: 0;
-        box-shadow: 0 0 0 3px rgba(1, 71, 225, 0.15);
-        background-color: #ffffff;
-    }
-
-    .form-control-custom::placeholder {
-        color: #9ca3af;
-        opacity: 1;
-    }
-
-    textarea.form-control-custom {
-        min-height: 100px;
-        resize: vertical;
-        padding-top: 0.875rem;
-    }
-
-    /* Currency Input */
-    .currency-input-wrapper {
-        position: relative;
-    }
-    
-    .currency-symbol {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #6b7280;
-        font-size: 0.875rem;
-        font-weight: 500;
-        pointer-events: none;
-        z-index: 10;
-    }
-    
-    .currency-input-wrapper .form-control-custom {
-        padding-left: 2rem;
-        padding-right: 4rem;
-    }
-    
-    .currency-suffix {
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #6b7280;
-        font-size: 0.875rem;
-        font-weight: 500;
-        pointer-events: none;
-    }
-
-    /* Select Chevron */
-    .select-wrapper {
-        position: relative;
-    }
-    
-    .select-chevron {
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #9ca3af;
-        pointer-events: none;
-        transition: var(--transition-fast);
-    }
-    
-    .form-select-custom:focus + .select-chevron,
-    .select-wrapper:focus-within .select-chevron {
-        color: var(--primary-color);
-    }
-
-    /* ===== Card Type Selection ===== */
-    .card-type-option {
-        position: relative;
-        border: 2px solid var(--border-color);
-        border-radius: 0.75rem;
-        padding: 1rem;
-        cursor: pointer;
-        transition: var(--transition-normal);
-        background: #ffffff;
-    }
-    
-    .card-type-option:hover {
-        border-color: var(--primary-color);
-        background: rgba(1, 71, 225, 0.03);
-    }
-    
-    .card-type-option.selected {
-        border-color: var(--primary-color);
-        background: rgba(1, 71, 225, 0.08);
-        box-shadow: 0 0 0 3px rgba(1, 71, 225, 0.15);
-    }
-    
-    .card-type-option input[type="radio"] {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-    }
-    
-    .card-type-radio {
-        width: 1.25rem;
-        height: 1.25rem;
-        border: 2px solid #d1d5db;
-        border-radius: 50%;
-        margin-right: 0.75rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        transition: var(--transition-fast);
-    }
-    
-    .card-type-option input[type="radio"]:checked + .card-type-content .card-type-radio {
-        border-color: var(--primary-color);
-        background: var(--primary-color);
-    }
-    
-    .card-type-option input[type="radio"]:checked + .card-type-content .card-type-radio::after {
-        content: '';
-        width: 0.5rem;
-        height: 0.5rem;
-        border-radius: 50%;
-        background: white;
-    }
-    
-    .card-type-content {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        width: 100%;
-    }
-    
-    .card-type-info h4 {
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #1f2937;
-        margin-bottom: 0.25rem;
-    }
-    
-    .card-type-info p {
-        font-size: 0.75rem;
-        color: #6b7280;
-        margin: 0;
-        line-height: 1.3;
-    }
-    
-    .card-type-logo {
-        flex-shrink: 0;
-        margin-left: 1rem;
-    }
-    
-    .card-type-logo svg,
-    .card-type-logo img {
-        height: 2rem;
-        width: auto;
-        max-width: 3rem;
-    }
-
-    /* ===== Info Card ===== */
-    .info-card {
-        background: #eff6ff;
-        border: 1px solid #bfdbfe;
-        border-radius: 0.75rem;
-        padding: 1rem;
-        margin: 1.5rem 0;
-        display: flex;
-        gap: 0.75rem;
-    }
-
-    .info-card-icon {
-        flex-shrink: 0;
-        color: #2563eb;
-        margin-top: 0.125rem;
-    }
-
-    .info-card-title {
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #1e40af;
-        margin-bottom: 0.25rem;
-    }
-
-    .info-card-text {
-        font-size: 0.875rem;
-        color: #1e3a8a;
-        line-height: 1.4;
-        margin: 0;
-    }
-
-    .info-card-text ul {
-        padding-left: 1.25rem;
-        margin: 0.5rem 0;
-    }
-    
-    .info-card-text li {
-        font-size: 0.875rem;
-        color: #1e3a8a;
-    }
-
-    /* ===== Terms Checkbox ===== */
-    .terms-checkbox {
-        display: flex;
-        align-items: flex-start;
-        gap: 0.75rem;
-        margin: 1rem 0;
-    }
-    
-    .terms-checkbox input[type="checkbox"] {
-        width: 1.25rem;
-        height: 1.25rem;
-        margin-top: 0.125rem;
-        border: 2px solid #d1d5db;
-        border-radius: 0.25rem;
-        cursor: pointer;
-        transition: var(--transition-fast);
-    }
-    
-    .terms-checkbox input[type="checkbox"]:checked {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
-        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
-        background-size: 1rem;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-    
-    .terms-checkbox label {
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #374151;
-        line-height: 1.4;
-    }
-    
-    .terms-checkbox a {
-        color: var(--primary-color);
-        text-decoration: none;
-        font-weight: 500;
-    }
-    
-    .terms-checkbox a:hover {
-        text-decoration: underline;
-    }
-
-    /* ===== Button Styling ===== */
-    .btn-submit {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        padding: 0.75rem 1.5rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        line-height: 1.25;
-        color: #ffffff;
-        background-color: var(--primary-color);
-        border: 1px solid transparent;
-        border-radius: 0.5rem;
-        transition: var(--transition-normal);
-        cursor: pointer;
-        box-shadow: var(--shadow-sm);
-    }
-
-    .btn-submit:hover {
-        background-color: #0039b3;
-        transform: translateY(-1px);
-        box-shadow: var(--shadow-md);
-    }
-
-    .btn-submit:active {
-        transform: translateY(0);
-    }
-
-    .btn-submit:focus {
-        outline: 0;
-        box-shadow: 0 0 0 3px rgba(1, 71, 225, 0.5);
-    }
-
-    .btn-submit:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-        transform: none;
-    }
-
-    .btn-back {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #374151;
-        background: #ffffff;
-        border: 1px solid #d1d5db;
-        border-radius: 0.5rem;
-        transition: var(--transition-normal);
-        cursor: pointer;
-        text-decoration: none;
-    }
-    
-    .btn-back:hover {
-        background: #f9fafb;
-        border-color: #9ca3af;
-        color: #1f2937;
-    }
-
-    /* ===== FAQs Section ===== */
-    .faqs-section {
-        margin-top: 2rem;
-    }
-    
-    .faqs-title {
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: #1f2937;
-        margin-bottom: 1rem;
-    }
-    
-    .faq-item {
-        background: var(--card-bg-color);
-        border: 1px solid var(--border-color);
-        border-radius: 1rem;
-        margin-bottom: 0.75rem;
-        overflow: hidden;
-        transition: var(--transition-fast);
-    }
-    
-    .faq-item:hover {
-        box-shadow: var(--shadow-sm);
-    }
-    
-    .faq-question {
-        padding: 1rem 1.25rem;
-        font-size: 1rem;
-        font-weight: 500;
-        color: #1f2937;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: var(--transition-fast);
-    }
-    
-    .faq-question:hover {
-        background: rgba(1, 71, 225, 0.03);
-    }
-    
-    .faq-question::after {
-        content: '+';
-        font-size: 1.25rem;
-        color: #6b7280;
-        transition: var(--transition-fast);
-    }
-    
-    .faq-item.active .faq-question::after {
-        content: '−';
-        color: var(--primary-color);
-    }
-    
-    .faq-answer {
-        padding: 0 1.25rem 1rem;
-        font-size: 0.875rem;
-        color: #6b7280;
-        line-height: 1.5;
-        display: none;
-    }
-    
-    .faq-item.active .faq-answer {
-        display: block;
-        animation: fadeIn 0.2s ease-out;
-    }
-    
-    .faq-answer strong {
-        color: #1f2937;
-        font-weight: 500;
-    }
-    
-    .faq-answer .block {
-        display: block;
-        margin: 0.25rem 0;
-    }
-
-    /* ===== Toast Notifications ===== */
-    .toast-container {
-        position: fixed;
-        top: 1rem;
-        right: 1rem;
-        z-index: 1100;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        max-width: 24rem;
-    }
-
-    .toast-custom {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 0.875rem 1rem;
-        background: #ffffff;
-        border-left: 4px solid var(--primary-color);
-        border-radius: 0.5rem;
-        box-shadow: var(--shadow-lg);
-        animation: slideIn 0.3s ease-out;
-    }
-
-    .toast-custom.success { border-left-color: #10b981; }
-    .toast-custom.error { border-left-color: #ef4444; }
-    .toast-custom.warning { border-left-color: var(--secondary-color); }
-
-    @keyframes slideIn {
-        from { opacity: 0; transform: translateX(100%); }
-        to { opacity: 1; transform: translateX(0); }
-    }
-
-    .toast-icon { flex-shrink: 0; color: inherit; }
-    .toast-message { font-size: 0.875rem; color: #1f2937; flex: 1; }
-    .toast-close {
-        background: none; border: none; color: #9ca3af;
-        cursor: pointer; padding: 0.25rem; border-radius: 0.25rem;
-        transition: var(--transition-fast);
-    }
-    .toast-close:hover { color: #374151; background: #f3f4f6; }
-
-    /* ===== Animations ===== */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(0.5rem); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fadeIn { animation: fadeIn 0.3s ease-out forwards; }
-
-    /* ===== Utilities ===== */
-    .max-w-4xl { max-width: 56rem; }
-    .mx-auto { margin-left: auto; margin-right: auto; }
-    
-    *:focus:not(:focus-visible) { outline: none; }
-    *:focus-visible { outline: none; }
-</style>
-
 <!-- Toast Notifications Container -->
 <div id="toast-container" class="toast-container"></div>
 
@@ -593,17 +20,17 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-2 small">
                         <li class="breadcrumb-item">
-                            <a href="/dashboard" class="text-decoration-none text-muted" style="transition: var(--transition-fast);">Dashboard</a>
+                            <a href="{% url 'customer:dashboard' %}" class="text-decoration-none text-muted" style="transition: var(--transition-fast);">Dashboard</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="/dashboard/cards" class="text-decoration-none text-muted" style="transition: var(--transition-fast);">Cards</a>
+                            <a href="{% url 'customer:cards' %}" class="text-decoration-none text-muted" style="transition: var(--transition-fast);">Cards</a>
                         </li>
                         <li class="breadcrumb-item active text-secondary">Apply</li>
                     </ol>
                 </nav>
-                <h1 class="h4 fw-bold text-dark mb-0">Apply for Virtual Card</h1>
+                <h1 class="h4 fw-bold text-dark mb-0">Apply for Debit Card</h1>
             </div>
-            <a href="/dashboard/cards" class="btn-back">
+            <a href="{% url 'customer:cards' %}" class="btn-back">
                 <i data-lucide="arrow-left" style="width:1rem;height:1rem;"></i>
                 Back to Cards
             </a>
@@ -619,30 +46,22 @@
             <div class="card-header-gradient">
                 <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between">
                     <div>
-                        <div class="header-icon-container mb-3">
-                            <i data-lucide="credit-card" style="width:1.75rem;height:1.75rem;"></i>
-                        </div>
-                        <h2 class="h4 fw-bold mb-1">Apply for a Virtual Card</h2>
-                        <p class="mb-0 opacity-75 small">Get instant access to a virtual card for online payments and subscriptions</p>
+                        <h2 class="h4 fw-bold mb-1">Apply for a Debit Card</h2>
+                        <p class="mb-0 opacity-75 small">
+                            Get secure access to a physical debit card for everyday purchases, ATM withdrawals, and online payments
+                        </p>
                     </div>
                     <div class="d-none d-md-block mt-3 mt-md-0">
                         <i data-lucide="credit-card" style="width:4rem;height:4rem;opacity:0.75;color:rgba(255,255,255,0.75);"></i>
                     </div>
                 </div>
-                <!-- Wave SVG -->
-                <div class="wave-decoration">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                        <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"></path>
-                        <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5"></path>
-                        <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"></path>
-                    </svg>
-                </div>
             </div>
-
+            {% include "../components/form_errors.html" %}
+            {% include "../components/messages.html" %}
             <!-- Form Body -->
             <div class="form-card-body">
-                <form id="cardApplicationForm" novalidate>
-                    <input type="hidden" name="_token" value="{{ csrf_token }}">
+                <form method="post" novalidate>
+                    {% csrf_token %}
                     
                     <!-- Card Details Section -->
                     <section class="mb-5">
@@ -652,107 +71,144 @@
                             <!-- Card Type -->
                             <div class="col-12">
                                 <label class="form-label">Card Type</label>
+
                                 <div class="d-flex flex-column gap-3">
+
                                     <!-- Visa -->
                                     <label class="card-type-option" id="cardTypeVisa">
-                                        <input type="radio" name="card_type" value="visa" checked>
+
+                                        <input type="radio" name="card_type" value="visa" {% if form.card_type.value == "visa" %}checked{% endif %}>
+
                                         <div class="card-type-content">
+
                                             <div class="card-type-radio"></div>
+
                                             <div class="card-type-info">
-                                                <h4>Visa</h4>
-                                                <p>Accepted worldwide, suitable for most online purchases</p>
+                                                <h4>Visa Debit Card</h4>
+                                                <p>Accepted worldwide, suitable for online and in-store payments</p>
                                             </div>
+
                                             <div class="card-type-logo">
-                                                <svg viewBox="0 0 1000 324" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:2rem;width:auto;">
-                                                    <path d="M433.334 318.516H348.568L403.315 5.01855H488.081L433.334 318.516Z" fill="#1434CB"/>
-                                                    <path d="M727.98 15.9043C712.039 9.56622 686.227 2.51855 653.355 2.51855C574.054 2.51855 519.055 45.5277 518.802 106.826C518.306 152.343 558.126 177.912 587.98 193.316C618.34 209.233 629.315 219.335 629.315 233.014C629.061 254.008 603.493 263.591 579.702 263.591C547.839 263.591 530.7 258.287 505.123 245.892L493.902 240.335L482.166 313.221C501.069 323.07 536.096 331.667 572.643 332.163C657.14 332.163 711.128 289.897 711.895 224.144C712.394 188.508 689.871 160.445 643.015 136.91C615.2 121.744 598.306 111.638 598.554 97.2356C598.554 84.5987 613.224 70.9167 648.747 70.9167C677.823 70.4206 699.053 77.7188 715.707 85.5144L726.681 90.8186L738.417 19.9214L727.98 15.9043Z" fill="#1434CB"/>
-                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M841.897 5.01855H773.691C755.782 5.01855 742.397 10.0624 734.862 30.0238L630.236 318.516H715.464C715.464 318.516 729.143 280.806 732.429 272.002C742.901 272.002 822.706 272.002 835.844 272.002C838.373 283.215 845.93 318.516 845.93 318.516H922.667L841.897 5.01855ZM762.22 208.49C769.018 189.752 796.85 116.686 796.85 116.686C796.602 117.174 803.16 99.19 806.699 88.0899L812.02 114.188C812.02 114.188 829.775 192.026 833.061 208.49H762.22Z" fill="#1434CB"/>
-                                                    <path d="M251.994 5.01855L171.471 219.335L162.137 174.313C146.216 129.054 102.175 80.0894 52.8662 56.8035L126.462 318.02H212.215L336.832 5.01855H251.994Z" fill="#1434CB"/>
-                                                    <path d="M127.963 5.01855H0.66211L0.167969 10.3101C98.1497 31.7971 163.301 76.5646 190.132 129.298L162.633 13.5747C157.329 -0.60098 144.316 5.51465 127.963 5.01855Z" fill="#1434CB"/>
-                                                </svg>
+                                                <div class="card-type-logo">
+                                                    <svg viewBox="0 0 1000 324" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                                        style="height:2rem;width:auto;">
+                                                        <path d="M433.334 318.516H348.568L403.315 5.01855H488.081L433.334 318.516Z"
+                                                            fill="#1434CB" />
+                                                        <path
+                                                            d="M727.98 15.9043C712.039 9.56622 686.227 2.51855 653.355 2.51855C574.054 2.51855 519.055 45.5277 518.802 106.826C518.306 152.343 558.126 177.912 587.98 193.316C618.34 209.233 629.315 219.335 629.315 233.014C629.061 254.008 603.493 263.591 579.702 263.591C547.839 263.591 530.7 258.287 505.123 245.892L493.902 240.335L482.166 313.221C501.069 323.07 536.096 331.667 572.643 332.163C657.14 332.163 711.128 289.897 711.895 224.144C712.394 188.508 689.871 160.445 643.015 136.91C615.2 121.744 598.306 111.638 598.554 97.2356C598.554 84.5987 613.224 70.9167 648.747 70.9167C677.823 70.4206 699.053 77.7188 715.707 85.5144L726.681 90.8186L738.417 19.9214L727.98 15.9043Z"
+                                                            fill="#1434CB" />
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M841.897 5.01855H773.691C755.782 5.01855 742.397 10.0624 734.862 30.0238L630.236 318.516H715.464C715.464 318.516 729.143 280.806 732.429 272.002C742.901 272.002 822.706 272.002 835.844 272.002C838.373 283.215 845.93 318.516 845.93 318.516H922.667L841.897 5.01855ZM762.22 208.49C769.018 189.752 796.85 116.686 796.85 116.686C796.602 117.174 803.16 99.19 806.699 88.0899L812.02 114.188C812.02 114.188 829.775 192.026 833.061 208.49H762.22Z"
+                                                            fill="#1434CB" />
+                                                        <path
+                                                            d="M251.994 5.01855L171.471 219.335L162.137 174.313C146.216 129.054 102.175 80.0894 52.8662 56.8035L126.462 318.02H212.215L336.832 5.01855H251.994Z"
+                                                            fill="#1434CB" />
+                                                        <path
+                                                            d="M127.963 5.01855H0.66211L0.167969 10.3101C98.1497 31.7971 163.301 76.5646 190.132 129.298L162.633 13.5747C157.329 -0.60098 144.316 5.51465 127.963 5.01855Z"
+                                                            fill="#1434CB" />
+                                                    </svg>
+                                                </div>
                                             </div>
+
                                         </div>
                                     </label>
-                                    
+
                                     <!-- Mastercard -->
-                                    <label class="card-type-option" id="cardTypeMastercard">
-                                        <input type="radio" name="card_type" value="mastercard">
+                                    <label class="card-type-option" id="cardTypeMaster">
+
+                                        <input type="radio" name="card_type" value="master" {% if form.card_type.value == "master" %}checked{% endif %}>
+
                                         <div class="card-type-content">
+
                                             <div class="card-type-radio"></div>
+
                                             <div class="card-type-info">
-                                                <h4>Mastercard</h4>
-                                                <p>Global acceptance with enhanced security features</p>
+                                                <h4>Master Debit Card</h4>
+                                                <p>Global acceptance with strong security features</p>
                                             </div>
+
                                             <div class="card-type-logo">
-                                                <svg viewBox="0 0 131.39 86.9" xmlns="http://www.w3.org/2000/svg" style="height:2rem;width:auto;">
-                                                    <path d="M48.37 15.14h34.66v56.61H48.37z" fill="#ff5f00"/>
-                                                    <path d="M52.37 43.45a35.94 35.94 0 0113.75-28.3 36 36 0 100 56.61 35.94 35.94 0 01-13.75-28.31z" fill="#eb001b"/>
-                                                    <path d="M120.39 65.54V64.5h.48v-.24h-1.19v.24h.47v1.04zm2.31 0v-1.29h-.36l-.42.91-.42-.91h-.36v1.29h.26V64.9l.39.89h.27l.39-.89v.89z" fill="#f79e1b"/>
-                                                    <path d="M123.94 43.45a36 36 0 01-58 28.3 36 36 0 000-56.61 36 36 0 0158 28.3z" fill="#f79e1b"/>
-                                                </svg>
+                                                <div class="card-type-logo">
+                                                    <svg viewBox="0 0 131.39 86.9" xmlns="http://www.w3.org/2000/svg"
+                                                        style="height:2rem;width:auto;">
+                                                        <path d="M48.37 15.14h34.66v56.61H48.37z" fill="#ff5f00" />
+                                                        <path
+                                                            d="M52.37 43.45a35.94 35.94 0 0113.75-28.3 36 36 0 100 56.61 35.94 35.94 0 01-13.75-28.31z"
+                                                            fill="#eb001b" />
+                                                        <path
+                                                            d="M120.39 65.54V64.5h.48v-.24h-1.19v.24h.47v1.04zm2.31 0v-1.29h-.36l-.42.91-.42-.91h-.36v1.29h.26V64.9l.39.89h.27l.39-.89v.89z"
+                                                            fill="#f79e1b" />
+                                                        <path d="M123.94 43.45a36 36 0 01-58 28.3 36 36 0 000-56.61 36 36 0 0158 28.3z"
+                                                            fill="#f79e1b" />
+                                                    </svg>
+                                                </div>
                                             </div>
+
                                         </div>
                                     </label>
-                                    
-                                    <!-- American Express -->
-                                    <label class="card-type-option" id="cardTypeAmex">
-                                        <input type="radio" name="card_type" value="american_express">
-                                        <div class="card-type-content">
-                                            <div class="card-type-radio"></div>
-                                            <div class="card-type-info">
-                                                <h4>American Express</h4>
-                                                <p>Premium benefits and exclusive rewards program</p>
-                                            </div>
-                                            <div class="card-type-logo">
-                                                <img src="https://intl-bc-online.com/dash/images/cards/amex.png" alt="American Express" style="height:2rem;width:auto;">
-                                            </div>
-                                        </div>
-                                    </label>
+
                                 </div>
+
+                                {% if form.card_type.errors %}
+                                <div class="text-danger small mt-2">
+                                    {{ form.card_type.errors }}
+                                </div>
+                                {% endif %}
                             </div>
                             
                             <!-- Card Level -->
                             <div class="col-md-6">
-                                <label for="card_level" class="form-label">Card Level<span class="required">*</span></label>
+                                <label for="{{ form.issuance_fee.id_for_label }}" class="form-label">
+                                    Card Issuance Fee
+                                </label>
                                 <div class="select-wrapper">
-                                    <select id="card_level" name="card_level" class="form-select-custom" required>
-                                        <option value="">Select a card level</option>
-                                        <option value="standard">Standard - $5.00</option>
-                                        <option value="gold">Gold - $15.00</option>
-                                        <option value="platinum">Platinum - $25.00</option>
-                                        <option value="black">Black - $50.00</option>
-                                    </select>
-                                    <span class="select-chevron">
-                                        <i data-lucide="chevron-down" style="width:1.25rem;height:1.25rem;"></i>
-                                    </span>
+                                    {{ form.issuance_fee }}
                                 </div>
                                 <small class="form-text text-muted">Different levels offer varied spending limits and features</small>
+
+                                {% if form.issuance_fee.errors %}
+                                <div class="text-danger small mt-2">
+                                    {{ form.issuance_fee.errors }}
+                                </div>
+                                {% endif %}
                             </div>
                             
                             <!-- Currency -->
                             <div class="col-md-6">
-                                <label for="currency" class="form-label">Currency</label>
+                                <label for="{{ form.currency.id_for_label }}" class="form-label">
+                                    Currency
+                                </label>
+
                                 <div class="select-wrapper">
-                                    <select id="currency" name="currency" class="form-select-custom">
-                                        <option value="USD">USD - US Dollar</option>
-                                        <option value="EUR">EUR - Euro</option>
-                                        <option value="GBP">GBP - British Pound</option>
-                                    </select>
-                                    <span class="select-chevron">
-                                        <i data-lucide="chevron-down" style="width:1.25rem;height:1.25rem;"></i>
-                                    </span>
+                                    {{ form.currency }}
                                 </div>
+
+                                {% if form.currency.errors %}
+                                <div class="text-danger small mt-2">
+                                    {{ form.currency.errors }}
+                                </div>
+                                {% endif %}
                             </div>
                             
-                            <!-- Daily Limit -->
+                            <!-- Spending Limit -->
                             <div class="col-md-6">
-                                <label for="daily_limit" class="form-label">Daily Spending Limit</label>
+                                <label for="{{ form.spending_limit.id_for_label }}" class="form-label">
+                                    Daily Spending Limit
+                                </label>
+
                                 <div class="currency-input-wrapper">
-                                    <span class="currency-symbol">$</span>
-                                    <input type="number" name="daily_limit" id="daily_limit" min="100000" max="100000" value="100000" class="form-control-custom" />
-                                    <span class="currency-suffix">USD</span>
+                                    {{ form.spending_limit }}
                                 </div>
-                                <small class="form-text text-muted">Limits: $100,000.00 - $100,000.00</small>
+
+                                <small class="form-text text-muted">
+                                    Set your preferred daily card spending limit
+                                </small>
+
+                                {% if form.spending_limit.errors %}
+                                <div class="text-danger small mt-2">
+                                    {{ form.spending_limit.errors }}
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </section>
@@ -764,17 +220,90 @@
                         <div class="row g-4">
                             <!-- Card Holder Name -->
                             <div class="col-12">
-                                <label for="card_holder_name" class="form-label">Cardholder Name<span class="required">*</span></label>
-                                <input type="text" name="card_holder_name" id="card_holder_name" value="{{ user.first_name }}" class="form-control-custom" placeholder="Name as it will appear on your card" required />
-                                <small class="form-text text-muted">Name as it will appear on your card</small>
+                                <label for="{{ form.full_name.id_for_label }}" class="form-label">
+                                    Cardholder Name
+                                    <span class="required">*</span>
+                                </label>
+
+                                {{ form.full_name }}
+
+                                <small class="form-text text-muted">
+                                    Name as it will appear on your card
+                                </small>
+
+                                {% if form.full_name.errors %}
+                                <div class="text-danger small mt-2">
+                                    {{ form.full_name.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-md-6">
+                                <label for="{{ form.email.id_for_label }}" class="form-label">
+                                    Email Address
+                                </label>
+
+                                {{ form.email }}
+
+                                {% if form.email.errors %}
+                                <div class="text-danger small mt-2">
+                                    {{ form.email.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Phone -->
+                            <div class="col-md-6">
+                                <label for="{{ form.phone.id_for_label }}" class="form-label">
+                                    Phone Number
+                                </label>
+
+                                {{ form.phone }}
+
+                                {% if form.phone.errors %}
+                                <div class="text-danger small mt-2">
+                                    {{ form.phone.errors }}
+                                </div>
+                                {% endif %}
                             </div>
                             
-                            <!-- Billing Address -->
+                            <!-- Address -->
                             <div class="col-12">
-                                <label for="billing_address" class="form-label">Billing Address</label>
-                                <textarea name="billing_address" id="billing_address" rows="3" class="form-control-custom" placeholder="Address used for verification when making purchases"></textarea>
-                                <small class="form-text text-muted">Address used for verification when making purchases</small>
+                                <label for="{{ form.address.id_for_label }}" class="form-label">
+                                    Billing Address
+                                </label>
+
+                                {{ form.address }}
+
+                                <small class="form-text text-muted">
+                                    Address used for verification when making purchases
+                                </small>
+
+                                {% if form.address.errors %}
+                                <div class="text-danger small mt-2">
+                                    {{ form.address.errors }}
+                                </div>
+                                {% endif %}
                             </div>
+
+                            <!-- Delivery Method -->
+                            <div class="col-md-6">
+                                <label for="{{ form.delivery_method.id_for_label }}" class="form-label">
+                                    Delivery Method
+                                </label>
+
+                                <div class="select-wrapper">
+                                    {{ form.delivery_method }}
+                                </div>
+
+                                {% if form.delivery_method.errors %}
+                                <div class="text-danger small mt-2">
+                                    {{ form.delivery_method.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            
                         </div>
                     </section>
                     
@@ -855,164 +384,8 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Lucide icons
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-        
-        // ===== Toast Notification System =====
-        function showToast(message, type = 'info', duration = 5000) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast-custom ${type}`;
-            
-            const icons = { success: 'check-circle', error: 'alert-circle', warning: 'alert-triangle', info: 'info' };
-            const colors = { success: '#10b981', error: '#ef4444', warning: '#f59e0b', info: '#0147E1' };
-            
-            toast.innerHTML = `
-                <span class="toast-icon" style="color:${colors[type]}">
-                    <i data-lucide="${icons[type]}" style="width:1.25rem;height:1.25rem;"></i>
-                </span>
-                <span class="toast-message">${message}</span>
-                <button type="button" class="toast-close" aria-label="Close">
-                    <i data-lucide="x" style="width:1rem;height:1rem;"></i>
-                </button>
-            `;
-            
-            container.appendChild(toast);
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-            
-            toast.querySelector('.toast-close').addEventListener('click', () => {
-                toast.style.animation = 'slideIn 0.2s ease-in reverse';
-                setTimeout(() => toast.remove(), 200);
-            });
-            
-            setTimeout(() => {
-                if (toast.parentNode) {
-                    toast.style.animation = 'slideIn 0.2s ease-in reverse';
-                    setTimeout(() => toast.remove(), 200);
-                }
-            }, duration);
-        }
-        
-        // ===== Card Type Selection =====
-        document.querySelectorAll('.card-type-option input[type="radio"]').forEach(radio => {
-            const option = radio.closest('.card-type-option');
-            
-            // Set initial selected state
-            if (radio.checked) {
-                option.classList.add('selected');
-            }
-            
-            radio.addEventListener('change', function() {
-                // Remove selected from all options
-                document.querySelectorAll('.card-type-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                // Add selected to current option
-                option.classList.add('selected');
-            });
-        });
-        
-        // ===== FAQs Accordion =====
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', function() {
-                const item = this.parentElement;
-                const isActive = item.classList.contains('active');
-                
-                // Close all items
-                document.querySelectorAll('.faq-item').forEach(faq => {
-                    faq.classList.remove('active');
-                });
-                
-                // Toggle current item
-                if (!isActive) {
-                    item.classList.add('active');
-                }
-            });
-        });
-        
-        // ===== Form Validation & Submission =====
-        const form = document.getElementById('cardApplicationForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const submitSpinner = document.getElementById('submitSpinner');
-        const submitText = document.getElementById('submitText');
-        const termsCheckbox = document.getElementById('terms');
-        const cardLevelSelect = document.getElementById('card_level');
-        
-        form?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Validate required fields
-            const cardLevel = cardLevelSelect.value;
-            const cardHolderName = document.getElementById('card_holder_name').value.trim();
-            
-            if (!cardLevel) {
-                showToast('Please select a card level', 'error');
-                cardLevelSelect.focus();
-                return;
-            }
-            
-            if (!cardHolderName) {
-                showToast('Please enter the cardholder name', 'error');
-                document.getElementById('card_holder_name').focus();
-                return;
-            }
-            
-            if (!termsCheckbox.checked) {
-                showToast('Please agree to the terms and conditions', 'error');
-                return;
-            }
-            
-            // Show loading state
-            submitBtn.disabled = true;
-            submitSpinner.classList.remove('d-none');
-            submitText.textContent = 'Processing...';
-            
-            // Simulate API call (replace with actual fetch)
-            setTimeout(() => {
-                showToast('✓ Card application submitted successfully! You\'ll receive a notification when your card is ready.', 'success');
-                
-                // Reset form (optional)
-                // form.reset();
-                // document.querySelectorAll('.card-type-option').forEach(opt => opt.classList.remove('selected'));
-                // document.querySelector('.card-type-option input[value="visa"]').checked = true;
-                // document.querySelector('.card-type-option input[value="visa"]').closest('.card-type-option').classList.add('selected');
-                
-                // Restore button
-                submitBtn.disabled = false;
-                submitSpinner.classList.add('d-none');
-                submitText.textContent = 'Apply for Card';
-                
-                if (typeof lucide !== 'undefined') lucide.createIcons();
-                
-                // In production: form.submit();
-            }, 2500);
-        });
-        
-        // ===== Input Focus Effects =====
-        document.querySelectorAll('.form-control-custom, .form-select-custom').forEach(input => {
-            input.addEventListener('focus', function() {
-                this.closest('.input-wrapper, .select-wrapper, .currency-input-wrapper')?.querySelector('.input-icon, .select-chevron, .currency-symbol')?.style.setProperty('color', 'var(--primary-color)');
-            });
-            input.addEventListener('blur', function() {
-                this.closest('.input-wrapper, .select-wrapper, .currency-input-wrapper')?.querySelector('.input-icon, .select-chevron, .currency-symbol')?.style.setProperty('color', '#9ca3af');
-            });
-        });
-        
-        // ===== Daily Limit Validation =====
-        const dailyLimitInput = document.getElementById('daily_limit');
-        dailyLimitInput?.addEventListener('input', function() {
-            const min = parseInt(this.min) || 0;
-            const max = parseInt(this.max) || Infinity;
-            let value = parseInt(this.value) || 0;
-            
-            if (value < min) {
-                this.value = min;
-            } else if (value > max) {
-                this.value = max;
-            }
-        });
-    });
-</script>
+{% block scripts %}
+<script src="{% static 'customer/custom_js/apply_card.js' %}"></script>
+{% endblock %}
+
 {% endblock %}

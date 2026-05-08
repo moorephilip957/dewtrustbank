@@ -4,8 +4,7 @@ from .models import UserBankAccount
 
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import UserBankAccount
-
+from .models import UserBankAccount, DebitCardApplication
 
 class UserBankAccountForm(forms.ModelForm):
 
@@ -72,3 +71,79 @@ class UserBankAccountForm(forms.ModelForm):
             instance.save()
 
         return instance
+    
+
+class DebitCardApplicationForm(forms.ModelForm):
+
+    class Meta:
+        model = DebitCardApplication
+
+        fields = [
+            'full_name',
+            'email',
+            'phone',
+            'address',
+            'card_type',
+            'currency',
+            'spending_limit',
+            'issuance_fee',
+            'delivery_method',
+        ]
+
+        widgets = {
+            'full_name': forms.TextInput(attrs={
+                'class': 'form-control form-control-custom',
+                'placeholder': 'Enter your full name'
+            }),
+
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control form-control-custom',
+                'placeholder': 'Enter your email'
+            }),
+
+            'phone': forms.TextInput(attrs={
+                'class': 'form-control form-control-custom',
+                'placeholder': 'Enter your phone number'
+            }),
+
+            'address': forms.Textarea(attrs={
+                'class': 'form-control form-control-custom',
+                'rows': 3,
+                'placeholder': 'Enter your address'
+            }),
+
+            'card_type': forms.Select(attrs={
+                'class': 'form-select-custom'
+            }),
+
+            'currency': forms.Select(attrs={
+                'class': 'form-select-custom'
+            }),
+
+            'spending_limit': forms.NumberInput(attrs={
+                'class': 'form-control form-control-custom',
+                'placeholder': 'Enter spending limit'
+            }),
+
+            'issuance_fee': forms.Select(attrs={
+                'class': 'form-select-custom'
+            }),
+
+            'delivery_method': forms.Select(attrs={
+                'class': 'form-select-custom'
+            }),
+        }
+
+    def __init__(self, *args, **kwargs):
+
+        user = kwargs.pop('user', None)
+
+        super().__init__(*args, **kwargs)
+
+        if user:
+            self.fields['full_name'].initial = user.get_full_name()
+            self.fields['email'].initial = user.email
+
+            # optional read-only fields
+            self.fields['full_name'].widget.attrs['readonly'] = True
+            self.fields['email'].widget.attrs['readonly'] = True

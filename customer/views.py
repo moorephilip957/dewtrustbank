@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-from .models import UserBankAccount
+from .models import UserBankAccount, DebitCard
+from .forms import DebitCardApplicationForm
 
 
 @login_required
@@ -29,12 +30,42 @@ def transaction_list(request):
         'customer/transactions.html',
     )
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+from .models import DebitCard
+
+
 @login_required
 def card(request):
+
+    account = request.user.bank_account
+
+    cards = DebitCard.objects.filter(
+        account=account
+    ).order_by('-created_at')
+
+    active_cards_count = cards.filter(
+        status='active'
+    ).count()
+
+    pending_cards_count = cards.filter(
+        status='pending'
+    ).count()
+
+    blocked_cards_count = cards.filter(
+        status='blocked'
+    ).count()
 
     return render(
         request,
         'customer/cards.html',
+        {
+            'cards': cards,
+            'active_cards_count': active_cards_count,
+            'pending_cards_count': pending_cards_count,
+            'blocked_cards_count': blocked_cards_count,
+        }
     )
 
 
@@ -128,14 +159,54 @@ def change_password(request):
         'customer/change_password.html',
     )
 
+
 @login_required
 def apply_card(request):
+
+    account = request.user.bank_account
+
+    if request.method == 'POST':
+
+        form = DebitCardApplicationForm(
+            request.POST,
+            user=request.user
+        )
+
+        if form.is_valid():
+
+            # save application
+            application = form.save(commit=False)
+            application.account = account
+            application.save()
+
+            # create actual debit card
+            DebitCard.objects.create(
+                account=account,
+                card_type=application.card_type,
+                currency=application.currency,
+                spending_limit=application.spending_limit,
+                issuance_fee=application.issuance_fee,
+                card_holder_name=request.user.get_full_name(),
+                is_virtual=False,
+                status='pending',
+            )
+            messages.success(request, 'Your debit card application has been successfully submitted and is currently pending approval and activation.')
+            return redirect('customer:cards')
+
+    else:
+
+        form = DebitCardApplicationForm(
+            user=request.user
+        )
 
     return render(
         request,
         'customer/apply_card.html',
+        {
+            'form': form,
+            'account': account,
+        }
     )
-
 
 @login_required
 def payment(request):

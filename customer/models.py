@@ -5,6 +5,8 @@ from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
 import random
 import string
+from django.utils import timezone
+from datetime import timedelta
 
 from account.models import CustomUser
 
@@ -219,3 +221,185 @@ class UserBankAccount(models.Model):
             f"{self.get_currency_symbol()}"
             f"{self.balance:,.2f}"
         )
+
+
+class DebitCard(models.Model):
+
+    CARD_TYPES = [
+        ('visa', 'Visa Debit Card'),
+        ('master', 'Master Debit Card'),
+    ]
+
+    CARD_STATUS = [
+        ('pending', 'Pending'),
+        ('active', 'Active'),
+        ('blocked', 'Blocked'),
+        ('expired', 'Expired'),
+    ]
+
+    CURRENCIES = [
+        ('USD', 'USD - US Dollar'),
+        ('EUR', 'EUR - Euro'),
+        ('GBP', 'GBP - British Pound'),
+        ('AED', 'AED - UAE Dirham'),
+        ('KWD', 'KWD - Kuwaiti Dinar'),
+    ]
+
+    account = models.ForeignKey(
+        'UserBankAccount',
+        on_delete=models.CASCADE,
+        related_name='cards'
+    )
+
+    card_type = models.CharField(
+        max_length=20,
+        choices=CARD_TYPES,
+        default='visa'
+    )
+
+    currency = models.CharField(
+        max_length=10,
+        choices=CURRENCIES,
+        default='USD'
+    )
+
+    card_number = models.CharField(
+        max_length=19,
+        unique=True,
+        editable=False
+    )
+
+    card_holder_name = models.CharField(
+        max_length=150
+    )
+
+    expiry_date = models.DateField()
+
+    cvv = models.CharField(
+        max_length=4
+    )
+
+    spending_limit = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0.00
+    )
+
+    balance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0.00
+    )
+
+    issuance_fee = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0.00
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=CARD_STATUS,
+        default='pending'
+    )
+
+    is_virtual = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def generate_card_number(self):
+        return f"5355 {random.randint(1000,9999)} {random.randint(1000,9999)} {random.randint(1000,9999)}"
+
+    def generate_cvv(self):
+        return str(random.randint(100, 999))
+
+    def save(self, *args, **kwargs):
+
+        if not self.card_number:
+            self.card_number = self.generate_card_number()
+
+        if not self.cvv:
+            self.cvv = self.generate_cvv()
+
+        if not self.expiry_date:
+            self.expiry_date = timezone.now().date() + timedelta(days=1460)
+
+        if not self.card_holder_name:
+            self.card_holder_name = self.account.user.get_full_name()
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.card_holder_name} - {self.card_number}"
+
+
+class DebitCardApplication(models.Model):
+    CARD_TYPES = [
+        ('visa', 'Visa Debit Card'),
+        ('master', 'Master Debit Card'),
+    ]
+
+    DELIVERY_METHODS = [
+        ('pickup', 'Branch Pickup'),
+        ('home_delivery', 'Home Delivery'),
+    ]
+
+    CURRENCIES = [
+        ('USD', 'USD - US Dollar'),
+        ('EUR', 'EUR - Euro'),
+        ('GBP', 'GBP - British Pound'),
+        ('AED', 'AED - UAE Dirham'),
+        ('KWD', 'KWD - Kuwaiti Dinar'),
+    ]
+
+    ISSUANCE_FEES = [
+        ('5', 'Standard - $5.00'),
+        ('15', 'Gold - $15.00'),
+        ('25', 'Platinum - $25.00'),
+        ('50', 'Black - $50.00'),
+    ]
+
+    # User ForeignKey
+    account = models.ForeignKey(
+        UserBankAccount,
+        on_delete=models.CASCADE,
+        related_name='debit_card_applications'
+    )
+
+    full_name = models.CharField(max_length=150)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    address = models.TextField()
+
+    card_type = models.CharField(
+        max_length=20,
+        choices=CARD_TYPES
+    )
+
+    currency = models.CharField(
+        max_length=10,
+        choices=CURRENCIES,
+        default='USD'
+    )
+
+    spending_limit = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        help_text="Daily or monthly spending limit"
+    )
+
+    issuance_fee = models.CharField(
+        max_length=10,
+        choices=ISSUANCE_FEES,
+        default='5'
+    )
+
+    delivery_method = models.CharField(
+        max_length=20,
+        choices=DELIVERY_METHODS
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.card_type}"
