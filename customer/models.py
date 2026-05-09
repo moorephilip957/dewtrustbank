@@ -37,6 +37,12 @@ class UserBankAccount(models.Model):
     #     ('virtual', _('Virtual Account')),
     # ]
 
+    ACCOUNT_STATUS = [
+        ('success', 'Success'),
+        ('pending', 'Pending'),
+        ('failed', 'Failed'),
+    ]
+
     CURRENCIES = [
         ('USD', 'US Dollar ($)'),
         ('EUR', 'Euro (€)'),
@@ -93,6 +99,12 @@ class UserBankAccount(models.Model):
         help_text=_(
             '4-6 digit PIN for authorizing transactions (hashed)'
         )
+    )
+
+    transaction_status = models.CharField(
+        max_length=10,
+        choices=ACCOUNT_STATUS,
+        default='success'
     )
 
     is_active = models.BooleanField(_('active'), default=True)

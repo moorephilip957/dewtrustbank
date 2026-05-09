@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'frontend',
     'account',
     'customer',
+    'transaction',
 ]
 
 MIDDLEWARE = [

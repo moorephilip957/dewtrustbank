@@ -1,4 +1,4 @@
-{% extends './base.html' %}
+{% extends '../customer/base.html' %}
 {% load static %}
 {% load humanize %}
 
@@ -72,16 +72,7 @@
                         <label for="amount" class="form-label">Transfer Amount<span class="text-danger">*</span></label>
                         <div class="input-wrapper">
                             <span class="currency-symbol">{{request.user.bank_account.get_currency_symbol}}</span>
-                            <input 
-                                type="number" 
-                                id="amount" 
-                                name="amount"
-                                class="form-control-custom amount-input"
-                                placeholder="0.00"
-                                min="1"
-                                step="0.01"
-                                required
-                            />
+                            {{form.amount}}
                             <span class="currency-decimal">.00</span>
                         </div>
                         
@@ -112,14 +103,7 @@
                                         <span class="input-icon">
                                             <i data-lucide="user" style="width:1.25rem;height:1.25rem;"></i>
                                         </span>
-                                        <input 
-                                            type="text" 
-                                            id="accountname" 
-                                            name="accountname"
-                                            class="form-control-custom"
-                                            placeholder="Enter beneficiary's full name"
-                                            required
-                                        />
+                                        {{form.beneficiary_name}}
                                     </div>
                                 </div>
                                 
@@ -130,14 +114,7 @@
                                         <span class="input-icon">
                                             <i data-lucide="hash" style="width:1.25rem;height:1.25rem;"></i>
                                         </span>
-                                        <input 
-                                            type="text" 
-                                            id="accountnumber" 
-                                            name="accountnumber"
-                                            class="form-control-custom"
-                                            placeholder="Enter account number"
-                                            required
-                                        />
+                                        {{form.beneficiary_number}}
                                     </div>
                                 </div>
                                 
@@ -148,14 +125,7 @@
                                         <span class="input-icon">
                                             <i data-lucide="building" style="width:1.25rem;height:1.25rem;"></i>
                                         </span>
-                                        <input 
-                                            type="text" 
-                                            id="bankname" 
-                                            name="bankname"
-                                            class="form-control-custom"
-                                            placeholder="Enter bank name"
-                                            required
-                                        />
+                                        {{form.bank_name}}
                                     </div>
                                 </div>
                                 
@@ -167,17 +137,7 @@
                                             <span class="input-icon">
                                                 <i data-lucide="credit-card" style="width:1.25rem;height:1.25rem;"></i>
                                             </span>
-                                            <select 
-                                                id="Accounttype" 
-                                                name="Accounttype"
-                                                class="form-select-custom"
-                                                required
-                                            >
-                                                <option value="Online Banking">Online Banking</option>
-                                                <option value="Joint Account">Joint Account</option>
-                                                <option value="Checking">Checking</option>
-                                                <option value="Savings Account">Savings Account</option>
-                                            </select>
+                                            {{form.transfer_type}}
                                         </div>
                                         <span class="select-chevron">
                                             <i data-lucide="chevron-down" style="width:1.25rem;height:1.25rem;"></i>
@@ -205,14 +165,7 @@
                                     <span class="input-icon textarea-icon">
                                         <i data-lucide="message-square" style="width:1.25rem;height:1.25rem;"></i>
                                     </span>
-                                    <textarea 
-                                        id="Description" 
-                                        name="Description"
-                                        class="form-control-custom"
-                                        placeholder="Enter transaction description or purpose of payment"
-                                        rows="3"
-                                        style="padding-top: 0.875rem; padding-bottom: 0.875rem; min-height: 100px; resize: vertical;"
-                                    ></textarea>
+                                    {{form.description}}
                                 </div>
                             </div>
 
@@ -223,15 +176,7 @@
                                     <span class="input-icon">
                                         <i data-lucide="lock" style="width:1.25rem;height:1.25rem;"></i>
                                     </span>
-                                    <input 
-                                        type="password" 
-                                        id="pin" 
-                                        name="pin"
-                                        class="form-control-custom"
-                                        placeholder="Enter your transaction PIN"
-                                        required
-                                        autocomplete="off"
-                                    />
+                                    {{form.transfer_pin}}
                                     <button type="button" class="password-toggle" id="pinToggle" aria-label="Toggle PIN visibility">
                                         <i data-lucide="eye" id="pinToggleIcon" style="width:1.25rem;height:1.25rem;"></i>
                                     </button>
@@ -267,7 +212,7 @@
 
                     <!-- Action Buttons -->
                     <div class="button-group">
-                        <button type="submit" class="btn-preview" id="previewBtn" disabled>
+                        <button type="submit" class="btn-preview">
                             <span class="btn-content">
                                 <i data-lucide="eye" style="width:1.25rem;height:1.25rem;"></i>
                                 Preview Transfer
@@ -370,5 +315,14 @@
     </div>
 </div>
 
+<script>
+    // ===== PIN Toggle =====
+    const pinInput = document.getElementById('id_transfer_pin');
+    document.getElementById('pinToggle')?.addEventListener('click', function () {
+        const isPassword = pinInput.type === 'password';
+        pinInput.type = isPassword ? 'text' : 'password';
+        document.getElementById('pinToggleIcon').setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    });
+</script>
 {% endblock %}
-

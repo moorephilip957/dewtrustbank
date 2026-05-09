@@ -1,0 +1,142 @@
+Deposit Flow
+
+    User Deposits
+        ↓
+    Deposit Model Created
+        ↓
+    Admin Confirms
+        ↓
+    User Balance Updated
+        ↓
+    TransactionHistory Created
+
+
+Transfer Flow
+
+    User Makes Transfer
+        ↓
+    Validate PIN
+        ↓
+    Check Balance
+        ↓
+    Debit Account
+        ↓
+    Create Transfer Record
+        ↓
+    Create TransactionHistory
+
+
+NEVER:
+
+delete transactions
+edit completed transactions
+store balance calculations only in frontend
+
+ALWAYS:
+
+use database transactions
+lock balance updates
+validate transfer pin securely
+9. VERY IMPORTANT — Use Atomic Transactions
+
+Critical for banking systems.
+
+from django.db import transaction
+
+with transaction.atomic():
+
+    account.balance -= amount
+    account.save()
+
+    TransactionHistory.objects.create(
+        user=user,
+        transaction_type="local_transfer",
+        amount=amount,
+        status="success"
+    )
+
+This prevents broken balances.
+
+
+How Transfers Affect Both
+Instant Transfer
+available_balance -= amount
+ledger_balance -= amount
+Pending Withdrawal
+available_balance -= amount
+ledger_balance stays same
+
+When completed:
+
+ledger_balance -= amount
+
+
+6. IMPORTANT
+
+Forms should ONLY:
+
+validate
+clean data
+
+They should NOT:
+
+debit balances
+create ledger entries
+send money
+
+Do those in:
+
+services.py
+utils.py
+processors.py
+
+Example:
+
+process_local_transfer(
+    user=request.user,
+    form=form
+)
+
+
+How It Looks in Your Table UI
+Amount	Type	Status	Reference ID	Description	Direction	Created	Action
+500	Deposit	Success	TXN123	Wallet funding	Credit	2026-05-09	View
+200	Transfer	Pending	TXN124	Rent payment	Debit	2026-05-09	View
+
+
+views.py        → receive request only
+forms.py        → validation only
+services.py     → business logic coordinator
+processors.py   → money movement engine (core logic)
+utils.py        → helpers (reference, validation, etc.)
+
+
+6. What Users Will Experience
+SUCCESS
+redirected to success page
+shows receipt
+PENDING
+shows “processing / awaiting approval”
+maybe admin review
+FAILED
+shows error reason
+no balance change (or rollback already handled)
+🔥 Why This Design is Strong
+
+✔ clean separation of logic
+✔ reusable for ALL transfer types
+✔ no duplicated redirect logic
+✔ scalable for banking workflows
+✔ easy to add new states (reversed, flagged, etc.)
+
+Optional Upgrade (VERY POWERFUL)
+
+Instead of string statuses, use constants:
+
+class TransactionResultStatus:
+    SUCCESS = "success"
+    FAILED = "failed"
+    PENDING = "pending"
+
+
+    Form → View → Service → Processor → Result → Redirect Page

@@ -7,4 +7,5 @@ urlpatterns = [
     path('', include('frontend.urls', namespace="frontend")),
     path('auth/', include('account.urls', namespace="account")),
     path('account/', include('customer.urls', namespace="customer")),
+    path('transaction/', include('transaction.urls', namespace="transaction")),
 ]
