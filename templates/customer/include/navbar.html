@@ -1,3 +1,5 @@
+{% load humanize %}
+
 <!-- Header -->
 <header class="header">
     <div class="d-flex align-items-center justify-content-between">
@@ -25,7 +27,7 @@
             <!-- Balance (Desktop) -->
             <div class="d-none d-md-flex align-items-center px-2 py-1 bg-primary-light rounded-pill">
                 <i class="bi bi-wallet me-1 text-dark"></i>
-                <span class="text-sm fw-medium text-dark">${{request.user.bank_account.balance}}</span>
+                <span class="text-sm fw-medium text-dark">${{request.user.bank_account.balance|intcomma}}</span>
             </div>
 
             <!-- Notifications -->

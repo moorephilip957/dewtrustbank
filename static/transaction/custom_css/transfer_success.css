@@ -1,0 +1,147 @@
+:root {
+    --primary-color: #0147E1;
+    --secondary-color: #FFC107;
+    --accent-color: #ec4899;
+    --text-color: #828282;
+}
+
+.success-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(1, 71, 225, 0.1);
+    overflow: hidden;
+}
+
+.success-header {
+    background: linear-gradient(135deg, #0147E1, #0039b3);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    position: relative;
+}
+
+.success-icon-circle {
+    width: 72px;
+    height: 72px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    animation: popIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0) rotate(-30deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0);
+    }
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: var(--text-color);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detail-value {
+    font-weight: 600;
+    color: #111;
+    font-size: 0.95rem;
+}
+
+.badge-success-custom {
+    background: #ecfdf5;
+    color: #059669;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.amount-display {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #0147E1;
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.btn-primary-custom {
+    background: var(--primary-color);
+    border: none;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.btn-primary-custom:hover {
+    background: #0039b3;
+    box-shadow: 0 6px 20px rgba(1, 71, 225, 0.25);
+}
+
+.btn-outline-custom {
+    border: 1px solid #e5e7eb;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 500;
+    color: #4b5563;
+}
+
+.btn-outline-custom:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    top: -10px;
+    z-index: 9999;
+    animation: confettiFall linear forwards;
+    pointer-events: none;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .success-header {
+        padding: 2rem 1rem;
+    }
+
+    .amount-display {
+        font-size: 2rem;
+    }
+}

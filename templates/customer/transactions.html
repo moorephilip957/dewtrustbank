@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 {% load static %}
-
+{% load humanize %}
 
 {% block styles %}
 <link rel="stylesheet" href="{% static 'customer/custom_css/transactions.css' %}">
@@ -9,7 +9,7 @@
 {% block content %}
 
 <!-- Page Content -->
-<div class="container-fluid px-3 px-md-4 py-4">
+<div class="container-fluid px-3 px-md-4 py-4 mb-5">
     
     <!-- Debug Panel (Hidden by Default - Toggle with Ctrl+Shift+D) -->
     <div class="alert alert-info d-none mb-4" id="debugPanel" role="alert">
@@ -64,18 +64,74 @@
             <table class="table table-hover mb-0">
                 <thead>
                     <tr>
-                        <th scope="col" style="width: 40px;"></th>
+                        <!-- <th scope="col" style="width: 40px;"></th> -->
                         <th scope="col">Amount</th>
                         <th scope="col">Type</th>
                         <th scope="col">Status</th>
                         <th scope="col">Reference ID</th>
                         <th scope="col">Description</th>
-                        <th scope="col">Scope</th>
+                        <th scope="col">Direction</th>
                         <th scope="col">Created</th>
-                        <th scope="col">Action</th>
+                        <!-- <th scope="col">Action</th> -->
                     </tr>
                 </thead>
                 <tbody id="transactionsBody">
+                    
+                    {% for transaction in transactions %}
+                    <tr>
+                        <!-- <td><i class="bi bi-chevron-right text-muted"></i></td> -->
+                        <td>
+                            <span class="
+                                {% if transaction.direction == 'credit' %}
+                                    amount-credit
+                                {% else %}
+                                    amount-debit
+                                {% endif %}
+                            ">
+                                {% if transaction.direction == 'credit' %}
+                                    +
+                                {% else %}
+                                    -
+                                {% endif %}
+
+                                {{ transaction.user.bank_account.get_currency_symbol }}
+                                {{ transaction.amount|intcomma }}
+                            </span>
+                        </td>
+                        <td>{{ transaction.get_transaction_type_display }}</td>
+                        <td>
+                            <span class="
+                                {% if transaction.status == 'success' %}
+                                    badge-completed
+                                {% elif transaction.status == 'pending' %}
+                                    badge-pending
+                                {% else %}
+                                    badge-failed
+                                {% endif %}
+                            ">
+
+                                {% if transaction.status == 'success' %}
+                                    <i class="bi bi-check-circle-fill"></i>
+
+                                {% elif transaction.status == 'pending' %}
+                                    <i class="bi bi-clock-fill"></i>
+
+                                {% else %}
+                                    <i class="bi bi-x-circle-fill"></i>
+                                {% endif %}
+
+                                {{ transaction.get_status_display }}
+                            </span>
+                        </td>
+                        <td><code>{{transaction.reference}}</code></td>
+                        <td>{{transaction.description}}</td>
+                        <td>{{transaction.direction}}</td>
+                        <td>{{transaction.created_at}}</td>
+                        <!-- <td>
+                            <button class="btn btn-sm btn-outline-secondary">View</button>
+                        </td> -->
+                    </tr>
+                    {% empty %}
                     <!-- Empty State (shown when no transactions) -->
                     <tr>
                         <td colspan="9" class="empty-state">
@@ -84,21 +140,7 @@
                             <p class="empty-text">Try adjusting your search or filter parameters</p>
                         </td>
                     </tr>
-                    
-                    Example transaction row (uncomment and loop in Django):
-                    <tr>
-                        <td><i class="bi bi-chevron-right text-muted"></i></td>
-                        <td><span class="amount-credit">+$1,250.00</span></td>
-                        <td>Deposit</td>
-                        <td><span class="badge-completed"><i class="bi bi-check-circle-fill"></i> Completed</span></td>
-                        <td><code>TXN-2026-001234</code></td>
-                        <td>Wire transfer from John Doe</td>
-                        <td>International</td>
-                        <td>May 5, 2026</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-secondary">View</button>
-                        </td>
-                    </tr>
+                    {% endfor %}
                    
                 </tbody>
             </table>

@@ -1,0 +1,262 @@
+{% extends '../customer/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'transaction/custom_css/wire_transfer.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4 px-3 px-md-4">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <div>
+            <h1 class="h4 fw-bold text-dark mb-1">International Wire Transfer</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 small">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'customer:dashboard' %}" class="text-decoration-none text-muted">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active text-secondary">
+                        Wire Transfer
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm overflow-hidden" style="max-width: 900px; margin:auto;">
+
+        <!-- Header -->
+        <div class="card-header bg-gradient-primary border-0 text-white text-center py-5 px-4">
+            <div>
+                <div class="bg-white bg-opacity-20 d-inline-flex align-items-center justify-content-center rounded-circle p-3 mb-3">
+                    <i data-lucide="globe" class="text-white" style="width:28px;height:28px;"></i>
+                </div>
+
+                <h2 class="h4 fw-bold mb-1">International Wire Transfer</h2>
+
+                <p class="mb-0 opacity-75 small">
+                    Funds will reflect in the Beneficiary Account within 72 hours.
+                </p>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="card-body p-4 p-md-5">
+
+            <form id="internationalTransferForm" method="post">
+
+                {% csrf_token %}
+
+                <!-- Amount -->
+                <div class="mb-4 bg-light rounded-3 p-4 border">
+                    <label for="amount" class="form-label fw-medium text-dark mb-2">
+                        Amount to Transfer
+                    </label>
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text bg-white border-end-0 fw-bold">$</span>
+
+                        {{form.amount}}
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <small class="text-muted">
+                            Available balance: <strong>{{request.user.bank_account.get_currency_symbol}} {{request.user.bank_account.balance|intcomma}}</strong>
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Wire Transfer Fields -->
+                <div id="wireFields" class="method-fields">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">
+                                Beneficiary Account Name
+                            </label>
+
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i data-lucide="user" style="width:16px;height:16px;"></i>
+                                </span>
+
+                                {{form.beneficiary_name}}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">
+                                Beneficiary Account Number
+                            </label>
+
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i data-lucide="hash" style="width:16px;height:16px;"></i>
+                                </span>
+
+                                {{form.beneficiary_number}}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">
+                                Bank Name
+                            </label>
+
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i data-lucide="building" style="width:16px;height:16px;"></i>
+                                </span>
+
+                                {{form.bank_name}}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">
+                                Bank Address
+                            </label>
+
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i data-lucide="map-pin" style="width:16px;height:16px;"></i>
+                                </span>
+
+                                {{form.bank_address}}
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-medium">
+                                Account Type
+                            </label>
+
+                            <select class="form-select" name="Accounttype">
+                                <option>Online Banking</option>
+                                <option>Joint Account</option>
+                                <option>Checking</option>
+                                <option>Savings Account</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-medium">
+                                Country
+                            </label>
+
+                            {{form.country}}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-medium">
+                                Swift Code
+                            </label>
+
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i data-lucide="code" style="width:16px;height:16px;"></i>
+                                </span>
+
+                                {{form.swift_code}}
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-medium">
+                                IBAN Number
+                            </label>
+
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i data-lucide="credit-card" style="width:16px;height:16px;"></i>
+                                </span>
+
+                                {{form.iban_number}}
+                            </div>
+
+                            <small class="text-muted">
+                                International Bank Account Number - Format varies by country
+                            </small>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- PIN -->
+                <div class="mb-4 mt-4">
+
+                    <label class="form-label fw-medium">
+                        Transaction PIN
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+                            <i data-lucide="key" style="width:16px;height:16px;"></i>
+                        </span>
+
+                        {{form.transfer_pin}}
+
+                        <button class="btn btn-outline-secondary"
+                                type="button"
+                                id="togglePin">
+
+                            <i data-lucide="eye"
+                               style="width:16px;height:16px;"
+                               id="pinIcon"></i>
+                        </button>
+                    </div>
+
+                    <small class="text-muted">
+                        Your transaction PIN, not your login password
+                    </small>
+                </div>
+
+                <!-- Note -->
+                <div class="mb-4">
+                    <label class="form-label fw-medium">
+                        Note (Optional)
+                    </label>
+
+                    {{form.description}}
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-end mt-4">
+
+                    <a href="{% url 'customer:dashboard' %}" class="btn btn-outline-secondary px-4">
+                        Cancel
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary px-5">
+                        Send
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Security -->
+    <div class="text-center text-muted small mt-4"
+         style="max-width: 600px; margin: 1rem auto;">
+
+        <i data-lucide="shield-check"
+           class="me-1 text-success"
+           style="width:14px;height:14px;"></i>
+
+        All transfers are encrypted and processed securely.
+        Never share your PIN with anyone.
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'transaction/custom_js/wire_transfer.js' %}"></script>
+{% endblock %}

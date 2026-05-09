@@ -308,15 +308,15 @@
                                         <div class="visa-logo-accent"></div>
                                     </div>
                                 </div>
-                                <div class="cc-number">4916 8523 7401 9362</div>
+                                <div class="cc-number">{{card.card_number}}</div>
                                 <div class="cc-details">
                                     <div>
                                         <div class="cc-label">Card Holder</div>
-                                        <div class="cc-name">JANE SMITH</div>
+                                        <div class="cc-name">{{card.card_holder_name}}</div>
                                     </div>
                                     <div class="cc-exp">
                                         <div class="cc-label">Expires</div>
-                                        <div>11/27</div>
+                                        <div>{{ card.expiry_date|date:"m/y"|default:"12/25" }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -324,10 +324,10 @@
                             <div class="cc-face cc-back">
                                 <div class="cc-mag-strip"></div>
                                 <div>
-                                    <div class="cc-signature">JANE SMITH</div>
+                                    <div class="cc-signature">{{card.card_holder_name}}</div>
                                     <div class="d-flex align-items-center gap-2">
                                         <span class="cc-label mb-0">CVV</span>
-                                        <span class="cc-cvv">315</span>
+                                        <span class="cc-cvv">{{card.cvv}}</span>
                                     </div>
                                 </div>
                                 <div class="cc-back-footer">

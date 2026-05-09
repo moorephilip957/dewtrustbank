@@ -3,7 +3,17 @@ from .processors import TransactionProcessor
 from .models import TransactionHistory
 
 
-def create_transaction(user, account, amount, transaction_type, direction, description=""):
+def create_transaction(
+    user,
+    account,
+    amount,
+    transaction_type,
+    direction,
+    bank_name,
+    beneficiary_name="",
+    beneficiary_number="",
+    description=""
+):
 
     transaction_obj = TransactionHistory.objects.create(
         user=user,
@@ -12,7 +22,12 @@ def create_transaction(user, account, amount, transaction_type, direction, descr
         direction=direction,
         description=description,
         reference=generate_reference(),
-        status="pending"
+        status="pending",
+
+        # Beneficiary Details
+        beneficiary_name=beneficiary_name,
+        beneficiary_number=beneficiary_number,
+        bank_name=bank_name,
     )
 
     result = TransactionProcessor.process(

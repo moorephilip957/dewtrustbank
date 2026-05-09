@@ -182,7 +182,9 @@ class InternationalTransferForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={
                 "class": "form-control my-input",
-                "placeholder": "Transfer PIN"
+                "placeholder": "Enter 6-10 digit PIN",
+                "minlength": "4",
+                "maxlength": "10"
             }
         )
     )
@@ -207,57 +209,68 @@ class InternationalTransferForm(forms.ModelForm):
 
             "beneficiary_name": forms.TextInput(
                 attrs={
-                    "class": "form-control my-input"
+                    "class": "form-control my-input",
+                    "placeholder": "Enter beneficiary's full name"
                 }
             ),
 
             "beneficiary_number": forms.TextInput(
                 attrs={
-                    "class": "form-control my-input"
+                    "class": "form-control my-input",
+                    "placeholder": "Enter account number"
                 }
             ),
 
             "bank_name": forms.TextInput(
                 attrs={
-                    "class": "form-control my-input"
+                    "class": "form-control my-input",
+                    "placeholder": "Enter bank name"
                 }
             ),
 
             "bank_address": forms.Textarea(
                 attrs={
                     "class": "form-control my-input",
-                    "rows": 3
+                    "rows": 1,
+                    "placeholder": "Enter bank address"
                 }
             ),
 
             "country": forms.TextInput(
                 attrs={
-                    "class": "form-control my-input"
+                    "class": "form-control my-input",
+                    "placeholder": "Enter beneficiary country"
                 }
             ),
 
             "swift_code": forms.TextInput(
                 attrs={
-                    "class": "form-control my-input"
+                    "class": "form-control my-input",
+                    "placeholder": "SWIFT/BIC"
                 }
             ),
 
             "iban_number": forms.TextInput(
                 attrs={
-                    "class": "form-control my-input"
+                    "class": "form-control my-input",
+                    "placeholder": "Enter IBAN number"
                 }
             ),
 
             "amount": forms.NumberInput(
                 attrs={
-                    "class": "form-control my-input"
+                    "class": "form-control border-start-0 ps-0 fw-bold",
+                    "placeholder": "0.00",
+                    "min": "1",
+                    "step": "0.01",
                 }
             ),
 
             "description": forms.Textarea(
                 attrs={
                     "class": "form-control my-input",
-                    "rows": 3
+                    "rows": 3,
+                    "placeholder": "Optional payment description"
                 }
             )
         }
@@ -284,7 +297,7 @@ class InternationalTransferForm(forms.ModelForm):
 
         if pin and not check_password(
             pin,
-            account.transfer_pin
+            account.transaction_pin
         ):
 
             raise forms.ValidationError(

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Failed</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f2f5;
+            padding: 40px 20px;
+        }
+
+        .bg-wrapper {
+            position: fixed; inset: 0; z-index: -1;
+            background: linear-gradient(135deg, #0f0c29, #2a0f14, #24243e);
+            overflow: hidden;
+        }
+        .bg-wrapper .circle {
+            position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.35;
+            animation: float 10s ease-in-out infinite alternate;
+        }
+        .bg-wrapper .circle:nth-child(1) { width: 450px; height: 450px; background: #ef4444; top: -10%; left: -5%; animation-delay: 0s; }
+        .bg-wrapper .circle:nth-child(2) { width: 350px; height: 350px; background: #f43f5e; bottom: -5%; right: -5%; animation-delay: 3s; }
+        .bg-wrapper .circle:nth-child(3) { width: 250px; height: 250px; background: #b91c1c; top: 60%; left: 40%; animation-delay: 5s; }
+        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, -30px) scale(1.08); } }
+
+        .tx-card {
+            position: relative; background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px; padding: 48px 40px;
+            max-width: 480px; width: 100%; color: #fff;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            animation: cardEntry 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards, shake 0.5s 0.8s ease-in-out;
+            opacity: 0; transform: translateY(40px) scale(0.96);
+        }
+        @keyframes cardEntry { to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+            20%, 40%, 60%, 80% { transform: translateX(4px); }
+        }
+
+        .icon-wrapper {
+            width: 96px; height: 96px; margin: 0 auto 28px; position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .icon-wrapper .ring {
+            position: absolute; inset: 0; border-radius: 50%;
+            border: 3px solid rgba(239, 68, 68, 0.2);
+            border-top-color: #ef4444; border-right-color: #ef4444;
+            animation: spin 1.5s linear infinite;
+        }
+        .icon-wrapper .ring:nth-child(2) { inset: 8px; border-color: rgba(239, 68, 68, 0.1); border-bottom-color: #f43f5e; animation-direction: reverse; animation-duration: 2.5s; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .icon-wrapper i { font-size: 44px; color: #ef4444; z-index: 2; animation: popIn 0.5s 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        .title {
+            text-align: center; font-size: 1.6rem; font-weight: 700; margin-bottom: 4px;
+            background: linear-gradient(135deg, #ffffff, #fecaca);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .subtitle { text-align: center; font-size: 0.9rem; color: rgba(255, 255, 255, 0.5); margin-bottom: 32px; font-weight: 400; }
+
+        .error-box {
+            background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 12px; padding: 12px 16px; margin-bottom: 32px;
+            display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: #fca5a5;
+        }
+        .error-box i { color: #ef4444; font-size: 1rem; }
+
+        .amount { text-align: center; margin-bottom: 36px; }
+        .amount .currency { font-size: 1.4rem; font-weight: 600; vertical-align: top; color: #ef4444; line-height: 1.8; }
+        .amount .value {
+            font-size: 3rem; font-weight: 800;
+            background: linear-gradient(135deg, #ef4444, #f43f5e);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .details-list { list-style: none; padding: 0; margin: 0; }
+        .details-list .detail-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        .details-list .detail-item:last-child { border-bottom: none; }
+        .details-list .detail-item:nth-child(1) { animation-delay: 0.4s; }
+        .details-list .detail-item:nth-child(2) { animation-delay: 0.5s; }
+        .details-list .detail-item:nth-child(3) { animation-delay: 0.6s; }
+        .details-list .detail-item:nth-child(4) { animation-delay: 0.7s; }
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(12px); } 100% { opacity: 1; transform: translateY(0); } }
+
+        .detail-item .label { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: rgba(255, 255, 255, 0.5); font-weight: 400; }
+        .detail-item .label i { font-size: 1rem; color: rgba(255, 255, 255, 0.35); }
+        .detail-item .val { font-size: 0.9rem; font-weight: 600; color: #fff; text-align: right; }
+        .detail-item .val.muted { color: rgba(255, 255, 255, 0.55); font-weight: 400; }
+
+        .badge-failed {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: rgba(239, 68, 68, 0.15); color: #ef4444;
+            padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+        }
+        .badge-failed i { font-size: 0.7rem; }
+
+        .btn-group-custom { display: flex; gap: 12px; margin-top: 36px; animation: fadeUp 0.5s 1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        .btn-retry {
+            flex: 1; padding: 14px; border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05); color: #fff; border-radius: 14px;
+            font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.3s ease;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-retry:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.25); transform: translateY(-2px); color: #fff; }
+        .btn-support {
+            flex: 1; padding: 14px; border: none;
+            background: linear-gradient(135deg, #ef4444, #f43f5e);
+            color: #fff; border-radius: 14px; font-size: 0.9rem; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-support:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(239, 68, 68, 0.35); color: #fff; }
+
+        @media (max-width: 576px) {
+            .tx-card { padding: 36px 24px; border-radius: 20px; }
+            .amount .value { font-size: 2.4rem; }
+            .title { font-size: 1.3rem; }
+            .btn-group-custom { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-wrapper">
+        <div class="circle"></div><div class="circle"></div><div class="circle"></div>
+    </div>
+
+    <div class="tx-card">
+        <div class="icon-wrapper">
+            <div class="ring"></div><div class="ring"></div>
+            <i class="bi bi-x-lg"></i>
+        </div>
+        <h2 class="title">Transaction Failed</h2>
+        <p class="subtitle">We couldn't process your payment</p>
+
+        <div class="error-box">
+            <i class="bi bi-exclamation-circle-fill"></i>
+            <span>Insufficient funds. Please check your account balance and try again.</span>
+        </div>
+
+        <div class="amount">
+            <span class="currency">$</span><span class="value">950.00</span>
+        </div>
+
+        <ul class="details-list">
+            <li class="detail-item">
+                <span class="label"><i class="bi bi-clock"></i> Date & Time</span>
+                <span class="val muted">May 10, 2026 • 4:08 PM</span>
+            </li>
+            <li class="detail-item">
+                <span class="label"><i class="bi bi-hash"></i> Reference</span>
+                <span class="val">TXN-3D8F1C0A7E</span>
+            </li>
+            <li class="detail-item">
+                <span class="label"><i class="bi bi-person"></i> Sent To</span>
+                <span class="val">Elena Rodriguez</span>
+            </li>
+            <li class="detail-item">
+                <span class="label"><i class="bi bi-ban"></i> Status</span>
+                <span class="val">
+                    <span class="badge-failed">
+                        <i class="bi bi-circle-fill"></i> Declined
+                    </span>
+                </span>
+            </li>
+        </ul>
+
+        <div class="btn-group-custom">
+            <button class="btn-retry" type="button"><i class="bi bi-arrow-clockwise"></i> Retry Payment</button>
+            <button class="btn-support" type="button"><i class="bi bi-headset"></i> Contact Support</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

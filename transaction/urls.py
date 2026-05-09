@@ -5,7 +5,8 @@ app_name = 'transaction'
 
 urlpatterns = [
     path('local-transfer/', views.local_transfer, name='local_transfer'),
-    # path("transfer/success/<uuid:tx_id>/", views.success_view, name="transfer_success"),
-    # path("transfer/pending/<uuid:tx_id>/", views.pending_view, name="transfer_pending"),
-    # path("transfer/failed/<uuid:tx_id>/", views.failed_view, name="transfer_failed"),
+    path('wire-transfer/', views.wire_transfer, name='wire_transfer'),
+    path("transfer/success/<int:tx_id>/", views.transfer_success, name="transfer_success"),
+    path("transfer/pending/<int:tx_id>/", views.transfer_pending, name="transfer_pending"),
+    path("transfer/failed/<int:tx_id>/", views.transfer_failed, name="transfer_failed"),
 ]

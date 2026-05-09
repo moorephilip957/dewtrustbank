@@ -48,6 +48,7 @@ class UserBankAccountAdmin(admin.ModelAdmin):
         'account_type',
         'currency',
         'balance',
+        'transaction_status',
         'is_active',
         'created_at',
     )

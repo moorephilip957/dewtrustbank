@@ -1,0 +1,74 @@
+{% extends '../customer/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'transaction/custom_css/transfer_success.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4 px-3 px-md-4" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; margin-bottom: 100px;">
+    <div style="max-width: 520px; width: 100%;">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item"><a href="{% url 'customer:dashboard' %}" class="text-decoration-none text-muted">Dashboard</a></li>
+                <li class="breadcrumb-item active text-secondary">Transfer Complete</li>
+            </ol>
+        </nav>
+
+        <!-- Card -->
+        <div class="card border-0 success-card" id="successCard">
+            <div class="success-header">
+                <div class="success-icon-circle">
+                    <i data-lucide="check" class="text-white" style="width:32px; height:32px;"></i>
+                </div>
+                <h2 class="h4 fw-bold text-white mb-1">Transaction Successful</h2>
+                <p class="mb-0 opacity-75 small text-white-50">Your payment has been processed securely.</p>
+            </div>
+
+            <div class="p-4 p-md-5">
+                <div class="amount-display">{{request.user.bank_account.get_currency_symbol}} {{transaction.amount|intcomma}}</div>
+
+                <div class="detail-row">
+                    <span class="detail-label"><i data-lucide="clock" style="width:16px; height:16px; color: var(--text-color);"></i> Date & Time</span>
+                    <span class="detail-value" style="color: var(--text-color);">{{ transaction.created_at|date:"M d, Y • g:i A" }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label"><i data-lucide="hash" style="width:16px; height:16px; color: var(--text-color);"></i> Reference</span>
+                    <span class="detail-value">{{ transaction.reference }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label"><i data-lucide="user" style="width:16px; height:16px; color: var(--text-color);"></i> Sent To</span>
+                    <span class="detail-value">{{ transaction.beneficiary_name }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label"><i data-lucide="building-2" style="width:16px; height:16px; color: var(--text-color);"></i> Bank</span>
+                    <span class="detail-value" style="color: var(--text-color);">{{ transaction.bank_name }}
+                    ••••
+                    {{ transaction.beneficiary_number|slice:"-4:" }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label"><i data-lucide="check-circle" style="width:16px; height:16px; color: #059669;"></i> Status</span>
+                    <span class="detail-value"><span class="badge-success-custom"><i data-lucide="dot" style="width:12px; height:12px;"></i>{{ transaction.get_status_display }}</span></span>
+                </div>
+
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-end mt-4">
+                    <button class="btn btn-outline-custom px-4"><i data-lucide="download" class="me-2" style="width:16px; height:16px;"></i> Download Receipt</button>
+                    <a href="{% url 'customer:dashboard' %}" class="btn btn-primary-custom text-white px-4"><i data-lucide="home" class="me-2" style="width:16px; height:16px;"></i> Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center text-muted small mt-4 mx-auto" style="max-width: 500px;">
+            <i data-lucide="shield-check" class="me-1 text-success" style="width:14px; height:14px;"></i>
+            This transaction is secured and encrypted. You will receive a confirmation email shortly.
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'transaction/custom_js/transfer_success.js' %}"></script>
+{% endblock %}

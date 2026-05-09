@@ -70,6 +70,24 @@ class TransactionHistory(models.Model):
         default=0
     )
 
+    beneficiary_name = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True
+    )
+
+    beneficiary_number = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True
+    )
+
+    bank_name = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def generate_reference(self):
