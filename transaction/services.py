@@ -18,7 +18,7 @@ def create_transaction(user, account, amount, transaction_type, direction, descr
     result = TransactionProcessor.process(
         account=account,
         amount=amount,
-        user_status=user.status,
+        user_status=account.transaction_status,
         transaction_obj=transaction_obj
     )
 

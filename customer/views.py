@@ -6,6 +6,7 @@ from django.contrib import messages
 
 from .models import UserBankAccount, DebitCard
 from .forms import DebitCardApplicationForm
+from transaction.models import TransactionHistory
 
 
 @login_required
@@ -25,15 +26,17 @@ def dashboard(request):
 @login_required
 def transaction_list(request):
 
+    transactions = TransactionHistory.objects.filter(
+        user=request.user
+    ).order_by('-created_at')
+
     return render(
         request,
         'customer/transactions.html',
+        {
+            'transactions': transactions
+        }
     )
-
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-
-from .models import DebitCard
 
 
 @login_required

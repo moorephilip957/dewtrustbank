@@ -140,3 +140,11 @@ class TransactionResultStatus:
 
 
     Form → View → Service → Processor → Result → Redirect Page
+
+
+    from customer.models import UserBankAccount
+    from decimal import Decimal DTB0247631882
+
+account = UserBankAccount.objects.get(account_number="DTB0247631882")
+account.balance += Decimal("500000.00")
+account.save()

@@ -33,7 +33,7 @@ class TransactionProcessor:
 
             with transaction.atomic():
 
-                account.available_balance -= amount
+                account.balance -= amount
                 account.save()
 
                 transaction_obj.status = "pending"
@@ -48,7 +48,7 @@ class TransactionProcessor:
         # 🟢 SUCCESS USER
         if user_status == "success":
 
-            if account.available_balance < amount:
+            if account.balance < amount:
 
                 return TransactionResult(
                     status="failed",
@@ -58,8 +58,8 @@ class TransactionProcessor:
 
             with transaction.atomic():
 
-                account.available_balance -= amount
-                account.ledger_balance -= amount
+                account.balance -= amount
+                # account.ledger_balance -= amount
                 account.save()
 
                 transaction_obj.status = "success"

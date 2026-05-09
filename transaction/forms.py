@@ -60,7 +60,6 @@ class LocalTransferForm(forms.ModelForm):
                 "class": "form-control-custom",
                 "placeholder": "Enter your transfer PIN",
                 "autocomplete": "off",
-                "id": "pin",
             }
         )
     )
@@ -151,7 +150,7 @@ class LocalTransferForm(forms.ModelForm):
             )
 
         # CHECK BALANCE
-        if amount and amount > account.available_balance:
+        if amount and amount > account.balance:
 
             raise forms.ValidationError(
                 "Insufficient balance."
@@ -160,7 +159,7 @@ class LocalTransferForm(forms.ModelForm):
         # CHECK PIN
         if pin and not check_password(
             pin,
-            account.transfer_pin
+            account.transaction_pin
         ):
 
             raise forms.ValidationError(
@@ -277,7 +276,7 @@ class InternationalTransferForm(forms.ModelForm):
 
         account = UserBankAccount.objects.get(user=self.user)
 
-        if amount and amount > account.available_balance:
+        if amount and amount > account.balance:
 
             raise forms.ValidationError(
                 "Insufficient balance."

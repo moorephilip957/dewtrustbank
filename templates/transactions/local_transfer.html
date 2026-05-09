@@ -8,7 +8,7 @@
 
 {% block content %}
 <!-- MAIN CONTENT AREA -->
-<div class="container-fluid py-4 px-3 px-md-4">
+<div class="container-fluid py-4 px-3 px-md-4 mb-5">
     
     <!-- Page Header with Breadcrumbs -->
     <div class="d-flex flex-column mb-5 animate-fadeIn" style="animation-delay: 0.05s;">
@@ -49,9 +49,12 @@
 
             <!-- Form Body -->
             <div class="form-card-body">
-                <form id="transferForm" novalidate>
+                <form id="transferForm" method="post">
 
                     {% csrf_token %}
+
+                    {% include "../components/form_errors.html" %}
+                    {% include "../components/messages.html" %}
 
                     <!-- Balance Card -->
                     <div class="balance-card">
@@ -66,15 +69,16 @@
                         </div>
                         <span class="balance-status">Available</span>
                     </div>
-
+                    
                     <!-- Amount Section -->
                     <div class="mb-4 p-4 rounded-xl border" style="background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%); border-color: var(--border-color);">
-                        <label for="amount" class="form-label">Transfer Amount<span class="text-danger">*</span></label>
+                        <label for="id_amount" class="form-label">Transfer Amount<span class="text-danger">*</span></label>
                         <div class="input-wrapper">
                             <span class="currency-symbol">{{request.user.bank_account.get_currency_symbol}}</span>
                             {{form.amount}}
                             <span class="currency-decimal">.00</span>
                         </div>
+                        
                         
                         <!-- Quick Amount Buttons -->
                         <!-- <div class="d-flex flex-wrap gap-2 mt-3">
@@ -98,7 +102,7 @@
                             <div class="row g-4">
                                 <!-- Account Name -->
                                 <div class="col-md-6">
-                                    <label for="accountname" class="form-label">Beneficiary Account Name<span class="text-danger">*</span></label>
+                                    <label for="id_beneficiary_name" class="form-label">Beneficiary Account Name<span class="text-danger">*</span></label>
                                     <div class="input-wrapper">
                                         <span class="input-icon">
                                             <i data-lucide="user" style="width:1.25rem;height:1.25rem;"></i>
@@ -109,7 +113,7 @@
                                 
                                 <!-- Account Number -->
                                 <div class="col-md-6">
-                                    <label for="accountnumber" class="form-label">Beneficiary Account Number<span class="text-danger">*</span></label>
+                                    <label for="id_beneficiary_number" class="form-label">Beneficiary Account Number<span class="text-danger">*</span></label>
                                     <div class="input-wrapper">
                                         <span class="input-icon">
                                             <i data-lucide="hash" style="width:1.25rem;height:1.25rem;"></i>
@@ -120,7 +124,7 @@
                                 
                                 <!-- Bank Name -->
                                 <div class="col-md-6">
-                                    <label for="bankname" class="form-label">Bank Name<span class="text-danger">*</span></label>
+                                    <label for="id_bank_name" class="form-label">Bank Name<span class="text-danger">*</span></label>
                                     <div class="input-wrapper">
                                         <span class="input-icon">
                                             <i data-lucide="building" style="width:1.25rem;height:1.25rem;"></i>
@@ -131,7 +135,7 @@
                                 
                                 <!-- Account Type -->
                                 <div class="col-md-6">
-                                    <label for="Accounttype" class="form-label">Transfer Type<span class="text-danger">*</span></label>
+                                    <label for="id_transfer_type" class="form-label">Transfer Type<span class="text-danger">*</span></label>
                                     <div class="select-wrapper">
                                         <div class="input-wrapper">
                                             <span class="input-icon">
@@ -160,7 +164,7 @@
                         <div class="beneficiary-card">
                             <!-- Description -->
                             <div class="mb-4">
-                                <label for="Description" class="form-label">Description/Memo</label>
+                                <label for="id_description" class="form-label">Description/Memo</label>
                                 <div class="input-wrapper">
                                     <span class="input-icon textarea-icon">
                                         <i data-lucide="message-square" style="width:1.25rem;height:1.25rem;"></i>
@@ -171,7 +175,7 @@
 
                             <!-- Transaction PIN -->
                             <div>
-                                <label for="pin" class="form-label">Transaction PIN<span class="text-danger">*</span></label>
+                                <label for="id_transfer_pin" class="form-label">Transaction PIN<span class="text-danger">*</span></label>
                                 <div class="input-wrapper">
                                     <span class="input-icon">
                                         <i data-lucide="lock" style="width:1.25rem;height:1.25rem;"></i>
@@ -204,22 +208,22 @@
                             <span class="label">Total</span>
                             <span class="value">$<span id="summaryTotal">0.00</span></span>
                         </div>
-                        <div class="summary-row new-balance">
+                        <!-- <div class="summary-row new-balance">
                             <span>New Balance After Transfer</span>
                             <span>$<span id="newBalance">0.00</span></span>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Action Buttons -->
                     <div class="button-group">
-                        <button type="submit" class="btn-preview">
+                        <button type="submit" class="btn-preview" id="previewBtn" disabled>
                             <span class="btn-content">
                                 <i data-lucide="eye" style="width:1.25rem;height:1.25rem;"></i>
                                 Preview Transfer
                             </span>
                             <span class="btn-glow"></span>
                         </button>
-                        <a href="/dashboard" class="btn-secondary">
+                        <a href="{% url 'customer:dashboard' %}" class="btn-secondary">
                             <i data-lucide="arrow-left" style="width:1.25rem;height:1.25rem;"></i>
                             Back to Dashboard
                         </a>
@@ -315,14 +319,8 @@
     </div>
 </div>
 
-<script>
-    // ===== PIN Toggle =====
-    const pinInput = document.getElementById('id_transfer_pin');
-    document.getElementById('pinToggle')?.addEventListener('click', function () {
-        const isPassword = pinInput.type === 'password';
-        pinInput.type = isPassword ? 'text' : 'password';
-        document.getElementById('pinToggleIcon').setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-    });
-</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'transaction/custom_js/local_transfer.js' %}"></script>
 {% endblock %}
