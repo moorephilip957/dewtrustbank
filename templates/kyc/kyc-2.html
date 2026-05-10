@@ -1012,9 +1012,7 @@
                             
                             <!-- Front Side Upload -->
                             <div class="mb-5">
-                                <label class="form-label d-block mb-3">
-                                    Upload Front Side <span class="required">*</span>
-                                </label>
+                                <label for="frontimg" id="frontUploadPrompt" class="w-100 h-100 d-flex flex-column align-items-center justify-content-center cursor-pointer">
                                 <div class="row g-4 align-items-center">
                                     <div class="col-md-6">
                                         <div class="upload-area" id="frontUploadArea">
@@ -1043,7 +1041,7 @@
                             
                             <!-- Back Side Upload -->
                             <div class="mb-5">
-                                <label class="form-label d-block mb-3">
+                                <label for="backimg" id="backUploadPrompt" class="w-100 h-100 d-flex flex-column align-items-center justify-content-center cursor-pointer">
                                     Upload Back Side <span class="required">*</span>
                                 </label>
                                 <div class="row g-4 align-items-center">
@@ -1074,7 +1072,7 @@
                             
                             <!-- Passport Photo Upload -->
                             <div>
-                                <label class="form-label d-block mb-3">
+                                <label for="photo" id="photoUploadPrompt" class="w-100 h-100 d-flex flex-column align-items-center justify-content-center cursor-pointer">
                                     Upload Passport Photograph <span class="required">*</span>
                                 </label>
                                 <div class="row g-4 align-items-center">
@@ -1145,166 +1143,207 @@
     
     <!-- Vanilla JavaScript for Frontend Interactions -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Hide page loader after content loads
-            setTimeout(() => {
-                const loader = document.getElementById('pageLoader');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hide page loader after content loads
+        setTimeout(() => {
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
                 loader.classList.add('hidden');
                 setTimeout(() => {
                     loader.style.display = 'none';
                 }, 400);
-            }, 800);
-            
-            // Animate form sections on scroll
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-            
-            document.querySelectorAll('.form-section').forEach(section => {
-                observer.observe(section);
+            }
+        }, 800);
+        
+        // Animate form sections on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
             });
-            
-            // Trigger initial animation for first section
-            document.querySelector('.form-section').classList.add('visible');
-            
-            // Document type selection
-            document.querySelectorAll('.doc-type-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    // Remove active class from all cards
-                    document.querySelectorAll('.doc-type-card').forEach(c => {
-                        c.classList.remove('active');
-                    });
-                    
-                    // Add active class to clicked card
-                    this.classList.add('active');
-                    
-                    // Update radio button
-                    const radio = this.querySelector('input[type="radio"]');
-                    if (radio) {
-                        radio.checked = true;
-                    }
+        }, observerOptions);
+        
+        document.querySelectorAll('.form-section').forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Trigger initial animation for first section
+        const firstSection = document.querySelector('.form-section');
+        if (firstSection) firstSection.classList.add('visible');
+        
+        // Document type selection
+        document.querySelectorAll('.doc-type-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove active class from all cards
+                document.querySelectorAll('.doc-type-card').forEach(c => {
+                    c.classList.remove('active');
                 });
+                
+                // Add active class to clicked card
+                this.classList.add('active');
+                
+                // Update radio button
+                const radio = this.querySelector('input[type="radio"]');
+                if (radio) radio.checked = true;
             });
+        });
+        
+        // ✅ FIXED: File upload functionality with proper preview handling
+        function setupFileUpload(uploadAreaId, fileInputId, previewContainerId, previewImgId, fileNameId, removeBtnId, uploadPromptId) {
+            const uploadArea = document.getElementById(uploadAreaId);
+            const fileInput = document.getElementById(fileInputId);
+            const previewContainer = document.getElementById(previewContainerId);
+            const previewImg = document.getElementById(previewImgId);
+            const fileName = document.getElementById(fileNameId);
+            const removeBtn = document.getElementById(removeBtnId);
+            const uploadPrompt = document.getElementById(uploadPromptId); // The label containing upload instructions
             
-            // File upload functionality
-            function setupFileUpload(uploadAreaId, fileInputId, previewId, previewImgId, fileNameId, removeBtnId) {
-                const uploadArea = document.getElementById(uploadAreaId);
-                const fileInput = document.getElementById(fileInputId);
-                const preview = document.getElementById(previewId);
-                const previewImg = document.getElementById(previewImgId);
-                const fileName = document.getElementById(fileNameId);
-                const removeBtn = document.getElementById(removeBtnId);
-                
-                if (!uploadArea || !fileInput) return;
-                
-                // Handle click on upload area
-                uploadArea.addEventListener('click', function(e) {
-                    // Don't trigger if clicking on preview or remove button
-                    if (e.target.closest('.upload-preview') || e.target.closest('.btn-remove')) {
-                        return;
-                    }
-                    fileInput.click();
-                });
-                
-                // Handle file selection
-                fileInput.addEventListener('change', function() {
-                    if (this.files && this.files[0]) {
-                        const file = this.files[0];
-                        
-                        // Validate file size (2MB max)
-                        if (file.size > 2 * 1024 * 1024) {
-                            alert('File size exceeds 2MB limit. Please choose a smaller file.');
-                            this.value = '';
-                            return;
-                        }
-                        
-                        // Display file name
-                        fileName.textContent = file.name;
-                        
-                        // Check if file is an image
-                        if (file.type.match('image.*')) {
-                            const reader = new FileReader();
-                            
-                            reader.onload = function(e) {
-                                previewImg.src = e.target.result;
-                                preview.classList.add('active');
-                                uploadArea.classList.add('d-none');
-                            };
-                            
-                            reader.readAsDataURL(file);
-                        } else {
-                            // For non-image files, just show filename
-                            preview.classList.add('active');
-                            uploadArea.classList.add('d-none');
-                        }
-                    }
-                });
-                
-                // Handle file removal
-                removeBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    // Reset file input
-                    fileInput.value = '';
-                    
-                    // Reset preview
-                    previewImg.src = '';
-                    fileName.textContent = '';
-                    preview.classList.remove('active');
-                    uploadArea.classList.remove('d-none');
-                });
-                
-                // Handle drag and drop
-                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                    uploadArea.addEventListener(eventName, function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }, false);
-                });
-                
-                ['dragenter', 'dragover'].forEach(eventName => {
-                    uploadArea.addEventListener(eventName, function() {
-                        uploadArea.classList.add('drag-over');
-                    }, false);
-                });
-                
-                ['dragleave', 'drop'].forEach(eventName => {
-                    uploadArea.addEventListener(eventName, function() {
-                        uploadArea.classList.remove('drag-over');
-                    }, false);
-                });
-                
-                uploadArea.addEventListener('drop', function(e) {
-                    const dt = e.dataTransfer;
-                    const files = dt.files;
-                    
-                    if (files.length) {
-                        fileInput.files = files;
-                        // Trigger change event
-                        const event = new Event('change');
-                        fileInput.dispatchEvent(event);
-                    }
-                }, false);
+            if (!uploadArea || !fileInput || !previewContainer || !previewImg || !fileName || !removeBtn || !uploadPrompt) {
+                console.warn(`Missing elements for ${uploadAreaId}. Check IDs:`);
+                console.log({ uploadAreaId, fileInputId, previewContainerId, previewImgId, fileNameId, removeBtnId, uploadPromptId });
+                return;
             }
             
-            // Initialize all file uploads
-            setupFileUpload('frontUploadArea', 'frontimg', 'frontPreview', 'frontPreviewImg', 'frontFileName', 'frontRemove');
-            setupFileUpload('backUploadArea', 'backimg', 'backPreview', 'backPreviewImg', 'backFileName', 'backRemove');
-            setupFileUpload('photoUploadArea', 'photo', 'photoPreview', 'photoPreviewImg', 'photoFileName', 'photoRemove');
+            // Handle click on upload area (only trigger file input if not clicking preview/remove)
+            uploadArea.addEventListener('click', function(e) {
+                if (e.target.closest('.upload-preview') || e.target.closest('.btn-remove')) {
+                    return;
+                }
+                fileInput.click();
+            });
             
-            // Form submission (frontend only - no backend logic)
-            document.getElementById('kycForm').addEventListener('submit', function(e) {
+            // Handle file selection
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    
+                    // Validate file size (2MB max)
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert('⚠️ File size exceeds 2MB limit. Please choose a smaller file.');
+                        this.value = '';
+                        return;
+                    }
+                    
+                    // Display file name
+                    fileName.textContent = file.name.length > 30 ? file.name.substring(0, 27) + '...' : file.name;
+                    
+                    // Check if file is an image
+                    if (file.type.match('image.*')) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            previewImg.src = e.target.result;
+                            // ✅ FIX: Hide upload prompt, show preview container (not the whole area)
+                            uploadPrompt.classList.add('d-none');
+                            previewContainer.classList.remove('d-none');
+                            previewContainer.style.display = 'block';
+                        };
+                        
+                        reader.readAsDataURL(file);
+                    } else {
+                        // For non-image files, just show filename
+                        uploadPrompt.classList.add('d-none');
+                        previewContainer.classList.remove('d-none');
+                        previewContainer.style.display = 'block';
+                    }
+                }
+            });
+            
+            // Handle file removal
+            removeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Reset file input
+                fileInput.value = '';
+                
+                // Reset preview
+                previewImg.src = '';
+                fileName.textContent = '';
+                // ✅ FIX: Show upload prompt, hide preview container
+                uploadPrompt.classList.remove('d-none');
+                previewContainer.classList.add('d-none');
+                previewContainer.style.display = 'none';
+            });
+            
+            // Handle drag and drop visual feedback
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, false);
+            });
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, function() {
+                    uploadArea.classList.add('drag-over');
+                }, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, function() {
+                    uploadArea.classList.remove('drag-over');
+                }, false);
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length) {
+                    fileInput.files = files;
+                    // Trigger change event manually
+                    const event = new Event('change', { bubbles: true });
+                    fileInput.dispatchEvent(event);
+                }
+            }, false);
+        }
+        
+        // ✅ Initialize all file uploads with CORRECT IDs matching HTML structure
+        // Front image upload
+        setupFileUpload(
+            'frontUploadArea',      // uploadAreaId
+            'frontimg',             // fileInputId
+            'frontPreview',         // previewContainerId (the .upload-preview div)
+            'frontPreviewImg',      // previewImgId (the <img> inside preview)
+            'frontFileName',        // fileNameId
+            'frontRemove',          // removeBtnId
+            'frontUploadPrompt'     // uploadPromptId (the <label> with upload instructions) ⭐ NEW
+        );
+        
+        // Back image upload
+        setupFileUpload(
+            'backUploadArea',
+            'backimg',
+            'backPreview',
+            'backPreviewImg',
+            'backFileName',
+            'backRemove',
+            'backUploadPrompt'
+        );
+        
+        // Photo upload
+        setupFileUpload(
+            'photoUploadArea',
+            'photo',
+            'photoPreview',
+            'photoPreviewImg',
+            'photoFileName',
+            'photoRemove',
+            'photoUploadPrompt'
+        );
+        
+        // Form submission (frontend demo only)
+        const kycForm = document.getElementById('kycForm');
+        if (kycForm) {
+            kycForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
                 // Basic validation check (visual feedback only)
@@ -1321,27 +1360,21 @@
                 });
                 
                 if (!isValid) {
-                    // Show validation message (frontend only)
                     const alert = document.createElement('div');
                     alert.className = 'alert alert-danger mt-3';
                     alert.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i>Please fill in all required fields.';
                     
-                    // Remove existing alerts
                     const existingAlert = this.querySelector('.alert-danger');
                     if (existingAlert) existingAlert.remove();
                     
-                    // Insert alert before submit button
                     this.querySelector('.submit-section').insertBefore(alert, this.querySelector('.submit-section').firstChild);
-                    
-                    // Scroll to alert
                     alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     return;
                 }
                 
                 // Show success modal (frontend demo only)
-                const modal = new bootstrap.Modal(document.createElement('div'));
-                modal._element.innerHTML = `
-                    <div class="modal fade" tabindex="-1">
+                const modalHTML = `
+                    <div class="modal fade show" tabindex="-1" style="display: block;" role="dialog">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header border-0 pb-0">
@@ -1363,52 +1396,56 @@
                             </div>
                         </div>
                     </div>
+                    <div class="modal-backdrop fade show"></div>
                 `;
-                document.body.appendChild(modal._element);
-                modal.show();
                 
-                // Clean up modal after hiding
-                modal._element.addEventListener('hidden.bs.modal', function() {
-                    document.body.removeChild(modal._element);
-                    // Reset form for demo purposes
-                    document.getElementById('kycForm').reset();
-                    // Reset file previews
-                    document.querySelectorAll('.upload-preview').forEach(p => p.classList.remove('active'));
-                    document.querySelectorAll('.upload-area').forEach(a => a.classList.remove('d-none'));
-                });
-            });
-            
-            // Add input validation feedback on blur
-            document.querySelectorAll('.form-control, .form-select').forEach(input => {
-                input.addEventListener('blur', function() {
-                    if (this.hasAttribute('required') && !this.value.trim()) {
-                        this.classList.add('is-invalid');
-                    } else {
-                        this.classList.remove('is-invalid');
-                    }
-                });
+                const modalContainer = document.createElement('div');
+                modalContainer.innerHTML = modalHTML;
+                document.body.appendChild(modalContainer);
                 
-                input.addEventListener('input', function() {
-                    if (this.value.trim()) {
-                        this.classList.remove('is-invalid');
-                    }
-                });
-            });
-            
-            // Add smooth scrolling to internal links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
+                // Close modal on button click
+                const closeBtn = modalContainer.querySelector('[data-bs-dismiss="modal"]');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', function() {
+                        document.body.removeChild(modalContainer);
+                        // Reset form for demo
+                        if (kycForm) kycForm.reset();
+                        // Reset all previews
+                        ['front', 'back', 'photo'].forEach(prefix => {
+                            const prompt = document.getElementById(prefix + 'UploadPrompt');
+                            const preview = document.getElementById(prefix + 'Preview');
+                            if (prompt) prompt.classList.remove('d-none');
+                            if (preview) {
+                                preview.classList.add('d-none');
+                                preview.style.display = 'none';
+                                const img = document.getElementById(prefix + 'PreviewImg');
+                                const name = document.getElementById(prefix + 'FileName');
+                                if (img) img.src = '';
+                                if (name) name.textContent = '';
+                            }
                         });
-                    }
-                });
+                    });
+                }
+            });
+        }
+        
+        // Add input validation feedback on blur
+        document.querySelectorAll('.form-control, .form-select').forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.hasAttribute('required') && !this.value.trim()) {
+                    this.classList.add('is-invalid');
+                } else {
+                    this.classList.remove('is-invalid');
+                }
+            });
+            
+            input.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.classList.remove('is-invalid');
+                }
             });
         });
-    </script>
+    });
+</script>
 </body>
 </html>
