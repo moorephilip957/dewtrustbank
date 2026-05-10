@@ -1,0 +1,148 @@
+/* =========================
+   NOTIFICATION LIST ITEM
+========================= */
+
+.notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+
+    padding: 1rem 1.25rem;
+    transition: all 0.2s ease;
+    border-radius: 10px;
+}
+
+/* hover state */
+.notification-item:hover {
+    background: #f8f9fa;
+}
+
+/* =========================
+   UNREAD STATE
+========================= */
+
+.notification-item.unread {
+    background: #ffffff;
+    border-left: 4px solid #0d6efd;
+}
+
+/* =========================
+   READ NOTIFICATIONS
+========================= */
+
+.notification-item:not(.unread) {
+    opacity: 0.65;
+    background: #f8f9fa;
+    border-left: 4px solid #3f4246;
+    color: #5b6065;
+}
+
+/* optional hover improvement */
+.notification-item:not(.unread):hover {
+    opacity: 1;
+}
+
+/* =========================
+   LEFT ICON WRAPPER
+========================= */
+
+.notification-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+.notification-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* =========================
+   TEXT BLOCK
+========================= */
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 0.25rem;
+}
+
+.notification-message {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+    line-height: 1.4;
+}
+
+.notification-time {
+    font-size: 0.75rem;
+    color: #adb5bd;
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.notification-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.notification-actions .btn {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+/* delete button */
+.btn-outline-danger {
+    border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+/* mark read */
+.btn-light {
+    background: #f8f9fa;
+    border: 1px solid #e5e7eb;
+}
+
+.btn-light:hover {
+    background: #e9ecef;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .notification-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .notification-actions {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 0.75rem;
+    }
+}

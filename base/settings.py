@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'transaction',
     'loan',
     'support',
+    'notification',
 ]
 
 MIDDLEWARE = [
@@ -75,6 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notification.context_processors.notifications_processor',
             ],
         },
     },
@@ -136,6 +138,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 from django.contrib.messages import constants as messages
 

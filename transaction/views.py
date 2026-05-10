@@ -6,6 +6,7 @@ from .services import create_transaction
 from customer.models import UserBankAccount
 from .models import TransactionHistory, Deposit, CryptoWallet
 from .utils import generate_reference
+from notification.utils import create_notification
 
 @login_required
 def local_transfer(request):
@@ -216,21 +217,32 @@ def deposit_detail(request, deposit_id):
 
                 form.save()
 
+                # Create transaction history
                 TransactionHistory.objects.create(
-                user=request.user,
-                amount=deposit.amount,
-                transaction_type='deposit',
-                direction='credit',
-                description="**** self deposit",
-                reference=generate_reference(),
-                status="pending",
+                    user=request.user,
+                    amount=deposit.amount,
+                    transaction_type='deposit',
+                    direction='credit',
+                    description="**** self deposit",
+                    reference=generate_reference(),
+                    status="pending",
 
-                # Beneficiary Details
-                beneficiary_name="****self",
-                beneficiary_number="******self",
-                bank_name="Dew Trust Bank",
+                    # Beneficiary Details
+                    beneficiary_name="****self",
+                    beneficiary_number="******self",
+                    bank_name="Dew Trust Bank",
                 )
 
+                # =========================
+                # CREATE NOTIFICATION
+                # =========================
+                create_notification(
+                    user=request.user,
+                    title="Deposit request Submitted",
+                    message=f"Your deposit of {deposit.user.bank_account.get_currency_symbol()}{deposit.amount} has been submitted successfully and is pending approval.",
+                    notif_type="info",
+                    related_object=deposit  
+                )
 
                 return redirect(
                     "transaction:deposit_pending",

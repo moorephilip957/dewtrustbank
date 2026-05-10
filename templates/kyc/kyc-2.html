@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureBank | KYC Application</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-color: #0147E1;
+            --primary-dark: #0039b3;
+            --secondary-color: #FFC107;
+            --secondary-dark: #e0a800;
+            --text-color: #4a5568;
+            --bg-color: #f9fafb;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --input-focus-ring: rgba(1, 71, 225, 0.25);
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text-color);
+            padding-bottom: 2rem;
+        }
+        
+        .kyc-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+        }
+        
+        .page-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .page-title {
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 0.25rem;
+        }
+        
+        .breadcrumb-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumb-item.active {
+            color: #4a5568;
+            font-weight: 500;
+        }
+        
+        .form-card {
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .form-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        }
+        
+        .card-header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .card-header i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        
+        .card-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin: 0;
+        }
+        
+        .card-header p {
+            color: #718096;
+            font-size: 0.9rem;
+            margin: 0.25rem 0 0;
+        }
+        
+        .card-body {
+            padding: 1.75rem;
+        }
+        
+        .form-section {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: #f8fafc;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-header i {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        .section-header h3 {
+            font-weight: 600;
+            color: #1a202c;
+            margin: 0;
+            font-size: 1.05rem;
+        }
+        
+        .section-header p {
+            color: #718096;
+            font-size: 0.85rem;
+            margin: 0.25rem 0 0;
+        }
+        
+        .section-body {
+            padding: 1.25rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        
+        .form-label .required {
+            color: #e53e3e;
+        }
+        
+        .input-group-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+            z-index: 10;
+            pointer-events: none;
+        }
+        
+        .form-control, .form-select {
+            padding-left: 2.25rem !important;
+            border-color: var(--border-color);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--input-focus-ring);
+        }
+        
+        .form-control::placeholder {
+            color: #a0aec0;
+        }
+        
+        /* Document Type Selection Cards */
+        .doc-type-card {
+            position: relative;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+        }
+        
+        .doc-type-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(1, 71, 225, 0.15);
+        }
+        
+        .doc-type-card.active {
+            border-color: var(--primary-color);
+            background: rgba(1, 71, 225, 0.03);
+        }
+        
+        .doc-type-card i {
+            font-size: 1.75rem;
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+        }
+        
+        .doc-type-card span {
+            font-weight: 500;
+            color: #2d3748;
+            font-size: 0.95rem;
+        }
+        
+        .doc-type-card input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        /* Document Guidelines */
+        .guidelines-box {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1.25rem 0;
+        }
+        
+        .guidelines-box h4 {
+            font-weight: 600;
+            color: #1a202c;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .guidelines-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .guidelines-box li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+        
+        .guidelines-box li i {
+            color: var(--primary-color);
+            margin-top: 0.2rem;
+            flex-shrink: 0;
+        }
+        
+        /* File Upload Areas */
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            position: relative;
+        }
+        
+        .upload-area:hover, .upload-area.drag-over {
+            border-color: var(--primary-color);
+            background: rgba(1, 71, 225, 0.03);
+        }
+        
+        .upload-area i {
+            font-size: 2rem;
+            color: #a0aec0;
+            margin-bottom: 0.75rem;
+        }
+        
+        .upload-area span {
+            display: block;
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin-bottom: 0.25rem;
+        }
+        
+        .upload-area small {
+            color: #718096;
+            font-size: 0.8rem;
+        }
+        
+        .upload-preview {
+            display: none;
+            margin-top: 1rem;
+        }
+        
+        .upload-preview.active {
+            display: block;
+        }
+        
+        .upload-preview img {
+            max-height: 160px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0.75rem;
+        }
+        
+        .upload-preview .filename {
+            font-size: 0.85rem;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            word-break: break-all;
+        }
+        
+        .btn-remove {
+            color: #e53e3e;
+            font-size: 0.8rem;
+            padding: 0.25rem 0.75rem;
+            border: none;
+            background: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-remove:hover {
+            color: #c53030;
+            text-decoration: none;
+        }
+        
+        .upload-icon-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            min-height: 120px;
+        }
+        
+        .upload-icon-placeholder i {
+            font-size: 3.5rem;
+            color: #cbd5e0;
+        }
+        
+        /* Submit Button */
+        .submit-section {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            background: white;
+        }
+        
+        .alert-warning-custom {
+            background: #fffbeb;
+            border-color: #fcd34d;
+            color: #92400e;
+            border-radius: 8px;
+            padding: 0.875rem 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .alert-warning-custom i {
+            font-size: 1.1rem;
+            margin-top: 0.1rem;
+        }
+        
+        .btn-submit {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            width: 100%;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-submit:not(:disabled):hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(1, 71, 225, 0.25);
+        }
+        
+        /* Support Card */
+        .support-card {
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .support-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1.5rem;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .support-content {
+                flex-direction: row;
+                text-align: left;
+            }
+        }
+        
+        .support-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(1, 71, 225, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .support-icon i {
+            color: var(--primary-color);
+            font-size: 1.75rem;
+        }
+        
+        .support-text h3 {
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 0.25rem;
+            font-size: 1.1rem;
+        }
+        
+        .support-text p {
+            color: #718096;
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+        
+        .btn-support {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1.25rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-support:hover {
+            background: rgba(1, 71, 225, 0.08);
+            transform: translateY(-1px);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
+        
+        /* Loading animation */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-content {
+            text-align: center;
+        }
+        
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(1, 71, 225, 0.1);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        .loader-text {
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 0.9rem;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-dark), var(--primary-color));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Button ripple effect */
+        .btn-ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-ripple:after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .btn-ripple:focus:not(:active):after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(100, 100);
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .card-body, .section-body {
+                padding: 1.25rem;
+            }
+            
+            .doc-type-card {
+                padding: 1rem;
+            }
+            
+            .upload-area {
+                padding: 1.25rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        /* Animation for section appearance */
+        .form-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        
+        .form-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">SecureBank Loading...</div>
+        </div>
+    </div>
+
+    <!-- Main Content Area (excluding navbar/sidebar/footer as requested) -->
+    <div class="container kyc-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">KYC Verification</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Account Verification</li>
+                </ol>
+            </nav>
+        </div>
+
+        <!-- Main Form Card -->
+        <div class="form-card">
+            <div class="card-header">
+                <i class="bi bi-clipboard-check"></i>
+                <div>
+                    <h2>Account Information</h2>
+                    <p>To comply with regulations, please provide your information to complete the verification process.</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <form id="kycForm" class="space-y-8">
+                    
+                    <!-- Personal Details Section -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="bi bi-person"></i>
+                            <div>
+                                <h3>Personal Details</h3>
+                                <p>Your personal information required for identification</p>
+                            </div>
+                        </div>
+                        <div class="section-body">
+                            <p class="text-muted small mb-4">Kindly provide the information requested below to enable us to create an account for you.</p>
+                            
+                            <div class="row g-4">
+                                <!-- Full Name -->
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">
+                                        Full Name <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-person input-group-icon"></i>
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your full name" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- Email -->
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">
+                                        Email <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-envelope input-group-icon"></i>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="your@email.com" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- Phone -->
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">
+                                        Phone <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-phone input-group-icon"></i>
+                                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="+1 (555) 123-4567" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- Title -->
+                                <div class="col-md-6">
+                                    <label for="title" class="form-label">
+                                        Title <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-badge input-group-icon"></i>
+                                        <select class="form-select" id="title" name="title" required>
+                                            <option value="">Please select your Title</option>
+                                            <option value="Mr">Mr.</option>
+                                            <option value="Mrs">Mrs.</option>
+                                            <option value="Ms">Ms.</option>
+                                            <option value="Miss">Miss</option>
+                                            <option value="Dr">Dr.</option>
+                                            <option value="Prof">Prof.</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Gender -->
+                                <div class="col-md-6">
+                                    <label for="gender" class="form-label">
+                                        Gender <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-people input-group-icon"></i>
+                                        <select class="form-select" id="gender" name="gender" required>
+                                            <option value="">Please select your gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                            <option value="Prefer not to say">Prefer not to say</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Zipcode -->
+                                <div class="col-md-6">
+                                    <label for="zipcode" class="form-label">
+                                        Zipcode <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-geo-alt input-group-icon"></i>
+                                        <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="12345" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- Date of birth -->
+                                <div class="col-md-6">
+                                    <label for="dob" class="form-label">
+                                        Date of Birth <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-calendar input-group-icon"></i>
+                                        <input type="date" class="form-control" id="dob" name="dob" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Employment Information Section -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="bi bi-briefcase"></i>
+                            <div>
+                                <h3>Employment Information</h3>
+                                <p>Required in case of loan or facility application</p>
+                            </div>
+                        </div>
+                        <div class="section-body">
+                            <div class="row g-4">
+                                <!-- State Security Number -->
+                                <div class="col-md-6">
+                                    <label for="statenumber" class="form-label">
+                                        State Security Number (SSN, NI, SIN etc.) <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-shield-check input-group-icon"></i>
+                                        <input type="text" class="form-control" id="statenumber" name="statenumber" placeholder="XXX-XX-XXXX" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- Account Type -->
+                                <div class="col-md-6">
+                                    <label for="accounttype" class="form-label">
+                                        Account Type <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-bank input-group-icon"></i>
+                                        <select class="form-select" id="accounttype" name="accounttype" required>
+                                            <option value="">Please select Account Type</option> 
+                                            <option value="Checking">Checking Account</option>
+                                            <option value="Savings">Savings Account</option>
+                                            <option value="Fixed">Fixed Deposit Account</option>
+                                            <option value="Current">Current Account</option>
+                                            <option value="Crypto">Crypto Currency Account</option>
+                                            <option value="Business">Business Account</option>
+                                            <option value="NonResident">Non Resident Account</option>
+                                            <option value="Corporate">Corporate Business Account</option>
+                                            <option value="Investment">Investment Account</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Type of Employment -->
+                                <div class="col-md-6">
+                                    <label for="employer" class="form-label">
+                                        Type of Employment <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-building input-group-icon"></i>
+                                        <select class="form-select" id="employer" name="employer" required>
+                                            <option value="">Select Type of Employment</option>
+                                            <option value="Self Employed">Self Employed</option>  
+                                            <option value="Government">Public/Government Office</option>  
+                                            <option value="Private">Private/Partnership Office</option>  
+                                            <option value="Business">Business/Sales</option>  
+                                            <option value="Trading">Trading/Market</option>  
+                                            <option value="Military">Military/Paramilitary</option>  
+                                            <option value="Public Figure">Politician/Celebrity</option>
+                                            <option value="Student">Student</option>
+                                            <option value="Retired">Retired</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Annual income Range -->
+                                <div class="col-md-6">
+                                    <label for="income" class="form-label">
+                                        Annual Income Range <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-currency-dollar input-group-icon"></i>
+                                        <select class="form-select" id="income" name="income" required>
+                                            <option value="">Select Salary Range</option>
+                                            <option value="100-500">$100.00 - $500.00</option> 
+                                            <option value="700-1000">$700.00 - $1,000.00</option> 
+                                            <option value="1000-2000">$1,000.00 - $2,000.00</option> 
+                                            <option value="2000-5000">$2,000.00 - $5,000.00</option> 
+                                            <option value="5000-10000">$5,000.00 - $10,000.00</option> 
+                                            <option value="15000-20000">$15,000.00 - $20,000.00</option> 
+                                            <option value="25000-30000">$25,000.00 - $30,000.00</option> 
+                                            <option value="30000-70000">$30,000.00 - $70,000.00</option> 
+                                            <option value="80000-140000">$80,000.00 - $140,000.00</option> 
+                                            <option value="150000-300000">$150,000.00 - $300,000.00</option> 
+                                            <option value="300000-1000000">$300,000.00 - $1,000,000.00</option> 
+                                            <option value="1000000+">$1,000,000.00+</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Address Section -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="bi bi-geo-alt"></i>
+                            <div>
+                                <h3>Your Address</h3>
+                                <p>Your location information required for identification</p>
+                            </div>
+                        </div>
+                        <div class="section-body">
+                            <div class="row g-4">
+                                <!-- Address line -->
+                                <div class="col-12">
+                                    <label for="address" class="form-label">
+                                        Address Line <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-house input-group-icon"></i>
+                                        <input type="text" class="form-control" id="address" name="address" placeholder="123 Main Street, Apt 4B" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- City -->
+                                <div class="col-md-6">
+                                    <label for="city" class="form-label">
+                                        City <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-building input-group-icon"></i>
+                                        <input type="text" class="form-control" id="city" name="city" placeholder="New York" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- State -->
+                                <div class="col-md-6">
+                                    <label for="state" class="form-label">
+                                        State/Province <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-map input-group-icon"></i>
+                                        <input type="text" class="form-control" id="state" name="state" placeholder="NY" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- Nationality -->
+                                <div class="col-md-6">
+                                    <label for="country" class="form-label">
+                                        Nationality <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-flag input-group-icon"></i>
+                                        <input type="text" class="form-control" id="country" name="country" placeholder="United States" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Next of Kin Section -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="bi bi-people"></i>
+                            <div>
+                                <h3>Registered Next of Kin</h3>
+                                <p>Information about your beneficiary</p>
+                            </div>
+                        </div>
+                        <div class="section-body">
+                            <div class="row g-4">
+                                <!-- Beneficiary Legal Name -->
+                                <div class="col-md-6">
+                                    <label for="kinname" class="form-label">
+                                        Beneficiary Legal Name <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-person input-group-icon"></i>
+                                        <input type="text" class="form-control" id="kinname" name="kinname" placeholder="Full name of beneficiary" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- Next of kin Address -->
+                                <div class="col-md-6">
+                                    <label for="kinaddress" class="form-label">
+                                        Next of Kin Address <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-house input-group-icon"></i>
+                                        <input type="text" class="form-control" id="kinaddress" name="kinaddress" placeholder="Beneficiary address" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- Relationship -->
+                                <div class="col-md-6">
+                                    <label for="relationship" class="form-label">
+                                        Relationship <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-heart input-group-icon"></i>
+                                        <input type="text" class="form-control" id="relationship" name="relationship" placeholder="e.g., Spouse, Parent, Sibling" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- Age -->
+                                <div class="col-md-6">
+                                    <label for="age" class="form-label">
+                                        Age <span class="required">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <i class="bi bi-clock input-group-icon"></i>
+                                        <input type="number" class="form-control" id="age" name="age" placeholder="Age in years" min="1" max="120" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Document Upload Section -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <div>
+                                <h3>Document Upload</h3>
+                                <p>Personal documents required for identity verification</p>
+                            </div>
+                        </div>
+                        <div class="section-body">
+                            <!-- Document Type Selection -->
+                            <div class="mb-5">
+                                <label class="form-label d-block mb-3">Select Document Type <span class="required">*</span></label>
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-4">
+                                        <label class="doc-type-card active" data-doctype="passport">
+                                            <input type="radio" name="document_type" value="passport" checked>
+                                            <i class="bi bi-passport"></i>
+                                            <span>International Passport</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <label class="doc-type-card" data-doctype="national-id">
+                                            <input type="radio" name="document_type" value="national-id">
+                                            <i class="bi bi-card-checklist"></i>
+                                            <span>National ID Card</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <label class="doc-type-card" data-doctype="drivers-license">
+                                            <input type="radio" name="document_type" value="drivers-license">
+                                            <i class="bi bi-license"></i>
+                                            <span>Driver's License</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Document Guidelines -->
+                            <div class="guidelines-box">
+                                <h4><i class="bi bi-exclamation-circle"></i> To avoid delays when verifying your account</h4>
+                                <ul>
+                                    <li><i class="bi bi-check-circle-fill"></i> Chosen credential must not have expired</li>
+                                    <li><i class="bi bi-check-circle-fill"></i> Document should be in good condition and clearly visible</li>
+                                    <li><i class="bi bi-check-circle-fill"></i> Make sure that there is no light glare on the document</li>
+                                    <li><i class="bi bi-check-circle-fill"></i> All four corners of the document must be visible</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Front Side Upload -->
+                            <div class="mb-5">
+                                <label class="form-label d-block mb-3">
+                                    Upload Front Side <span class="required">*</span>
+                                </label>
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-md-6">
+                                        <div class="upload-area" id="frontUploadArea">
+                                            <input type="file" class="d-none" id="frontimg" name="frontimg" accept="image/*">
+                                            <label for="frontimg" class="w-100 h-100 d-flex flex-column align-items-center justify-content-center cursor-pointer">
+                                                <i class="bi bi-cloud-upload"></i>
+                                                <span>Click to upload or drag and drop</span>
+                                                <small>SVG, PNG, JPG or GIF (max. 2MB)</small>
+                                            </label>
+                                            <div class="upload-preview" id="frontPreview">
+                                                <img src="" alt="Front preview" id="frontPreviewImg">
+                                                <p class="filename" id="frontFileName"></p>
+                                                <button type="button" class="btn-remove" id="frontRemove">
+                                                    <i class="bi bi-trash"></i> Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex justify-content-center">
+                                        <div class="upload-icon-placeholder">
+                                            <i class="bi bi-card-heading"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Back Side Upload -->
+                            <div class="mb-5">
+                                <label class="form-label d-block mb-3">
+                                    Upload Back Side <span class="required">*</span>
+                                </label>
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-md-6">
+                                        <div class="upload-area" id="backUploadArea">
+                                            <input type="file" class="d-none" id="backimg" name="backimg" accept="image/*">
+                                            <label for="backimg" class="w-100 h-100 d-flex flex-column align-items-center justify-content-center cursor-pointer">
+                                                <i class="bi bi-cloud-upload"></i>
+                                                <span>Click to upload or drag and drop</span>
+                                                <small>SVG, PNG, JPG or GIF (max. 2MB)</small>
+                                            </label>
+                                            <div class="upload-preview" id="backPreview">
+                                                <img src="" alt="Back preview" id="backPreviewImg">
+                                                <p class="filename" id="backFileName"></p>
+                                                <button type="button" class="btn-remove" id="backRemove">
+                                                    <i class="bi bi-trash"></i> Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex justify-content-center">
+                                        <div class="upload-icon-placeholder">
+                                            <i class="bi bi-card-list"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Passport Photo Upload -->
+                            <div>
+                                <label class="form-label d-block mb-3">
+                                    Upload Passport Photograph <span class="required">*</span>
+                                </label>
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-md-6">
+                                        <div class="upload-area" id="photoUploadArea">
+                                            <input type="file" class="d-none" id="photo" name="photo" accept="image/*">
+                                            <label for="photo" class="w-100 h-100 d-flex flex-column align-items-center justify-content-center cursor-pointer">
+                                                <i class="bi bi-cloud-upload"></i>
+                                                <span>Click to upload or drag and drop</span>
+                                                <small>SVG, PNG, JPG or GIF (max. 2MB)</small>
+                                            </label>
+                                            <div class="upload-preview" id="photoPreview">
+                                                <img src="" alt="Photo preview" id="photoPreviewImg">
+                                                <p class="filename" id="photoFileName"></p>
+                                                <button type="button" class="btn-remove" id="photoRemove">
+                                                    <i class="bi bi-trash"></i> Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex justify-content-center">
+                                        <div class="upload-icon-placeholder">
+                                            <i class="bi bi-person-circle"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button Section -->
+                    <div class="submit-section">
+                        <div class="alert-warning-custom">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            <div>
+                                <strong>Note:</strong> Please ensure all information is accurate before submission. Incomplete or incorrect information may delay your verification process.
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-submit btn-ripple" id="submitBtn">
+                            <i class="bi bi-check-circle"></i>
+                            Submit Application
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Support Section -->
+        <div class="support-card">
+            <div class="support-content">
+                <div class="support-icon">
+                    <i class="bi bi-life-preserver"></i>
+                </div>
+                <div class="support-text">
+                    <h3>Need help with verification?</h3>
+                    <p>Our support team is available 24/7 to assist you with the verification process. Reach out with any questions.</p>
+                </div>
+                <a href="#" class="btn btn-outline-primary btn-support">
+                    <i class="bi bi-chat-square-text"></i>
+                    Contact Support
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Vanilla JavaScript for Frontend Interactions -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide page loader after content loads
+            setTimeout(() => {
+                const loader = document.getElementById('pageLoader');
+                loader.classList.add('hidden');
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 400);
+            }, 800);
+            
+            // Animate form sections on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.form-section').forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Trigger initial animation for first section
+            document.querySelector('.form-section').classList.add('visible');
+            
+            // Document type selection
+            document.querySelectorAll('.doc-type-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remove active class from all cards
+                    document.querySelectorAll('.doc-type-card').forEach(c => {
+                        c.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked card
+                    this.classList.add('active');
+                    
+                    // Update radio button
+                    const radio = this.querySelector('input[type="radio"]');
+                    if (radio) {
+                        radio.checked = true;
+                    }
+                });
+            });
+            
+            // File upload functionality
+            function setupFileUpload(uploadAreaId, fileInputId, previewId, previewImgId, fileNameId, removeBtnId) {
+                const uploadArea = document.getElementById(uploadAreaId);
+                const fileInput = document.getElementById(fileInputId);
+                const preview = document.getElementById(previewId);
+                const previewImg = document.getElementById(previewImgId);
+                const fileName = document.getElementById(fileNameId);
+                const removeBtn = document.getElementById(removeBtnId);
+                
+                if (!uploadArea || !fileInput) return;
+                
+                // Handle click on upload area
+                uploadArea.addEventListener('click', function(e) {
+                    // Don't trigger if clicking on preview or remove button
+                    if (e.target.closest('.upload-preview') || e.target.closest('.btn-remove')) {
+                        return;
+                    }
+                    fileInput.click();
+                });
+                
+                // Handle file selection
+                fileInput.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        const file = this.files[0];
+                        
+                        // Validate file size (2MB max)
+                        if (file.size > 2 * 1024 * 1024) {
+                            alert('File size exceeds 2MB limit. Please choose a smaller file.');
+                            this.value = '';
+                            return;
+                        }
+                        
+                        // Display file name
+                        fileName.textContent = file.name;
+                        
+                        // Check if file is an image
+                        if (file.type.match('image.*')) {
+                            const reader = new FileReader();
+                            
+                            reader.onload = function(e) {
+                                previewImg.src = e.target.result;
+                                preview.classList.add('active');
+                                uploadArea.classList.add('d-none');
+                            };
+                            
+                            reader.readAsDataURL(file);
+                        } else {
+                            // For non-image files, just show filename
+                            preview.classList.add('active');
+                            uploadArea.classList.add('d-none');
+                        }
+                    }
+                });
+                
+                // Handle file removal
+                removeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Reset file input
+                    fileInput.value = '';
+                    
+                    // Reset preview
+                    previewImg.src = '';
+                    fileName.textContent = '';
+                    preview.classList.remove('active');
+                    uploadArea.classList.remove('d-none');
+                });
+                
+                // Handle drag and drop
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    uploadArea.addEventListener(eventName, function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }, false);
+                });
+                
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    uploadArea.addEventListener(eventName, function() {
+                        uploadArea.classList.add('drag-over');
+                    }, false);
+                });
+                
+                ['dragleave', 'drop'].forEach(eventName => {
+                    uploadArea.addEventListener(eventName, function() {
+                        uploadArea.classList.remove('drag-over');
+                    }, false);
+                });
+                
+                uploadArea.addEventListener('drop', function(e) {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    
+                    if (files.length) {
+                        fileInput.files = files;
+                        // Trigger change event
+                        const event = new Event('change');
+                        fileInput.dispatchEvent(event);
+                    }
+                }, false);
+            }
+            
+            // Initialize all file uploads
+            setupFileUpload('frontUploadArea', 'frontimg', 'frontPreview', 'frontPreviewImg', 'frontFileName', 'frontRemove');
+            setupFileUpload('backUploadArea', 'backimg', 'backPreview', 'backPreviewImg', 'backFileName', 'backRemove');
+            setupFileUpload('photoUploadArea', 'photo', 'photoPreview', 'photoPreviewImg', 'photoFileName', 'photoRemove');
+            
+            // Form submission (frontend only - no backend logic)
+            document.getElementById('kycForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Basic validation check (visual feedback only)
+                const requiredFields = this.querySelectorAll('[required]');
+                let isValid = true;
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.classList.add('is-invalid');
+                    } else {
+                        field.classList.remove('is-invalid');
+                    }
+                });
+                
+                if (!isValid) {
+                    // Show validation message (frontend only)
+                    const alert = document.createElement('div');
+                    alert.className = 'alert alert-danger mt-3';
+                    alert.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i>Please fill in all required fields.';
+                    
+                    // Remove existing alerts
+                    const existingAlert = this.querySelector('.alert-danger');
+                    if (existingAlert) existingAlert.remove();
+                    
+                    // Insert alert before submit button
+                    this.querySelector('.submit-section').insertBefore(alert, this.querySelector('.submit-section').firstChild);
+                    
+                    // Scroll to alert
+                    alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                }
+                
+                // Show success modal (frontend demo only)
+                const modal = new bootstrap.Modal(document.createElement('div'));
+                modal._element.innerHTML = `
+                    <div class="modal fade" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header border-0 pb-0">
+                                    <h5 class="modal-title">Application Submitted</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body pt-0">
+                                    <div class="text-center py-4">
+                                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                                            <i class="bi bi-check-lg fs-1"></i>
+                                        </div>
+                                        <h5 class="mb-2">Thank You!</h5>
+                                        <p class="text-muted mb-0">Your KYC application has been submitted successfully. Our team will review your documents and notify you within 24-48 hours.</p>
+                                    </div>
+                                </div>
+                                <div class="modal-footer border-0 pt-0">
+                                    <button type="button" class="btn btn-primary w-100" data-bs-dismiss="modal">Return to Dashboard</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal._element);
+                modal.show();
+                
+                // Clean up modal after hiding
+                modal._element.addEventListener('hidden.bs.modal', function() {
+                    document.body.removeChild(modal._element);
+                    // Reset form for demo purposes
+                    document.getElementById('kycForm').reset();
+                    // Reset file previews
+                    document.querySelectorAll('.upload-preview').forEach(p => p.classList.remove('active'));
+                    document.querySelectorAll('.upload-area').forEach(a => a.classList.remove('d-none'));
+                });
+            });
+            
+            // Add input validation feedback on blur
+            document.querySelectorAll('.form-control, .form-select').forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (this.hasAttribute('required') && !this.value.trim()) {
+                        this.classList.add('is-invalid');
+                    } else {
+                        this.classList.remove('is-invalid');
+                    }
+                });
+                
+                input.addEventListener('input', function() {
+                    if (this.value.trim()) {
+                        this.classList.remove('is-invalid');
+                    }
+                });
+            });
+            
+            // Add smooth scrolling to internal links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
