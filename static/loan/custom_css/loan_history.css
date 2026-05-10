@@ -1,0 +1,131 @@
+/* ===== Bootstrap Overrides for Exact Match ===== */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+}
+
+.text-white-75 {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.opacity-75 {
+    opacity: 0.75 !important;
+}
+
+/* Table enhancements */
+.table> :not(caption)>*>* {
+    padding: 0.75rem 1rem;
+    border-bottom-color: #e5e7eb;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(1, 71, 225, 0.03);
+}
+
+/* Form enhancements */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(1, 71, 225, 0.15);
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+}
+
+/* Blur effect for header */
+.backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* Responsive typography */
+.h3-md {
+    font-size: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .h3-md {
+        font-size: 1.875rem;
+    }
+}
+
+/* Custom sizes matching original */
+.w-8 {
+    width: 2rem !important;
+}
+
+.h-8 {
+    height: 2rem !important;
+}
+
+.rounded-3 {
+    border-radius: 0.75rem !important;
+}
+
+.rounded-4 {
+    border-radius: 1rem !important;
+}
+
+/* Max width utility */
+.max-w-4xl {
+    max-width: 56rem;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Hover link */
+.hover-primary:hover {
+    color: var(--primary-color) !important;
+}
+
+/* Toast notifications */
+.toast {
+    border-left: 4px solid var(--primary-color);
+    border-radius: 0.5rem;
+}
+
+.toast-success {
+    border-left-color: #198754;
+}
+
+.toast-error {
+    border-left-color: #dc3545;
+}
+
+.toast-warning {
+    border-left-color: var(--secondary-color);
+}
+
+/* Animation for empty state */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#emptyState {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Pagination active state */
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.pagination .page-link {
+    color: var(--primary-color);
+}
+
+.pagination .page-link:hover {
+    color: var(--primary-color-dark);
+}

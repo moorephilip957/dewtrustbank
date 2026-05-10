@@ -8,4 +8,5 @@ urlpatterns = [
     path('auth/', include('account.urls', namespace="account")),
     path('account/', include('customer.urls', namespace="customer")),
     path('transaction/', include('transaction.urls', namespace="transaction")),
+    path('loan/', include('loan.urls', namespace="loan")),
 ]

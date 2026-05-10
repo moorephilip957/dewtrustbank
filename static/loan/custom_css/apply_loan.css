@@ -1,0 +1,152 @@
+/* ===== EXACT Theme Variables from Original ===== */
+:root {
+    --primary-color: #0147E1;
+    --primary-color-dark: #0147E1;
+    --primary-color-light: #E0E0E0;
+    --primary-color-lightest: #E0E0E0;
+    --secondary-color: #FFC107;
+    --secondary-color-dark: #CC9900;
+    --secondary-color-light: #FFECB3;
+    --accent-color: #ec4899;
+    --text-color: #828282;
+    --bg-color: #f9fafb;
+    --sidebar-bg-color: #F4F5F7;
+    --sidebar-text-color: #0047AB;
+    --card-bg-color: #F4F5F7;
+}
+
+/* ===== Bootstrap Overrides for Exact Match ===== */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+}
+
+.bg-gradient-primary-subtle {
+    background: linear-gradient(135deg, rgba(1, 71, 225, 0.05) 0%, rgba(1, 71, 225, 0.1) 100%);
+}
+
+.text-white-75 {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.opacity-75 {
+    opacity: 0.75 !important;
+}
+
+/* Card hover effects */
+.hover-shadow:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-2px);
+}
+
+.transition-all {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Custom sizes matching original */
+.w-8 {
+    width: 2rem !important;
+}
+
+.h-8 {
+    height: 2rem !important;
+}
+
+.rounded-3 {
+    border-radius: 0.75rem !important;
+}
+
+.rounded-4 {
+    border-radius: 1rem !important;
+}
+
+/* Spacing utilities */
+.space-y-3>*+* {
+    margin-top: 0.75rem;
+}
+
+.space-y-4>*+* {
+    margin-top: 1rem;
+}
+
+/* Form enhancements */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(1, 71, 225, 0.15);
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+}
+
+/* Blur effect for header */
+.backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* Animation for form sections */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#loanFormSection {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive typography */
+.h3-md {
+    font-size: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .h3-md {
+        font-size: 1.875rem;
+    }
+}
+
+/* Cursor pointer for interactive elements */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Toast notifications */
+.toast {
+    border-left: 4px solid var(--primary-color);
+    border-radius: 0.5rem;
+}
+
+.toast-success {
+    border-left-color: #198754;
+}
+
+.toast-error {
+    border-left-color: #dc3545;
+}
+
+.toast-warning {
+    border-left-color: var(--secondary-color);
+}
+
+/* Preserve textarea line breaks */
+.preserveLines {
+    white-space: pre-wrap;
+}
+
+/* Max width utility */
+.max-w-4xl {
+    max-width: 56rem;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}

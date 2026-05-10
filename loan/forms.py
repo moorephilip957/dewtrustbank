@@ -56,7 +56,7 @@ class LoanApplicationForm(forms.ModelForm):
         }
 
         labels = {
-            'amount': 'Loan Amount (USD)',
+            'amount': 'Loan Amount',
             'duration_months': 'Duration (Months)',
             'loan_type': 'Credit Facility',
             'purpose': 'Purpose of Loan',

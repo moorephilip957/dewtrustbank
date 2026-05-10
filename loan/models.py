@@ -1,10 +1,9 @@
-# models.py
-
 from decimal import Decimal
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
+
+from account.models import CustomUser
 
 
 class LoanApplication(models.Model):
@@ -34,7 +33,7 @@ class LoanApplication(models.Model):
     ]
 
     applicant = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         related_name='loan_applications'
     )
@@ -47,7 +46,7 @@ class LoanApplication(models.Model):
     amount = models.DecimalField(
         max_digits=12,
         decimal_places=2,
-        help_text="Loan Amount in USD"
+        help_text="Loan Amount"
     )
 
     duration_months = models.PositiveIntegerField(
@@ -113,6 +112,14 @@ class LoanApplication(models.Model):
     date_applied = models.DateTimeField(
         auto_now_add=True
     )
+
+    @staticmethod
+    def active_loans_count(user):
+
+        return LoanApplication.objects.filter(
+            applicant=user,
+            status__in=["pending", "approved"]
+        ).count()
 
     def get_interest_rate(self):
 
