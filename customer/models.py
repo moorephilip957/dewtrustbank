@@ -1,5 +1,9 @@
 from django.db import models
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.hashers import (
+    make_password,
+    check_password, 
+    identify_hasher
+)
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
@@ -140,15 +144,16 @@ class UserBankAccount(models.Model):
         if not self.account_number:
             self.account_number = self.generate_account_number()
 
-        # Hash PIN if plain text
-        if (
-            self.transaction_pin
-            and len(self.transaction_pin) <= 6
-            and not self.transaction_pin.startswith('pbkdf2_')
-        ):
-            self.transaction_pin = make_password(
-                str(self.transaction_pin)
-            )
+        # Hash PIN only if not already hashed
+        if self.transaction_pin:
+
+            try:
+                identify_hasher(self.transaction_pin)
+
+            except Exception:
+                self.transaction_pin = make_password(
+                    str(self.transaction_pin)
+                )
 
         super().save(*args, **kwargs)
 

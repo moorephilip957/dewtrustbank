@@ -2,3 +2,4 @@ django
 django-countries
 qrcode 
 pillow
+django-user-agents

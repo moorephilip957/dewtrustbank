@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # external apps
     'django_countries',
     'django.contrib.humanize',
+    'django_user_agents',
 
     # my apps
     'frontend',
@@ -58,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_user_agents.middleware.UserAgentMiddleware',
 ]
 
 ROOT_URLCONF = 'base.urls'

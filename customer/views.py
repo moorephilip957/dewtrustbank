@@ -1,8 +1,9 @@
 from django.shortcuts import render
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.core.exceptions import ValidationError
+
 
 from .models import UserBankAccount, DebitCard
 from .forms import DebitCardApplicationForm
@@ -131,16 +132,21 @@ def download_app(request):
 
     return render(
         request,
-        'customer/download_app.html',
+        'customer/download_app2.html',
     )
-
 
 @login_required
 def settings(request):
 
+    user = request.user
+
     return render(
         request,
         'customer/settings.html',
+        {
+            'user': user,
+            'bank_account': getattr(user, 'bank_account', None),
+        }
     )
 
 
@@ -218,3 +224,56 @@ def payment(request):
         request,
         'customer/crypto_payment.html',
     )
+
+
+@login_required
+def change_transaction_pin(request):
+
+    if request.method == "POST":
+
+        new_pin = request.POST.get("pin")
+        current_password = request.POST.get("current_password")
+
+        # Verify login password
+        if not request.user.check_password(current_password):
+
+            messages.error(
+                request,
+                "Incorrect account password."
+            )
+
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        try:
+            bank_account = request.user.bank_account
+
+            # Save hashed PIN
+            bank_account.set_transaction_pin(new_pin)
+
+            messages.success(
+                request,
+                "Transaction PIN updated successfully."
+            )
+
+        except UserBankAccount.DoesNotExist:
+
+            messages.error(
+                request,
+                "Bank account not found."
+            )
+
+        except ValidationError as e:
+
+            messages.error(
+                request,
+                str(e)
+            )
+
+        except Exception:
+
+            messages.error(
+                request,
+                "Something went wrong."
+            )
+
+    return redirect(request.META.get('HTTP_REFERER'))

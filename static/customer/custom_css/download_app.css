@@ -1,0 +1,200 @@
+
+/* ===== Bootstrap Overrides for Exact Match ===== */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+}
+
+.bg-gradient-primary-subtle {
+    background: linear-gradient(135deg, rgba(1, 71, 225, 0.05) 0%, rgba(1, 71, 225, 0.1) 100%);
+}
+
+.text-white-75 {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.opacity-75 {
+    opacity: 0.75 !important;
+}
+
+/* Color utility classes */
+.bg-purple {
+    background-color: var(--purple) !important;
+}
+
+.bg-pink {
+    background-color: var(--pink) !important;
+}
+
+.bg-indigo {
+    background-color: var(--indigo) !important;
+}
+
+.bg-cyan {
+    background-color: var(--cyan) !important;
+}
+
+.bg-amber {
+    background-color: var(--amber) !important;
+}
+
+.text-purple {
+    color: var(--purple) !important;
+}
+
+.text-pink {
+    color: var(--pink) !important;
+}
+
+.text-indigo {
+    color: var(--indigo) !important;
+}
+
+.text-cyan {
+    color: var(--cyan) !important;
+}
+
+/* Card enhancements */
+.card {
+    border-radius: 1rem !important;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    transition: all 0.2s ease-in-out;
+}
+
+/* Form enhancements */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(1, 71, 225, 0.15);
+}
+
+/* Blur effect for header */
+.backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* Responsive typography */
+.lead {
+    font-size: 1.1rem;
+}
+
+@media (min-width: 768px) {
+    .lead {
+        font-size: 1.25rem;
+    }
+}
+
+/* Custom sizes matching original */
+.rounded-3 {
+    border-radius: 0.75rem !important;
+}
+
+.rounded-4 {
+    border-radius: 1rem !important;
+}
+
+/* Spacing utilities */
+.space-y-3>*+* {
+    margin-top: 0.75rem;
+}
+
+.space-y-4>*+* {
+    margin-top: 1rem;
+}
+
+/* Max width utility */
+.max-w-4xl {
+    max-width: 59rem;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Hover link */
+.hover-primary:hover {
+    color: var(--primary-color) !important;
+}
+
+/* Toast notifications */
+.toast {
+    border-left: 4px solid var(--primary-color);
+    border-radius: 0.5rem;
+}
+
+.toast-success {
+    border-left-color: #198754;
+}
+
+.toast-error {
+    border-left-color: #dc3545;
+}
+
+.toast-warning {
+    border-left-color: var(--secondary-color);
+}
+
+/* Animation for instructions */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#manual-instructions {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Tab pills */
+.nav-pills .nav-link.active {
+    background-color: var(--primary-color);
+}
+
+.nav-pills .nav-link {
+    color: var(--primary-color);
+}
+
+.nav-pills .nav-link:hover {
+    color: #fff;
+}
+
+/* Button enhancements */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
+}
+
+/* Cursor pointer for interactive elements */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* .max-w-4xl {
+    width: 100%;
+    max-width: 59rem;
+    margin: 0 auto;
+} */
+
+/* Tablet and below */
+/* @media (max-width: 768px) {
+    .max-w-4xl {
+        max-width: 100%;
+        padding: 0 1rem;
+    }
+} */
