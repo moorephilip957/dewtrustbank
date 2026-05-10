@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Payment Page</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<style>
+
+:root{
+    --primary:#0147E1;
+    --light:#f5f7fb;
+    --border:#e9edf5;
+    --text:#111827;
+    --muted:#6b7280;
+}
+
+body{
+    background:#f4f7fb;
+    font-family:Inter,sans-serif;
+    color:var(--text);
+}
+
+/* PAGE */
+
+.payment-wrapper{
+    padding:50px 15px;
+}
+
+.payment-card{
+    background:#fff;
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+    border:1px solid #edf0f6;
+}
+
+/* HEADER */
+
+.payment-header{
+    padding:28px;
+    border-bottom:1px solid var(--border);
+}
+
+.payment-title{
+    font-size:28px;
+    font-weight:700;
+    margin-bottom:6px;
+}
+
+.breadcrumb-custom{
+    font-size:14px;
+    color:#6b7280;
+}
+
+.breadcrumb-custom span{
+    margin:0 8px;
+}
+
+/* METHOD TOP */
+
+.method-top{
+    padding:28px;
+    border-bottom:1px solid var(--border);
+}
+
+.method-box{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.method-name{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.method-name i{
+    width:45px;
+    height:45px;
+    border-radius:12px;
+    background:#edf4ff;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+}
+
+.method-name h4{
+    margin:0;
+    font-size:22px;
+    font-weight:700;
+}
+
+.amount-badge{
+    background:#edf4ff;
+    color:#111;
+    padding:10px 18px;
+    border-radius:999px;
+    font-weight:600;
+}
+
+/* BODY */
+
+.payment-body{
+    padding:30px;
+}
+
+/* ALERT */
+
+.custom-alert{
+    background:#eef6ff;
+    border:1px solid #cfe2ff;
+    border-radius:16px;
+    padding:18px;
+    display:flex;
+    gap:14px;
+    margin-bottom:30px;
+}
+
+.custom-alert i{
+    color:#0d6efd;
+    font-size:20px;
+    margin-top:3px;
+}
+
+/* QR BOX */
+
+.qr-box{
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:20px;
+    padding:25px;
+    max-width:380px;
+    margin:auto;
+    text-align:center;
+}
+
+.qr-icon{
+    width:60px;
+    height:60px;
+    background:#edf4ff;
+    color:var(--primary);
+    border-radius:50%;
+    margin:auto auto 18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
+
+.qr-image{
+    background:#fff;
+    border-radius:16px;
+    border:1px solid #e5e7eb;
+    padding:14px;
+    margin:20px 0;
+}
+
+.qr-image img{
+    width:220px;
+}
+
+/* ADDRESS BOX */
+
+.wallet-box{
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:20px;
+    padding:25px;
+    margin-top:35px;
+}
+
+.wallet-box h5{
+    font-weight:700;
+    margin-bottom:20px;
+}
+
+.input-group-custom{
+    display:flex;
+}
+
+.input-group-custom input{
+    flex:1;
+    border:1px solid #dbe1ea;
+    border-right:none;
+    padding:14px 18px;
+    border-radius:14px 0 0 14px;
+    outline:none;
+    background:#fff;
+}
+
+.copy-btn{
+    width:65px;
+    border:none;
+    background:#edf2f7;
+    border:1px solid #dbe1ea;
+    border-radius:0 14px 14px 0;
+    transition:.3s;
+}
+
+.copy-btn:hover{
+    background:#dbeafe;
+}
+
+.network{
+    margin-top:12px;
+    font-size:14px;
+    color:#6b7280;
+}
+
+/* UPLOAD */
+
+.upload-wrapper{
+    margin-top:40px;
+}
+
+.upload-title{
+    font-weight:600;
+    margin-bottom:14px;
+}
+
+.upload-box{
+    border:2px dashed #cfd7e6;
+    border-radius:20px;
+    padding:50px 20px;
+    text-align:center;
+    background:#fff;
+    transition:.3s;
+}
+
+.upload-box:hover{
+    border-color:var(--primary);
+    background:#f9fbff;
+}
+
+.upload-box i{
+    font-size:50px;
+    color:#9ca3af;
+    margin-bottom:15px;
+}
+
+.upload-box p{
+    margin-bottom:8px;
+    color:#6b7280;
+}
+
+.upload-box strong{
+    color:var(--primary);
+}
+
+/* BUTTON */
+
+.submit-btn{
+    width:100%;
+    margin-top:25px;
+    background:var(--primary);
+    border:none;
+    padding:16px;
+    border-radius:14px;
+    font-weight:600;
+    color:#fff;
+    transition:.3s;
+}
+
+.submit-btn:hover{
+    background:#0038b1;
+}
+
+@media(max-width:768px){
+
+    .payment-title{
+        font-size:24px;
+    }
+
+    .payment-header,
+    .method-top,
+    .payment-body{
+        padding:22px;
+    }
+
+    .method-box{
+        align-items:flex-start;
+    }
+
+    .amount-badge{
+        width:100%;
+        text-align:center;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="container payment-wrapper">
+
+    <div class="payment-card">
+
+        <!-- HEADER -->
+        <div class="payment-header">
+
+            <h1 class="payment-title">
+                Make Deposit
+            </h1>
+
+            <div class="breadcrumb-custom">
+                Dashboard
+                <span>/</span>
+                Deposits
+                <span>/</span>
+                <strong>Make Payment</strong>
+            </div>
+
+        </div>
+
+        <!-- METHOD -->
+        <div class="method-top">
+
+            <div class="method-box">
+
+                <div class="method-name">
+                    <i class="fa-solid fa-credit-card"></i>
+
+                    <div>
+                        <h4>Payment Method: USDT</h4>
+                    </div>
+                </div>
+
+                <div class="amount-badge">
+                    Amount: $500 USD
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BODY -->
+        <div class="payment-body">
+
+            <!-- ALERT -->
+            <div class="custom-alert">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <div>
+                    <h6 class="fw-bold mb-2">
+                        Payment Instructions
+                    </h6>
+
+                    <p class="mb-0">
+                        You are to make payment of
+                        <strong>$500</strong>
+                        using your selected payment method.
+                        Screenshot and upload the proof of payment.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- QR -->
+            <div class="qr-box">
+
+                <div class="qr-icon">
+                    <i class="fa-solid fa-qrcode"></i>
+                </div>
+
+                <h4 class="fw-bold">
+                    Scan QR Code
+                </h4>
+
+                <div class="qr-image">
+
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=GxcexCE4bm5nBzamRReNPhMzQTeQQrHQ">
+
+                </div>
+
+                <p class="text-muted">
+                    Scan the QR code with your payment app
+                </p>
+
+                <div class="mt-3">
+
+                    <small class="fw-semibold d-block">
+                        USDT Address
+                    </small>
+
+                    <small class="text-muted">
+                        GxcexCE4bm5nBzamRReNPhMzQTeQQrHQ
+                    </small>
+
+                    <div class="mt-2"></div>
+
+                    <small class="fw-semibold d-block">
+                        Amount
+                    </small>
+
+                    <small class="text-muted">
+                        $500
+                    </small>
+
+                </div>
+
+            </div>
+
+            <!-- WALLET -->
+            <div class="wallet-box">
+
+                <h5>
+                    <i class="fa-solid fa-wallet me-2 text-primary"></i>
+                    USDT Address
+                </h5>
+
+                <div class="input-group-custom">
+
+                    <input
+                        type="text"
+                        value="GxcexCE4bm5nBzamRReNPhMzQTeQQrHQ"
+                        id="walletInput"
+                        readonly
+                    >
+
+                    <button class="copy-btn" onclick="copyWallet()">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+
+                </div>
+
+                <div class="network">
+                    <i class="fa-solid fa-circle-info text-primary me-1"></i>
+                    <strong>Network Type:</strong> TRC20
+                </div>
+
+            </div>
+
+            <!-- UPLOAD -->
+            <!-- UPLOAD -->
+            <div class="upload-wrapper">
+
+                <div class="upload-title">
+                    Upload Payment Proof
+                </div>
+
+                <div class="upload-box" id="uploadBox">
+
+                    <!-- DEFAULT CONTENT -->
+                    <div id="uploadDefault">
+
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                        <p>
+                            <strong>Click to upload</strong>
+                            or drag and drop
+                        </p>
+
+                        <p class="small">
+                            PNG, JPG or PDF (max. 5MB)
+                        </p>
+
+                    </div>
+
+                    <!-- PREVIEW -->
+                    <div id="previewContainer" style="display:none;">
+
+                        <img
+                            id="previewImage"
+                            src=""
+                            class="img-fluid rounded shadow-sm mb-3"
+                            style="max-height:220px;"
+                        >
+
+                        <div class="d-flex align-items-center justify-content-center gap-2">
+
+                            <span id="fileName" class="fw-semibold"></span>
+
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-danger rounded-circle"
+                                onclick="removeFile()"
+                            >
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- INPUT -->
+                    <input
+                        type="file"
+                        id="fileInput"
+                        hidden
+                        accept="image/*,.pdf"
+                    >
+
+                </div>
+
+                <button class="submit-btn">
+                    <i class="fa-solid fa-circle-check me-2"></i>
+                    Submit Payment
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function copyWallet() {
+
+    let copyText = document.getElementById("walletInput");
+
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+
+    navigator.clipboard.writeText(copyText.value);
+
+}
+
+</script>
+
+<script>
+
+/* CLICK TO OPEN FILE */
+
+const uploadBox = document.getElementById("uploadBox");
+const fileInput = document.getElementById("fileInput");
+
+uploadBox.addEventListener("click", () => {
+    fileInput.click();
+});
+
+/* DRAG DROP */
+
+uploadBox.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    uploadBox.style.borderColor = "#0147E1";
+    uploadBox.style.background = "#f5f9ff";
+});
+
+uploadBox.addEventListener("dragleave", () => {
+    uploadBox.style.borderColor = "#cfd7e6";
+    uploadBox.style.background = "#fff";
+});
+
+uploadBox.addEventListener("drop", (e) => {
+
+    e.preventDefault();
+
+    uploadBox.style.borderColor = "#cfd7e6";
+    uploadBox.style.background = "#fff";
+
+    if(e.dataTransfer.files.length){
+        fileInput.files = e.dataTransfer.files;
+        showPreview(e.dataTransfer.files[0]);
+    }
+
+});
+
+/* FILE CHANGE */
+
+fileInput.addEventListener("change", function(){
+
+    if(this.files.length){
+        showPreview(this.files[0]);
+    }
+
+});
+
+/* SHOW PREVIEW */
+
+function showPreview(file){
+
+    document.getElementById("uploadDefault").style.display = "none";
+    document.getElementById("previewContainer").style.display = "block";
+
+    document.getElementById("fileName").innerText = file.name;
+
+    const previewImage = document.getElementById("previewImage");
+
+    if(file.type.startsWith("image/")){
+
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+            previewImage.src = e.target.result;
+        }
+
+        reader.readAsDataURL(file);
+
+    }else{
+
+        previewImage.src =
+        "https://cdn-icons-png.flaticon.com/512/337/337946.png";
+
+    }
+
+}
+
+/* REMOVE FILE */
+
+function removeFile(){
+
+    fileInput.value = "";
+
+    document.getElementById("uploadDefault").style.display = "block";
+    document.getElementById("previewContainer").style.display = "none";
+
+}
+
+</script>
+
+</body>
+</html>

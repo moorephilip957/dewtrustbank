@@ -1,0 +1,391 @@
+{% extends '../customer/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'transaction/custom_css/deposit_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4 px-3 px-md-4 mb-5">
+
+    <!-- HEADER -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+
+        <div>
+
+            <h1 class="h3 fw-bold text-dark mb-1">
+                Make Deposit
+            </h1>
+
+            <nav aria-label="breadcrumb">
+
+                <ol class="breadcrumb mb-0 small">
+
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'customer:dashboard' %}"
+                           class="text-decoration-none text-muted">
+                           Dashboard
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item">
+                        <a href="#"
+                           class="text-decoration-none text-muted">
+                           Deposits
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item active">
+                        Make Payment
+                    </li>
+
+                </ol>
+
+            </nav>
+
+        </div>
+
+        <div class="mt-3 mt-md-0">
+
+            <span class="badge bg-light text-dark border px-3 py-2">
+
+                <i data-lucide="wallet"
+                   style="width:14px;height:14px;"
+                   class="me-1"></i>
+
+                Balance:
+                {{request.user.bank_account.get_currency_symbol}}
+                {{request.user.bank_account.balance|intcomma}}
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+    <div class="payment-page">
+
+        <div class="card payment-card">
+
+            <!-- TOP -->
+            <div class="payment-header">
+
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="method-icon">
+
+                            <i data-lucide="credit-card"
+                               style="width:24px;height:24px;"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold mb-0">
+                                Payment Method: {{ deposit.method|upper }}
+                            </h5>
+
+                        </div>
+
+                    </div>
+
+                    <div class="amount-badge">
+
+                        Amount:
+                        {{request.user.bank_account.get_currency_symbol}}{{deposit.amount|intcomma}}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% if deposit.method == "WIRE" %}
+                <div class=" border-0 rounded-4 mt-3 d-flex align-items-start gap-3 mx-3">
+
+                    <div class="flex-shrink-0">
+                        <i data-lucide="info"
+                        class="text-primary"
+                        style="width:20px;height:20px;"></i>
+                    </div>
+
+                    <div>
+
+                        <h6 class="fw-bold mb-1">
+                            Wire Transfer Instructions
+                        </h6>
+
+                        <p class="mb-0 text-secondary">
+
+                            Customers who selected
+                            <strong>Wire Transfer</strong>
+                            are required to contact support before making payment.
+                            Our support team will provide the appropriate bank details
+                            and guide you through the transfer process.
+
+                        </p>
+
+                    </div>
+
+                </div>
+            {% endif %}
+
+            <!-- BODY -->
+            <div class="card-body p-4 p-md-5">
+
+
+                {% if deposit.method == "BTC" or deposit.method == "USDT" %}
+
+                <!-- ALERT -->
+                <div class="custom-alert d-flex gap-3 mb-4">
+
+                    <div>
+
+                        <i data-lucide="info"
+                           class="text-primary"
+                           style="width:22px;height:22px;"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h6 class="fw-bold mb-2">
+                            Payment Instructions
+                        </h6>
+
+                        <p class="mb-0 text-secondary">
+
+                            You are to make payment of
+                            <strong>{{request.user.bank_account.get_currency_symbol}}{{deposit.amount|intcomma}}</strong>
+                            using your selected payment method.
+                            Screenshot and upload the proof of payment.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- QR -->
+                <div class="qr-box text-center mb-5">
+
+                    <div class="qr-icon mb-3">
+
+                        <i data-lucide="qr-code"
+                           style="width:28px;height:28px;"></i>
+
+                    </div>
+
+                    <h4 class="fw-bold">
+                        Scan QR Code
+                    </h4>
+
+                    <div class="qr-image my-4">
+
+                        <img
+                            src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=GxcexCE4bm5nBzamRReNPhMzQTeQQrHQ"
+                            class="img-fluid"
+                        >
+
+                    </div>
+
+                    <p class="text-muted small">
+                        Scan the QR code with your payment app
+                    </p>
+
+                    <div class="mt-3">
+
+                        <small class="fw-semibold d-block">
+                            {{deposit.method}} Address
+                        </small>
+
+                        <small class="text-muted">
+                            GxcexCE4bm5nBzamRReNPhMzQTeQQrHQ
+                        </small>
+
+                        <div class="mt-2"></div>
+
+                        <small class="fw-semibold d-block">
+                            Amount
+                        </small>
+
+                        <small class="text-muted">
+                            {{request.user.bank_account.get_currency_symbol}}{{deposit.amount|intcomma}}
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <!-- WALLET -->
+                <div class="wallet-box mb-5">
+
+                    <h5 class="fw-bold mb-4">
+
+                        <i data-lucide="wallet"
+                           class="text-primary me-2"
+                           style="width:20px;height:20px;"></i>
+
+                        USDT Address
+
+                    </h5>
+
+                    <div class="input-group">
+
+                        <input
+                            type="text"
+                            class="form-control wallet-input"
+                            id="walletInput"
+                            value="GxcexCE4bm5nBzamRReNPhMzQTeQQrHQ"
+                            readonly
+                        >
+
+                        <button
+                            type="button"
+                            class="btn btn-light border copy-btn"
+                            onclick="copyWallet()">
+
+                            <i data-lucide="copy"
+                               style="width:18px;height:18px;"></i>
+
+                        </button>
+
+                    </div>
+
+                    <div class="mt-3 small text-secondary">
+
+                        <i data-lucide="info"
+                           class="text-primary me-1"
+                           style="width:15px;height:15px;"></i>
+
+                        <strong>Network Type:</strong>
+                        TRC20
+
+                    </div>
+
+                </div>
+
+                <!-- FORM -->
+                <form method="post" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+
+                    <!-- FILE -->
+                    <div class="mb-4">
+
+                        <label class="form-label fw-semibold mb-3">
+
+                            Upload Payment Proof
+
+                        </label>
+
+                        <div class="upload-box"
+                            id="uploadBox">
+
+                            <!-- DEFAULT -->
+                            <div id="uploadDefault">
+
+                                <i class="fa-solid fa-cloud-arrow-up upload-icon mb-3"></i>
+
+                                <p class="mb-2">
+
+                                    <strong class="text-primary">
+                                        Click to upload
+                                    </strong>
+
+                                    or drag and drop
+
+                                </p>
+
+                                <small class="text-muted">
+                                    PNG, JPG or PDF (max. 5MB)
+                                </small>
+
+                            </div>
+
+                            <!-- PREVIEW -->
+                            <div id="previewContainer"
+                                style="display:none;">
+
+                                <img id="previewImage"
+                                    src=""
+                                    class="img-fluid rounded shadow-sm mb-3"
+                                    style="max-height:220px;">
+
+                                <div class="d-flex align-items-center justify-content-center gap-2">
+
+                                    <span id="fileName"
+                                        class="fw-semibold"></span>
+
+                                    <button type="button"
+                                            class="btn btn-sm btn-danger rounded-circle"
+                                            id="removeFileBtn">
+
+                                        <!-- <i class="fa-solid fa-xmark"></i> -->
+                                        <i data-lucide="x"></i>
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                            <!-- DJANGO FIELD -->
+                            {{ form.proof }}
+
+                        </div>
+
+                        <!-- ERRORS -->
+                        {% for error in form.proof.errors %}
+                            <div class="text-danger mt-2">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+
+                        <div id="uploadError" class="text-danger small mt-2 d-none">
+                            Please upload a proof of payment
+                        </div>
+
+                    </div>
+
+                    <!-- BUTTON -->
+                    <div class="d-grid">
+
+                        <button type="submit"
+                                class="btn btn-primary submit-btn" id="submitBtn" disabled>
+
+                            <i data-lucide="check-circle"
+                               class="me-2"
+                               style="width:18px;height:18px;"></i>
+
+                            Submit Payment
+
+                        </button>
+
+                    </div>
+
+                </form>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+{% endblock %}
+
+
+{% block scripts %}
+    {% if deposit.method == "BTC" or deposit.method == "USDT" %}
+    <script src="{% static 'transaction/custom_js/deposit_detail.js' %}"></script>
+    {% endif %}
+{% endblock %}

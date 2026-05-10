@@ -1,0 +1,128 @@
+/* ===== Theme Variables ===== */
+:root {
+    --primary-color-light: #3369e7;
+    --secondary-color: #FFC107;
+    --text-color: #828282;
+    --bg-color: #f9fafb;
+}
+
+/* ===== Bootstrap Overrides & Utilities ===== */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+}
+
+.hover-primary:hover {
+    color: var(--primary-color) !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.transition-all {
+    transition: all 0.2s ease-in-out;
+}
+
+/* ===== Payment Method Cards ===== */
+.payment-method-card {
+    background: #fff;
+    border: 2px solid #e5e7eb !important;
+}
+
+.payment-method-card:hover,
+.payment-method-card.selected {
+    border-color: var(--primary-color) !important;
+    background-color: rgba(1, 71, 225, 0.05);
+    box-shadow: 0 0 0 4px rgba(1, 71, 225, 0.1);
+}
+
+.payment-method-card.selected .checkmark {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.payment-method-card.selected .checkmark::after {
+    display: block;
+}
+
+/* ===== Custom Checkbox Styling ===== */
+.form-check-custom {
+    width: 20px;
+    height: 20px;
+    position: relative;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #d1d5db;
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.checkmark::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    display: none;
+}
+
+/* ===== Form Enhancements ===== */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(1, 71, 225, 0.15);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
+}
+
+/* ===== Responsive Typography ===== */
+.h3-md {
+    font-size: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .h3-md {
+        font-size: 1.875rem;
+    }
+}
+
+/* ===== Backdrop Blur Support ===== */
+.backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* ===== Animation for Submit ===== */
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.btn-primary:disabled {
+    animation: pulse 1.5s infinite;
+}

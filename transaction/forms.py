@@ -1,55 +1,74 @@
 # forms.py
 from django import forms
-from django import forms
 from django.contrib.auth.hashers import check_password
 
 from .models import Deposit, LocalTransfer, InternationalTransfer
 from customer.models import UserBankAccount
 
 
-class DepositForm(forms.ModelForm):
+class DepositCreateForm(forms.ModelForm):
 
     class Meta:
         model = Deposit
 
         fields = [
             "method",
-            "amount",
-            "proof"
+            "amount"
         ]
 
         widgets = {
 
-            "method": forms.Select(
-                attrs={
-                    "class": "form-control my-input"
-                }
-            ),
+            # HIDDEN FIELD
+            "method": forms.HiddenInput(),
 
             "amount": forms.NumberInput(
                 attrs={
-                    "class": "form-control my-input",
-                    "placeholder": "Enter amount"
-                }
-            ),
-
-            "proof": forms.FileInput(
-                attrs={
-                    "class": "form-control my-input"
+                    "class": "form-control",
+                    "min": "100",
+                    "max": "5000000",
+                    "step": "0.01",
+                    "placeholder": "0.00"
                 }
             )
         }
 
     def clean_amount(self):
 
-        amount = self.cleaned_data.get("amount")
+        amount = self.cleaned_data["amount"]
 
-        if amount <= 0:
+        if amount < 100:
             raise forms.ValidationError(
-                "Amount must be greater than zero."
+                "Minimum deposit is $100"
+            )
+
+        if amount > 5000000:
+            raise forms.ValidationError(
+                "Maximum deposit is $5,000,000"
             )
 
         return amount
+
+
+class DepositProofForm(forms.ModelForm):
+
+    class Meta:
+        model = Deposit
+        fields = ["proof"]
+
+        widgets = {
+            "proof": forms.FileInput(
+                attrs={
+                    "hidden": True,
+                    "id": "fileInput",
+                    "accept": "image/*,.pdf",
+                }
+            )
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["proof"].required = True
     
 
 class LocalTransferForm(forms.ModelForm):

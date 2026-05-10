@@ -1,0 +1,52 @@
+<!-- loan_form.html -->
+
+<form method="POST" class="p-4 shadow rounded bg-white">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label class="form-label">
+            {{ form.amount.label }} *
+        </label>
+        <div class="input-group">
+            <span class="input-group-text">$</span>
+            {{ form.amount }}
+        </div>
+        {{ form.amount.errors }}
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">
+            {{ form.duration_months.label }} *
+        </label>
+        {{ form.duration_months }}
+        {{ form.duration_months.errors }}
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">
+            {{ form.loan_type.label }} *
+        </label>
+        {{ form.loan_type }}
+        {{ form.loan_type.errors }}
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">
+            {{ form.purpose.label }} *
+        </label>
+        {{ form.purpose }}
+        {{ form.purpose.errors }}
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">
+            {{ form.monthly_net_income.label }} *
+        </label>
+        {{ form.monthly_net_income }}
+        {{ form.monthly_net_income.errors }}
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100 custom_css">
+        Apply for Loan
+    </button>
+</form>

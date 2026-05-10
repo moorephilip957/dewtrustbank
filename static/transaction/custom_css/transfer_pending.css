@@ -1,0 +1,130 @@
+:root {
+    --secondary-color: #FFC107;
+    --text-color: #828282;
+}
+
+.pending-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(255, 193, 7, 0.12);
+    overflow: hidden;
+}
+
+.pending-header {
+    background: linear-gradient(135deg, var(--secondary-color), var(--secondary-color-dark));
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+}
+
+.pending-icon-circle {
+    width: 72px;
+    height: 72px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
+.pulse-icon {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 0.85;
+    }
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: var(--text-color);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detail-value {
+    font-weight: 600;
+    color: #111;
+    font-size: 0.95rem;
+}
+
+.badge-pending-custom {
+    background: #fffbeb;
+    color: #d97706;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.amount-display {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #d97706;
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.btn-secondary-custom {
+    background: var(--secondary-color);
+    color: #1a1a1a;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.btn-secondary-custom:hover {
+    background: var(--secondary-color-dark);
+    box-shadow: 0 6px 20px rgba(204, 153, 0, 0.25);
+    transform: translateY(-1px);
+}
+
+.btn-outline-custom {
+    border: 1px solid #e5e7eb;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 500;
+    color: #4b5563;
+}
+
+.btn-outline-custom:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+@media (max-width: 576px) {
+    .pending-header {
+        padding: 2rem 1rem;
+    }
+
+    .amount-display {
+        font-size: 2rem;
+    }
+}

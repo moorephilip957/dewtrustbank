@@ -1,0 +1,190 @@
+{% extends '../customer/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'transaction/custom_css/deposit_pending.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="pending-page-wrapper">
+
+    <!-- Background -->
+    <div class="bg-wrapper">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+
+    <!-- Card -->
+    <div class="tx-card">
+
+        <!-- Icon -->
+        <div class="icon-wrapper">
+            <div class="ring"></div>
+            <div class="ring"></div>
+
+            <i data-lucide="clock-3"></i>
+        </div>
+
+        <!-- Heading -->
+        <h2 class="title">
+            Payment Pending
+        </h2>
+
+        <p class="subtitle">
+            Your transaction is being processed
+        </p>
+
+        <!-- Amount -->
+        <div class="amount">
+
+            <span class="currency">
+                {{ request.user.bank_account.get_currency_symbol }}
+            </span>
+
+            <span class="value">
+                {{ deposit.amount|floatformat:2|intcomma }}
+            </span>
+
+        </div>
+
+        <!-- Details -->
+        <ul class="details-list">
+
+            <!-- Date -->
+            <li class="detail-item">
+
+                <span class="label">
+
+                    <i data-lucide="calendar-days"></i>
+
+                    Date & Time
+
+                </span>
+
+                <span class="val muted">
+
+                    {{ deposit.created_at|date:"M d, Y • g:i A" }}
+
+                </span>
+
+            </li>
+
+            <!-- Reference -->
+            <!-- <li class="detail-item">
+
+                <span class="label">
+
+                    <i data-lucide="hash"></i>
+
+                    Reference
+
+                </span>
+
+                <span class="val">
+
+                    {{ deposit.reference }}
+
+                </span>
+
+            </li> -->
+
+            <!-- Method -->
+            <li class="detail-item">
+
+                <span class="label">
+
+                    <i data-lucide="wallet"></i>
+
+                    Payment Method
+
+                </span>
+
+                <span class="val">
+
+                    {{ deposit.method|upper }}
+
+                </span>
+
+            </li>
+
+            <!-- User -->
+            <!-- <li class="detail-item">
+
+                <span class="label">
+
+                    <i data-lucide="user"></i>
+
+                    Account Holder
+
+                </span>
+
+                <span class="val muted">
+
+                    {{ request.user.get_full_name }}
+
+                </span>
+
+            </li> -->
+
+            <!-- Status -->
+            <li class="detail-item">
+
+                <span class="label">
+
+                    <i data-lucide="hourglass"></i>
+
+                    Status
+
+                </span>
+
+                <span class="val">
+
+                    <span class="badge-pending">
+
+                        <i data-lucide="loader-circle"></i>
+
+                        Pending
+
+                    </span>
+
+                </span>
+
+            </li>
+
+        </ul>
+
+        <!-- Buttons -->
+        <div class="btn-group-custom">
+
+            <a href=""
+                class="btn-status text-decoration-none">
+
+                <i data-lucide="refresh-cw"></i>
+
+                Refresh Status
+
+            </a>
+
+            <a href="{% url 'customer:dashboard' %}"
+                class="btn-home text-decoration-none">
+
+                <i data-lucide="house"></i>
+
+                Back to Home
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    lucide.createIcons();
+</script>
+
+{% endblock %}

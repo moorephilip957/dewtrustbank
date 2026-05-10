@@ -50,6 +50,9 @@
 
                 {% csrf_token %}
 
+                {% include "../components/form_errors.html" %}
+                {% include "../components/messages.html" %}
+
                 <!-- Amount -->
                 <div class="mb-4 bg-light rounded-3 p-4 border">
                     <label for="amount" class="form-label fw-medium text-dark mb-2">
@@ -130,7 +133,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <!-- <div class="col-md-4">
                             <label class="form-label fw-medium">
                                 Account Type
                             </label>
@@ -141,9 +144,9 @@
                                 <option>Checking</option>
                                 <option>Savings Account</option>
                             </select>
-                        </div>
+                        </div> -->
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label fw-medium">
                                 Country
                             </label>
@@ -151,7 +154,7 @@
                             {{form.country}}
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label fw-medium">
                                 Swift Code
                             </label>
