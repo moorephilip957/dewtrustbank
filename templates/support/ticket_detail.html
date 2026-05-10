@@ -1,0 +1,104 @@
+{% extends '../customer/base.html' %}
+{% load static %}
+
+{% block styles %}
+<style>
+:root {
+    --primary-color: #0147E1;
+    --border-color: #e5e7eb;
+    --text-muted: #6b7280;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.ticket-header {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.chat-box {
+    background: #f9fafb;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    height: 450px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+}
+
+.message {
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 0.75rem;
+    max-width: 75%;
+}
+
+.message-user {
+    background: #dbeafe;
+    margin-left: auto;
+    text-align: right;
+}
+
+.message-support {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+}
+
+.message-meta {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+.reply-box {
+    margin-top: 1rem;
+}
+
+textarea {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    resize: none;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4 mb-5">
+    <h3>Ticket #{{ ticket.reference_id }} - {{ ticket.subject }}</h3>
+    <p>Status: <span class="badge bg-info">{{ ticket.status|capfirst }}</span></p>
+
+    <hr>
+
+    <div class="chat-box mb-4">
+        {% for msg in messages %}
+            <div class="mb-3 {% if msg.sender == 'user' %}text-end{% else %}text-start{% endif %}">
+                <div class="d-inline-block p-2 rounded {% if msg.sender == 'user' %}bg-primary text-white{% else %}bg-light text-dark{% endif %}">
+                    {{ msg.content|linebreaks }}
+                    {% if msg.attachment %}
+                        <div class="mt-1">
+                            <a href="{{ msg.attachment.url }}" target="_blank">View Attachment</a>
+                        </div>
+                    {% endif %}
+                    <small class="d-block {% if msg.sender == 'user' %}text-secondary{% else %}bg-light text-dark{% endif %}">{{ msg.created_at|date:"M d, Y H:i" }}</small>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-muted">No messages yet.</p>
+        {% endfor %}
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <textarea name="message" class="form-control" rows="3" placeholder="Type your message..."></textarea>
+        </div>
+        <!-- <div class="mb-3">
+            <input type="file" name="attachment" class="form-control">
+        </div> -->
+        <button type="submit" class="btn btn-primary">Send Message</button>
+    </form>
+</div>
+{% endblock %}

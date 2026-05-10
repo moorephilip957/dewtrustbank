@@ -1,0 +1,168 @@
+{% extends '../customer/base.html' %}
+{% load static %}
+
+{% block styles %}
+<style>
+:root {
+    --primary-color: #0147E1;
+    --card-bg: #ffffff;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+/* Page wrapper */
+.success-wrapper {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background: #f9fafb;
+}
+
+/* Card */
+.success-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-md);
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    padding: 2.5rem 2rem;
+    animation: fadeIn 0.4s ease-out;
+}
+
+/* Icon circle */
+.success-icon {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+/* Title */
+.success-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+/* Text */
+.success-text {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+/* Ticket reference box */
+.ticket-box {
+    background: #f3f4f6;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: #374151;
+    margin-bottom: 1.5rem;
+}
+
+/* Button */
+.btn-primary-custom {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0.65rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: 0.2s ease-in-out;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary-custom:hover {
+    background: #0039b3;
+    transform: translateY(-1px);
+}
+
+/* Secondary link */
+.btn-link-custom {
+    display: inline-block;
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-decoration: none;
+}
+
+.btn-link-custom:hover {
+    color: #111827;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="success-wrapper">
+
+    <div class="success-card">
+
+        <!-- Success Icon -->
+        <div class="success-icon">
+            <i data-lucide="check-circle" style="width:48px;height:48px;color:#10b981;"></i>
+        </div>
+
+        <!-- Title -->
+        <h2 class="success-title">Ticket Submitted Successfully</h2>
+
+        <!-- Message -->
+        <p class="success-text">
+            Your support request has been received. Our team will review it and respond within 24 hours.
+        </p>
+
+        <!-- Optional Ticket ID -->
+        {% if ticket %}
+        <div class="ticket-box">
+            Ticket ID: <strong>#{{ ticket.reference_id }}</strong>
+        </div>
+        {% endif %}
+
+        <!-- Actions -->
+        <a href="{% url 'support:create_ticket' %}" class="btn-primary-custom">
+            Submit Another Ticket
+        </a>
+
+        <br>
+
+        <a href="{% url 'customer:dashboard' %}" class="btn-link-custom">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    lucide.createIcons();
+</script>
+{% endblock %}

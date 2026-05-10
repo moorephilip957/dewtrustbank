@@ -9,4 +9,5 @@ urlpatterns = [
     path('account/', include('customer.urls', namespace="customer")),
     path('transaction/', include('transaction.urls', namespace="transaction")),
     path('loan/', include('loan.urls', namespace="loan")),
+    path('support/', include('support.urls', namespace="support")),
 ]

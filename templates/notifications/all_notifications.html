@@ -1,0 +1,368 @@
+{% extends '../customer/base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'notifications/notifications.css' %}">
+
+    
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* =========================
+   NOTIFICATION LIST ITEM
+========================= */
+
+.notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+
+    padding: 1rem 1.25rem;
+    transition: all 0.2s ease;
+    border-radius: 10px;
+}
+
+/* hover state */
+.notification-item:hover {
+    background: #f8f9fa;
+}
+
+/* =========================
+   UNREAD STATE
+========================= */
+
+.notification-item.unread {
+    background: #ffffff;
+    border-left: 4px solid #0d6efd;
+}
+
+/* =========================
+   LEFT ICON WRAPPER
+========================= */
+
+.notification-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+.notification-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* icon color variants */
+.icon-primary {
+    background: #e7f1ff;
+    color: #0d6efd;
+}
+
+.icon-success {
+    background: #e6f7ee;
+    color: #198754;
+}
+
+.icon-warning {
+    background: #fff6e5;
+    color: #ffc107;
+}
+
+.icon-danger {
+    background: #ffe9e9;
+    color: #dc3545;
+}
+
+/* =========================
+   TEXT BLOCK
+========================= */
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 0.25rem;
+}
+
+.notification-message {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+    line-height: 1.4;
+}
+
+.notification-time {
+    font-size: 0.75rem;
+    color: #adb5bd;
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.notification-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.notification-actions .btn {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+/* delete button */
+.btn-outline-danger {
+    border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+/* mark read */
+.btn-light {
+    background: #f8f9fa;
+    border: 1px solid #e5e7eb;
+}
+
+.btn-light:hover {
+    background: #e9ecef;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .notification-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .notification-actions {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 0.5rem;
+    }
+}
+</style>
+
+<!-- Toast Notifications -->
+<div id="toast-container" class="toast-container"></div>
+
+<!-- MAIN CONTENT -->
+<div class="container-fluid py-4 px-3 px-md-4">
+
+    <!-- Header -->
+    <div class="d-flex flex-column mb-4 animate-fadeIn">
+        <h1 class="h4 fw-bold text-dark mb-1">Notifications</h1>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'customer:dashboard' %}" class="text-decoration-none text-muted">
+                        Dashboard
+                    </a>
+                </li>
+                <li class="breadcrumb-item active text-secondary">Notifications</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Actions -->
+    <div class="d-flex justify-content-between align-items-center mb-4 animate-fadeIn">
+        
+        <div class="text-muted small">
+            You have <strong>{{ unread_count }}</strong> unread notifications
+        </div>
+
+        <div class="d-flex gap-2">
+
+            <form method="POST" action="{% url 'customer:notifications_mark_all' %}">
+                {% csrf_token %}
+                <button class="btn btn-outline-primary btn-sm">
+                    Mark all as read
+                </button>
+            </form>
+
+            <form method="POST" action="{% url 'customer:notifications_delete_all' %}"
+                  onsubmit="return confirm('Delete all notifications?')">
+                {% csrf_token %}
+                <button class="btn btn-outline-danger btn-sm">
+                    Delete all
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Notifications Card -->
+    <div class="card shadow-sm border-0 animate-fadeIn">
+
+        <div class="card-header bg-white border-bottom py-3">
+            <h5 class="mb-0 fw-semibold">All Notifications</h5>
+        </div>
+
+        <div class="card-body p-0">
+
+            {% if notifications %}
+
+                <div class="list-group list-group-flush">
+
+                    {% for notification in notifications %}
+
+                    <div class="list-group-item px-4 py-3 notification-item {% if not notification.is_read %}unread{% endif %}">
+
+                        <div class="d-flex justify-content-between align-items-start">
+
+                            <!-- Left -->
+                            <div class="d-flex gap-3">
+
+                                <!-- Icon -->
+                                <div class="notification-icon 
+                                    {% if notification.type == 'success' %}bg-success-soft text-success
+                                    {% elif notification.type == 'warning' %}bg-warning-soft text-warning
+                                    {% elif notification.type == 'danger' %}bg-danger-soft text-danger
+                                    {% else %}bg-primary-soft text-primary{% endif %}">
+                                    
+                                    {% if notification.type == 'success' %}
+                                        <i data-lucide="check-circle"></i>
+                                    {% elif notification.type == 'warning' %}
+                                        <i data-lucide="alert-triangle"></i>
+                                    {% elif notification.type == 'danger' %}
+                                        <i data-lucide="x-circle"></i>
+                                    {% else %}
+                                        <i data-lucide="bell"></i>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Content -->
+                                <div>
+                                    <h6 class="mb-1 fw-semibold">
+                                        {{ notification.title }}
+                                    </h6>
+
+                                    <p class="mb-1 text-muted small">
+                                        {{ notification.message }}
+                                    </p>
+
+                                    <span class="text-muted small">
+                                        {{ notification.created_at|date:"M d, Y \\a\\t h:i A" }}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="d-flex gap-2">
+
+                                {% if not notification.is_read %}
+                                <a href="{% url 'customer:notification_read' notification.id %}"
+                                   class="btn btn-sm btn-light">
+                                    Mark read
+                                </a>
+                                {% endif %}
+
+                                <form method="POST"
+                                      action="{% url 'customer:notification_delete' notification.id %}"
+                                      onsubmit="return confirm('Delete this notification?')">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-outline-danger">
+                                        Delete
+                                    </button>
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <!-- Empty state -->
+                <div class="text-center py-5">
+                    <div class="mb-3 text-muted">
+                        <i data-lucide="bell-off" style="width:40px;height:40px;"></i>
+                    </div>
+                    <h6 class="fw-semibold">No notifications yet</h6>
+                    <p class="text-muted small mb-0">
+                        You’ll see updates from your account here.
+                    </p>
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- Pagination -->
+    {% if notifications.has_other_pages %}
+    <div class="d-flex justify-content-between align-items-center mt-4">
+
+        <div class="text-muted small">
+            Page {{ notifications.number }} of {{ notifications.paginator.num_pages }}
+        </div>
+
+        <nav>
+            <ul class="pagination pagination-sm mb-0">
+
+                {% if notifications.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ notifications.previous_page_number }}">
+                        Previous
+                    </a>
+                </li>
+                {% endif %}
+
+                <li class="page-item active">
+                    <span class="page-link">
+                        {{ notifications.number }}
+                    </span>
+                </li>
+
+                {% if notifications.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ notifications.next_page_number }}">
+                        Next
+                    </a>
+                </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    lucide.createIcons();
+</script>
+{% endblock %}

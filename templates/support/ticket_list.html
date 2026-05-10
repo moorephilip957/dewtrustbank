@@ -1,0 +1,143 @@
+{% extends '../customer/base.html' %}
+{% load static %}
+
+{% block styles %}
+<style>
+:root {
+    --primary-color: #0147E1;
+    --border-color: #e5e7eb;
+    --text-muted: #6b7280;
+    --card-bg: #ffffff;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.ticket-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    box-shadow: var(--shadow-sm);
+    transition: 0.2s ease;
+}
+
+.ticket-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.badge-status {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+}
+
+.status-open { background: #dbeafe; color: #1d4ed8; }
+.status-progress { background: #fef9c3; color: #a16207; }
+.status-closed { background: #f3f4f6; color: #374151; }
+
+.ticket-id {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.ticket-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.ticket-meta {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.search-box {
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    padding: 0.6rem 1rem;
+    width: 100%;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title mb-1">My Support Tickets</h1>
+            <small class="text-muted">Track and manage all your requests</small>
+        </div>
+
+        <a href="{% url 'support:create_ticket' %}" class="btn btn-primary">
+            + New Ticket
+        </a>
+    </div>
+
+    <!-- Search -->
+    <div class="mb-4">
+        <input type="text" class="search-box" placeholder="Search tickets by subject or ID...">
+    </div>
+
+    <!-- Filters -->
+    <div class="mb-3">
+        <div class="btn-group">
+            <a href="?status=all" class="btn btn-outline-secondary btn-sm">All</a>
+            <a href="?status=open" class="btn btn-outline-primary btn-sm">Open</a>
+            <a href="?status=in_progress" class="btn btn-outline-warning btn-sm">In Progress</a>
+            <a href="?status=closed" class="btn btn-outline-dark btn-sm">Closed</a>
+        </div>
+    </div>
+
+    <!-- Ticket List -->
+    <div class="row g-3">
+
+        {% for ticket in tickets %}
+
+        <div class="col-12">
+            <a href="{% url 'support:ticket_detail' ticket.reference_id %}" class="text-decoration-none text-dark">
+                <div class="ticket-card d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <div class="ticket-id">#{{ ticket.reference_id }}</div>
+                        <div class="ticket-title">{{ ticket.subject }}</div>
+                        <div class="ticket-meta">
+                            Last updated: {{ ticket.updated_at }}
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        {% if ticket.status == "open" %}
+                            <span class="badge-status status-open">Open</span>
+                        {% elif ticket.status == "in_progress" %}
+                            <span class="badge-status status-progress">In Progress</span>
+                        {% else %}
+                            <span class="badge-status status-closed">Closed</span>
+                        {% endif %}
+
+                        <div class="ticket-meta mt-1">
+                            {{ ticket.priority }}
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+        </div>
+
+        {% empty %}
+        <div class="text-center text-muted py-5">
+            No tickets found.
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}
