@@ -80,7 +80,7 @@ def wire_transfer(request):
             else:
                 return redirect("transaction:transfer_failed", tx_id=result.transaction.id)
     else:
-        form = InternationalTransferForm(request.POST, user=request.user)
+        form = InternationalTransferForm(user=request.user)
 
     context = {
         'form': form,
