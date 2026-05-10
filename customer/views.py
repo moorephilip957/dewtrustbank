@@ -3,10 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.exceptions import ValidationError
+from django.contrib.auth import update_session_auth_hash
 
 
 from .models import UserBankAccount, DebitCard
-from .forms import DebitCardApplicationForm
+from .forms import DebitCardApplicationForm, ChangePasswordForm
 from transaction.models import TransactionHistory
 
 
@@ -277,3 +278,52 @@ def change_transaction_pin(request):
             )
 
     return redirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def change_password(request):
+
+    if request.method == 'POST':
+
+        form = ChangePasswordForm(
+            request.user,
+            request.POST
+        )
+
+        if form.is_valid():
+
+            new_password = form.cleaned_data.get(
+                'new_password1'
+            )
+
+            # Set new password
+            request.user.set_password(new_password)
+
+            request.user.save()
+
+            # Keep user logged in
+            update_session_auth_hash(
+                request,
+                request.user
+            )
+
+            messages.success(
+                request,
+                'Password changed successfully.'
+            )
+
+            return redirect('customer:settings')
+
+    else:
+
+        form = ChangePasswordForm(
+            request.user
+        )
+
+    return render(
+        request,
+        'customer/change_password.html',
+        {
+            'form': form
+        }
+    )

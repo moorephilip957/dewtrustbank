@@ -1,10 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import UserBankAccount
+from django.contrib.auth.password_validation import validate_password
+from .models import UserBankAccount, DebitCardApplication 
 
-from django import forms
-from django.core.exceptions import ValidationError
-from .models import UserBankAccount, DebitCardApplication
 
 class UserBankAccountForm(forms.ModelForm):
 
@@ -147,3 +145,104 @@ class DebitCardApplicationForm(forms.ModelForm):
             # optional read-only fields
             self.fields['full_name'].widget.attrs['readonly'] = True
             self.fields['email'].widget.attrs['readonly'] = True
+
+
+class ChangePasswordForm(forms.Form):
+
+    current_password = forms.CharField(
+        label='Current Password',
+        required=True,
+        widget=forms.PasswordInput(
+            attrs={
+                'id': 'current_password',
+                'name': 'current_password',
+                'class': 'form-control-custom',
+                'placeholder': 'Enter your current password',
+                'autocomplete': 'current-password',
+            }
+        )
+    )
+
+    password = forms.CharField(
+        label='New Password',
+        required=True,
+        min_length=8,
+        widget=forms.PasswordInput(
+            attrs={
+                'id': 'password',
+                'name': 'password',
+                'class': 'form-control-custom',
+                'placeholder': 'Enter your new password',
+                'autocomplete': 'new-password',
+                'minlength': '8',
+                'pattern': '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}',
+            }
+        ),
+        help_text=(
+            'Password must contain at least one uppercase letter, '
+            'one lowercase letter, and one number.'
+        )
+    )
+
+    password_confirmation = forms.CharField(
+        label='Confirm Password',
+        required=True,
+        widget=forms.PasswordInput(
+            attrs={
+                'id': 'password_confirmation',
+                'name': 'password_confirmation',
+                'class': 'form-control-custom',
+                'placeholder': 'Confirm your new password',
+                'autocomplete': 'new-password',
+            }
+        )
+    )
+
+    def __init__(self, user, *args, **kwargs):
+
+        self.user = user
+
+        super().__init__(*args, **kwargs)
+
+    def clean_current_password(self):
+
+        current_password = self.cleaned_data.get(
+            'current_password'
+        )
+
+        if not self.user.check_password(
+            current_password
+        ):
+
+            raise forms.ValidationError(
+                'Current password is incorrect.'
+            )
+
+        return current_password
+
+    def clean(self):
+
+        cleaned_data = super().clean()
+
+        password = cleaned_data.get('password')
+
+        password_confirmation = cleaned_data.get(
+            'password_confirmation'
+        )
+
+        # Check passwords match
+        if password and password_confirmation:
+
+            if password != password_confirmation:
+
+                raise forms.ValidationError(
+                    'Passwords do not match.'
+                )
+
+            # Django password validation
+            validate_password(
+                password,
+                self.user
+            )
+
+        return cleaned_data
