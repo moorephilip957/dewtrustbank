@@ -24,8 +24,8 @@
                     <div class="hero-content-form">
                         <form id="heroForm" action="#" method="POST">
                             <div class="form-group">
-                                <a href="register.html" class="btn-highlighted">Open Account</a>
-                                <a href="login.html" class="btn-default">Online banking</a>
+                                <a href="{% url 'account:register' %}" class="btn-highlighted">Open Account</a>
+                                <a href="{% url 'account:login' %}" class="btn-default">Online banking</a>
                             </div>
                         </form>
                     </div>
@@ -201,25 +201,23 @@
                     <!-- PWA Install Buttons Start -->
                     <div class="pwa-install-buttons wow fadeInUp" data-wow-delay="0.5s">
                         <!-- Android Install Button -->
-                        <button id="installAndroidBtn" class="btn-pwa android-btn" style="display: none;">
+                        <button id="installAndroidBtn" class="btn-pwa android-btn open-pwa" data-device="android">
                             <i class="fab fa-android"></i>
                             <div class="btn-text">
                                 <span class="small-text">Install for</span>
                                 <span class="main-text">Android</span>
                             </div>
                         </button>
-
                         <!-- iOS Install Button -->
-                        <button id="installIOSBtn" class="btn-pwa ios-btn" style="display: none;">
+                        <button id="installIOSBtn" class="btn-pwa ios-btn open-pwa" data-device="ios">
                             <i class="fab fa-apple"></i>
                             <div class="btn-text">
                                 <span class="small-text">Install for</span>
                                 <span class="main-text">iPhone</span>
                             </div>
                         </button>
-
                         <!-- Generic Install Button -->
-                        <button id="installGenericBtn" class="btn-pwa generic-btn">
+                        <button id="installGenericBtn" class="btn-pwa generic-btn open-pwa" data-device="desktop">
                             <i class="fas fa-download"></i>
                             <div class="btn-text">
                                 <span class="small-text">Install</span>
@@ -612,7 +610,7 @@
                                     </div>
 
                                     <div class="expertise-btn">
-                                        <a href="contact.html" class="btn-default">contact now</a>
+                                        <a href="{% url 'frontend:contact' %}" class="btn-default">contact now</a>
                                     </div>
                                 </div>
                             </div>
@@ -1135,8 +1133,8 @@
 
                     <!-- CTA Box Button Start -->
                     <div class="cta-box-btn wow fadeInUp" data-wow-delay="0.5s">
-                        <a href="register.html" class="btn-highlighted btn-cta-1">get started today</a>
-                        <a href="about.html" class="btn-highlighted btn-cta-2">explore our services</a>
+                        <a href="{% url 'account:register' %}" class="btn-highlighted btn-cta-1">get started today</a>
+                        <a href="{% url 'frontend:about' %}" class="btn-highlighted btn-cta-2">explore our services</a>
                     </div>
                     <!-- CTA Box Button End -->
                 </div>
@@ -1170,7 +1168,7 @@
       <div class="col-lg-5">
         <!-- Section Button Start -->
         <div class="section-btn wow fadeInUp" data-wow-delay="0.25s">
-          <a href="contact.html" class="btn-default">contact now</a>
+          <a href="{% url 'frontend:contact' %}" class="btn-default">contact now</a>
         </div>
         <!-- Section Button End -->
       </div>
@@ -1191,7 +1189,7 @@
                   <li>After logging in, Android® and iPhone® users can access mobile banking features instantly.</li>
                   <li>You may also enroll in Mobile Deposit to deposit checks using your mobile device camera.</li>
                   <li>To enroll, select “Mobile Deposit” from the main menu, then review and accept the terms.</li>
-                  <li>If you are not yet registered for Online Banking, you can <a href="register.html">sign up online</a>.</li>
+                  <li>If you are not yet registered for Online Banking, you can <a href="{% url 'account:register' %}">sign up online</a>.</li>
                 </ul>
               </p>
             </div>
@@ -1253,4 +1251,134 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="pwaInstallModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Install Our App</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Android -->
+        <div id="androidSteps">
+          <h6>📱 Android Installation</h6>
+          <ol>
+            <li>Tap the <b>Install</b> button</li>
+            <li>Or open browser menu (⋮)</li>
+            <li>Select <b>Add to Home screen</b></li>
+            <li>Confirm install</li>
+          </ol>
+        </div>
+
+        <!-- iOS -->
+        <div id="iosSteps">
+          <h6>🍎 iPhone Installation</h6>
+          <ol>
+            <li>Tap the <b>Share</b> button (⬆️)</li>
+            <li>Scroll and tap <b>Add to Home Screen</b></li>
+            <li>Tap <b>Add</b></li>
+          </ol>
+        </div>
+
+        <!-- Desktop -->
+        <div id="desktopSteps">
+          <h6>💻 Desktop Installation</h6>
+          <ol>
+            <li>Open Chrome or Edge</li>
+            <li>Click install icon in address bar</li>
+            <li>Or go to menu → Install App</li>
+          </ol>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function detectOS() {
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+
+    if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) {
+        return "ios";
+    }
+
+    if (/android/i.test(ua)) {
+        return "android";
+    }
+
+    return "desktop";
+}
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const os = detectOS();
+
+    const androidBtn = document.getElementById("installAndroidBtn");
+    const iosBtn = document.getElementById("installIOSBtn");
+    const genericBtn = document.getElementById("installGenericBtn");
+
+    // hide all first
+    if (androidBtn) androidBtn.style.display = "none";
+    if (iosBtn) iosBtn.style.display = "none";
+    if (genericBtn) genericBtn.style.display = "none";
+
+    // show only relevant one
+    if (os === "android" && androidBtn) {
+        androidBtn.style.display = "inline-flex";
+    } 
+    else if (os === "ios" && iosBtn) {
+        iosBtn.style.display = "inline-flex";
+    } 
+    else if (genericBtn) {
+        genericBtn.style.display = "inline-flex";
+    }
+
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modalEl = document.getElementById('pwaInstallModal');
+    const modal = new bootstrap.Modal(modalEl);
+
+    const android = document.getElementById("androidSteps");
+    const ios = document.getElementById("iosSteps");
+    const desktop = document.getElementById("desktopSteps");
+
+    function hideAll() {
+        android.style.display = "none";
+        ios.style.display = "none";
+        desktop.style.display = "none";
+    }
+
+    document.querySelectorAll(".open-pwa").forEach(btn => {
+        btn.addEventListener("click", function () {
+
+            hideAll();
+
+            const type = this.dataset.device;
+
+            if (type === "android") {
+                android.style.display = "block";
+            } else if (type === "ios") {
+                ios.style.display = "block";
+            } else {
+                desktop.style.display = "block";
+            }
+
+            modal.show();
+        });
+    });
+
+});
+</script>
 {% endblock %}

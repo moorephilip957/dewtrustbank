@@ -191,7 +191,7 @@ MESSAGE_TAGS = {
 }
 
 
-PWA_APP_NAME = "First Havin"
+PWA_APP_NAME = "First Havin Bank"
 PWA_APP_DESCRIPTION = "A Global Standard in Modern Finance"
 PWA_APP_THEME_COLOR = "#14202e"
 PWA_APP_BACKGROUND_COLOR = "#ffffff"

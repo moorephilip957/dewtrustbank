@@ -133,29 +133,29 @@ class KYCVerification(models.Model):
 
     upload_front_side = models.ImageField(
         upload_to='kyc/front/',
-        validators=[
-            FileExtensionValidator(
-                allowed_extensions=['jpg', 'jpeg', 'png', 'gif']
-            )
-        ]
+        # validators=[
+        #     FileExtensionValidator(
+        #         allowed_extensions=['jpg', 'jpeg', 'png', 'gif']
+        #     )
+        # ]
     )
 
     upload_back_side = models.ImageField(
         upload_to='kyc/back/',
-        validators=[
-            FileExtensionValidator(
-                allowed_extensions=['jpg', 'jpeg', 'png', 'gif']
-            )
-        ]
+        # validators=[
+        #     FileExtensionValidator(
+        #         allowed_extensions=['jpg', 'jpeg', 'png', 'gif']
+        #     )
+        # ]
     )
 
     passport_photograph = models.ImageField(
         upload_to='kyc/passport/',
-        validators=[
-            FileExtensionValidator(
-                allowed_extensions=['jpg', 'jpeg', 'png', 'gif']
-            )
-        ]
+        # validators=[
+        #     FileExtensionValidator(
+        #         allowed_extensions=['jpg', 'jpeg', 'png', 'gif']
+        #     )
+        # ]
     )
 
     verified = models.BooleanField(default=False)
