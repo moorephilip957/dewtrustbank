@@ -1,5 +1,10 @@
-django
+django==4.2
 django-countries
 qrcode 
 pillow
 django-user-agents
+python-dotenv
+cloudinary
+django-cloudinary-storage
+whitenoise
+gunicorn

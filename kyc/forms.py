@@ -17,7 +17,8 @@ class KYCVerificationForm(forms.ModelForm):
     class Meta:
         model = KYCVerification
 
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['user', 'status']
 
         widgets = {
             'full_name': forms.TextInput(attrs={

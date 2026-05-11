@@ -41,7 +41,7 @@ def kyc_verification(request):
 
         if form.is_valid():
             kyc = form.save(commit=False)
-            kyc.user = request.user  # IMPORTANT
+            kyc.user = request.user  
             kyc.save()
 
             if is_edit:

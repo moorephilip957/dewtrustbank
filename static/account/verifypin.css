@@ -17,7 +17,8 @@ body {
 /* 1. TOP HEADER SECTION */
 /* ===================== */
 .top-section {
-    background: linear-gradient(135deg, #033353, #074c69);
+    background: linear-gradient(135deg, #0037CC, #2F7BFF);
+    /* background: linear-gradient(135deg, #033353, #074c69); */
     height: 240px;
     position: relative;
     overflow: hidden;
@@ -109,7 +110,7 @@ body {
 }
 
 .btn-verify {
-    background: linear-gradient(135deg, #033353, #074c69);
+    background: linear-gradient(135deg, #0037CC, #2F7BFF);
     border: none;
     color: white;
     padding: 12px;

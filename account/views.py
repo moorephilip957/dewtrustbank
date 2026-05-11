@@ -7,6 +7,7 @@ from django.conf import settings
 from .forms import CustomUserRegistrationForm
 from customer.forms import UserBankAccountForm
 from customer.models import BankAccountType,UserBankAccount
+from account.models import CustomUser
 
 def register_view(request):
     account_types = BankAccountType.objects.all()
@@ -99,17 +100,6 @@ def login_view(request):
 
     return render(request, 'account/login.html')
 
-
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
-
-from django.contrib import messages
-from django.contrib.auth import login
-from django.shortcuts import render, redirect
-
-from account.models import CustomUser
-from customer.models import UserBankAccount
 
 
 def pin_verify_view(request):

@@ -15,7 +15,7 @@ urlpatterns = [
     path('notification/', include('notification.urls', namespace="notification")),
     path('kyc/', include('kyc.urls', namespace="kyc")),
 ]
-urlpatterns += static(
-    settings.MEDIA_URL,
-    document_root=settings.MEDIA_ROOT
-)
+# urlpatterns += static(
+#     settings.MEDIA_URL,
+#     document_root=settings.MEDIA_ROOT
+# )
