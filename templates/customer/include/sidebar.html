@@ -9,17 +9,23 @@
                     style="width: 2.5rem; height: 2.5rem;">
                     
                 </div> -->
-                <img src="{% static 'frontend/custom/logo-favicon.png' %}" alt="" width="60">
-                <span class="ms-2 fw-semibold text-dark">FHB</span>
+                <img src="{% static 'frontend/custom/firsthavin-logo.png' %}" alt="" width="160">
+                <!-- <span class="ms-2 fw-semibold text-dark">FHB</span> -->
             </a>
         </div>
 
         <!-- User Info Card -->
         <div class="bg-light rounded-3 p-3 mb-3 border">
             <div class="d-flex align-items-center mb-2">
-                <img src="https://ui-avatars.com/api/?name=Andrew+Levin&background=0147E1&color=fff" alt="User"
+                {% if request.user.kycverification.passport_photograph %}
+                <img src="{{request.user.kycverification.passport_photograph.url}}" alt="User"
                     class="rounded-circle border border-2 border-primary-light"
                     style="width: 2.5rem; height: 2.5rem; object-fit: cover;">
+                {% else %}
+                <img src="{% static 'frontend/custom/default-img.jpg' %}" alt="User"
+                    class="rounded-circle border border-2 border-primary-light"
+                    style="width: 2.5rem; height: 2.5rem; object-fit: cover;">
+                {% endif %}
                 <div class="ms-2 flex-grow-1 min-w-0">
                     <p class="mb-0 text-sm fw-medium text-dark text-truncate">{{request.user.full_name}}</p>
                     <p class="mb-0 text-xs text-muted text-truncate">ID: {{request.user.id}}</p>

@@ -52,10 +52,13 @@
 /************************************/
 
 :root {
+  
+  /* --primary-color: #0037CC; */
   --primary-color: #14202e;
   --secondary-color: #fafafa;
   --text-color: #828282;
   --accent-color: #fafafa;
+  /* --dark-color: #001b67; */
   --dark-color: #0A2E5C;
   --white-color: #ffffff;
   --divider-color: #e3e3e3;

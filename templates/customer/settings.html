@@ -28,7 +28,11 @@
             <!-- Profile Header -->
             <div class="profile-header">
                 <div class="position-relative mb-3">
-                    <img src="https://i.pravatar.cc/150?img=12" alt="Profile" class="profile-avatar">
+                    {% if request.user.kycverification.passport_photograph %}
+                    <img src="{{request.user.kycverification.passport_photograph.url}}" alt="Profile" class="profile-avatar">
+                    {% else %}
+                    <img src="{% static 'frontend/custom/default-img.jpg' %}" alt="Profile" class="profile-avatar">
+                    {% endif %}
                     <button class="edit-avatar-btn" data-bs-toggle="modal" data-bs-target="#profilePictureModal"
                         title="Change photo">
                         <i class="bi bi-camera"></i>
@@ -159,7 +163,7 @@
                         <label for="dob" class="form-label">Date of Birth</label>
                         <div class="input-icon">
                             <i class="bi bi-calendar"></i>
-                            <input type="date" class="form-control form-control-readonly" id="dob" value="{{ user.dob|date:'d/m/Y' }}"
+                            <input type="date" class="form-control form-control-readonly" id="dob" value="{{ user.kycverification.date_of_birth|date:'d/m/Y' }}"
                                 readonly>
                         </div>
                     </div>
@@ -170,7 +174,7 @@
                         <div class="input-icon">
                             <i class="bi bi-telephone"></i>
                             <input type="tel" class="form-control form-control-readonly" id="phone"
-                                value="{{user.phone_number}}" readonly>
+                                value="{{user.kycverification.phone}}" readonly>
                         </div>
                     </div>
 
@@ -180,7 +184,7 @@
                         <div class="input-icon">
                             <i class="bi bi-geo-alt" style="top: 1.1rem;"></i>
                             <textarea class="form-control form-control-readonly" id="address" rows="3"
-                                readonly>{{user.address}}</textarea>
+                                readonly>{{user.kycverification.address_line}}</textarea>
                         </div>
                     </div>
 

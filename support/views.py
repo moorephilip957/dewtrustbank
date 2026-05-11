@@ -7,7 +7,7 @@ from .models import Ticket, TicketMessage
 from kyc.decorator import kyc_required
 
 @login_required
-@kyc_required
+# @kyc_required
 def create_ticket(request):
     if request.method == "POST":
         form = TicketForm(request.POST, request.FILES)
@@ -50,14 +50,14 @@ def create_ticket(request):
 
 
 @login_required
-@kyc_required
+# @kyc_required
 def ticket_success(request, reference_id):
     ticket = get_object_or_404(Ticket, reference_id=reference_id)
     return render(request, "support/ticket_success.html", {"ticket": ticket})
 
 
 @login_required
-@kyc_required
+# @kyc_required
 def ticket_list(request):
     tickets = Ticket.objects.filter(user=request.user).order_by("-updated_at")
 
@@ -72,7 +72,7 @@ def ticket_list(request):
 
 
 @login_required
-@kyc_required
+# @kyc_required
 def ticket_detail(request, reference_id):
     # Fetch ticket only for the logged-in user
     ticket = get_object_or_404(Ticket, reference_id=reference_id, user=request.user)

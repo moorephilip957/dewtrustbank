@@ -1,3 +1,4 @@
+{% load static %}
 {% load humanize %}
 
 <!-- Header -->
@@ -9,9 +10,9 @@
                 <i class="bi bi-list fs-4"></i>
             </button>
             <a href="#" class="text-decoration-none">
-                <div class="bg-primary text-white rounded d-flex align-items-center justify-content-center"
+                <div class=" text-white rounded d-flex align-items-center justify-content-center"
                     style="width: 2rem; height: 2rem;">
-                    <i class="bi bi-building fs-6"></i>
+                    <img src="{% static 'frontend/custom/firsthavin-logo-favicon.png' %}" alt="" width="40">
                 </div>
             </a>
         </div>
@@ -30,36 +31,6 @@
                 <span class="text-sm fw-medium text-dark">${{request.user.bank_account.balance|intcomma}}</span>
             </div>
 
-            <!-- Notifications -->
-            <!-- <div class="dropdown">
-                <button class="btn btn-link text-dark p-0 position-relative" type="button" id="notificationDropdown"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-bell fs-5"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-end p-0" style="width: 20rem;">
-                    <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
-                        <h6 class="mb-0 fw-semibold">Notifications</h6>
-                        <button class="btn btn-link btn-sm p-0 text-primary">Mark all as read</button>
-                    </div>
-                    <div class="overflow-auto" style="max-height: 15rem;">
-                        <a href="#" class="notification-item d-flex">
-                            <div class="notification-icon success me-3">
-                                <i class="bi bi-check-circle"></i>
-                            </div>
-                            <div class="flex-grow-1 min-w-0">
-                                <p class="mb-0 fw-medium text-dark">KYC Verification Approved</p>
-                                <p class="mb-0 text-sm text-muted text-truncate">Your KYC verification has been reviewed
-                                    and approved.</p>
-                                <p class="mb-0 text-xs text-muted mt-1">6 days ago</p>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="text-center p-2 border-top">
-                        <a href="#" class="text-sm fw-medium text-primary text-decoration-none">View all
-                            notifications</a>
-                    </div>
-                </div>
-            </div> -->
 
             <!-- Notifications -->
             <div class="dropdown">
@@ -115,32 +86,32 @@
             <div class="dropdown">
                 <button class="btn btn-link p-0 d-flex align-items-center" type="button" id="userDropdown"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://ui-avatars.com/api/?name=Andrew+Levin&background=0147E1&color=fff" alt="User"
+                    {% if request.user.kycverification.passport_photograph %}
+                    <img src="{{request.user.kycverification.passport_photograph.url}}" alt="User"
                         class="rounded-circle border border-2" style="width: 2rem; height: 2rem; object-fit: cover;">
+                    {% else %}
+                        <img src="{% static 'frontend/custom/default-img.jpg' %}" alt="User"
+                        class="rounded-circle border border-2" style="width: 2rem; height: 2rem; object-fit: cover;">
+                    {% endif %}
                 </button>
                 <div class="dropdown-menu dropdown-menu-end p-0" style="width: 12rem;">
                     <div class="p-3 border-bottom">
                         <p class="mb-0 fw-medium text-dark">{{request.user.full_name}}</p>
                         <p class="mb-0 text-xs text-muted">ID: {{request.user.id}}</p>
                         {% with kyc=request.user.kycverification %}
-
-                            <span class="badge-kyc
-                                {% if kyc.status == 'approved' %}badge-verified
-                                {% elif kyc.status == 'pending' %}badge-pending
-                                {% elif kyc.status == 'rejected' %}badge-rejected
-                                {% else %}badge-none{% endif %} mt-1">
-
-                                <i class="bi
-                                    {% if kyc.status == 'approved' %}bi-check-circle-fill
-                                    {% elif kyc.status == 'pending' %}bi-hourglass-split
-                                    {% elif kyc.status == 'rejected' %}bi-x-circle-fill
-                                    {% else %}bi-exclamation-circle{% endif %}"></i>
-
-                                {{ kyc.status|capfirst }}
-
+                            {% if kyc.status == "approved" %}
+                            <span class="badge-kyc badge-verified mt-1">
+                                <i class="bi bi-check-circle-fill"></i>
+                                KYC Verified
                             </span>
-
-                            {% endwith %}
+                            {% else %}
+                                <span class="badge-kyc badge-rejected mt-1">
+                                <i class="bi bi-check-circle-fill"></i>
+                                KYC Not Verified
+                                </span>
+                            {% endif %}
+                            
+                        {% endwith %}
                     </div>
                     <a href="{% url 'support:create_ticket' %}" class="dropdown-item">
                         <i class="bi bi-question-circle"></i> Support Ticket
@@ -173,9 +144,20 @@
             <div class="ms-3">
                 <h6 class="mb-0 fw-semibold">{{request.user.full_name}}</h6>
                 <p class="mb-0 text-sm text-muted">Account: {{request.user.bank_account.account_number}}</p>
-                <span class="badge-verified mt-1">
-                    <i class="bi bi-check-circle-fill"></i> Verified
-                </span>
+                {% with kyc=request.user.kycverification %}
+                    {% if kyc.status == "approved" %}
+                    <span class="badge-kyc badge-verified mt-1">
+                        <i class="bi bi-check-circle-fill"></i>
+                         KYC Verified
+                    </span>
+                    {% else %}
+                        <span class="badge-kyc badge-rejected mt-1">
+                        <i class="bi bi-check-circle-fill"></i>
+                         KYC Not Verified
+                        </span>
+                    {% endif %}
+                    
+                {% endwith %}
             </div>
         </div>
 
