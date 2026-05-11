@@ -16,7 +16,7 @@ from account.models import CustomUser
 
 
 class BankAccountType(models.Model):
-    name = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=200, unique=True)
 
     daily_transfer_limit = models.DecimalField(max_digits=15, decimal_places=2)
     single_transfer_limit = models.DecimalField(max_digits=15, decimal_places=2)
