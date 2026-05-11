@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django_user_agents',
     "cloudinary_storage",
     "cloudinary",
+    "pwa",
 
     # my apps
     'frontend',
@@ -189,6 +190,44 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',  
 }
 
+
+PWA_APP_NAME = "First Havin"
+PWA_APP_DESCRIPTION = "A Global Standard in Modern Finance"
+PWA_APP_THEME_COLOR = "#14202e"
+PWA_APP_BACKGROUND_COLOR = "#ffffff"
+PWA_APP_DISPLAY = "standalone"
+PWA_APP_SCOPE = "/"
+PWA_APP_ORIENTATION = "portrait"
+PWA_APP_START_URL = "/"
+PWA_APP_STATUS_BAR_COLOR = "default"
+
+PWA_APP_ICONS = [
+    {
+        "src": "/static/icons/icon-192.png",
+        "sizes": "192x192"
+    },
+    {
+        "src": "/static/icons/icon-512.png",
+        "sizes": "512x512"
+    }
+]
+
+PWA_APP_ICONS_APPLE = [
+    {
+        "src": "/static/icons/icon-192.png",
+        "sizes": "192x192"
+    }
+]
+
+PWA_APP_SPLASH_SCREEN = [
+    {
+        "src": "/static/icons/icon-512.png",
+        "media": "(device-width: 320px) and (device-height: 568px)"
+    }
+]
+
+PWA_APP_DIR = "ltr"
+PWA_APP_LANG = "en-US"
 
 # if DJANGO_ENV == "production":
 #     SECURE_SSL_REDIRECT = True

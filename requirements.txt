@@ -8,3 +8,4 @@ cloudinary
 django-cloudinary-storage
 whitenoise
 gunicorn
+django-pwa
