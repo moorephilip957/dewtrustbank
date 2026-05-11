@@ -1,0 +1,281 @@
+{% extends '../customer/base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'kyc/kyc_terms.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Main Content Area (excluding navbar/sidebar/footer as requested) -->
+<div class="container kyc-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">Account Verification</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Account Verification</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Verification Card -->
+    <div class="verification-card">
+        <div class="card-header">
+            <i class="bi bi-shield-check"></i>
+            <h2>Verify Your Identity</h2>
+        </div>
+        <div class="card-body">
+            <!-- Welcome Message -->
+            <div class="welcome-card">
+                <div class="d-flex align-items-start">
+                    <div class="welcome-icon">
+                        <i class="bi bi-person-check"></i>
+                    </div>
+                    <div>
+                        <h3 class="welcome-title">Welcome to First Havin Bank</h3>
+                        <p class="welcome-subtitle">Complete your account verification to gain full access to our banking services</p>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-gray-600">
+                    <p class="mb-2"><strong>Dear Valued Customer,</strong></p>
+
+                    <p>
+                        Welcome to First Havin Bank. We are committed to delivering innovative, secure,
+                        and customer focused financial solutions designed to support your personal and
+                        business banking needs.
+                    </p>
+
+                    <p>
+                        At First Havin Bank, we provide a comprehensive range of banking services,
+                        including savings accounts, investment solutions, and lending products tailored
+                        to meet your financial goals. Our trusted services are utilized by customers
+                        across the globe.
+                    </p>
+
+                    <p>
+                        Our dedicated customer support team is available 24/7 to assist you with any
+                        questions or concerns. For assistance, please contact us at:
+                        <a href="mailto:support@firsthavinbank.com"
+                            class="text-decoration-none"
+                            style="color: var(--primary-color);">
+                            support@firsthavinonline.com
+                        </a>.
+                    </p>
+
+                    <p>
+                        To complete your registration, we require additional information for compliance
+                        purposes, including the completion of the AML/KYC verification process.
+                        Kindly review the terms and conditions below before proceeding.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div class="terms-container">
+                <div class="terms-title">
+                    <i class="bi bi-file-earmark-text"></i>
+                    <span>Terms and Conditions</span>
+                </div>
+
+                <div class="terms-box">
+                    <p class="mb-3">
+                        Before accessing our online banking services, you must carefully review and agree
+                        to the terms and conditions outlined below. By clicking the “I Accept” button,
+                        you confirm that you understand and agree to be bound by these conditions.
+                        Selecting “Decline” will prevent you from completing your registration for our
+                        online banking services. We recommend printing or saving a copy of these terms
+                        for your records.
+                    </p>
+
+                    <h4>1. DEFINITIONS</h4>
+
+                    <p class="mb-2">
+                        In these Terms and Conditions, the following definitions apply:
+                    </p>
+
+                    <ul class="mb-3">
+                        <li>
+                            <strong>ACCOUNT:</strong>
+                            Any account maintained by you and accessible through our online banking platform.
+                        </li>
+
+                        <li>
+                            <strong>ADDITIONAL SECURITY DETAILS:</strong>
+                            Additional information provided by you to help verify your identity,
+                            including security questions and authentication credentials.
+                        </li>
+
+                        <li>
+                            <strong>IDENTITY DETAILS:</strong>
+                            The access credentials or verification information issued by the Bank.
+                        </li>
+
+                        <li>
+                            <strong>FIRST HAVIN BANK ACCOUNT NUMBER, PASSWORD, AND ACCOUNT PIN:</strong>
+                            The unique credentials selected by you for secure access to our online services.
+                        </li>
+
+                        <li>
+                            <strong>YOU, YOUR, AND YOURSELF:</strong>
+                            The account holder entering into this agreement with First Havin Bank.
+                        </li>
+                    </ul>
+
+                    <h4>2. USE OF ONLINE BANKING SERVICES</h4>
+
+                    <ol class="mb-3">
+                        <li>
+                            These Terms and Conditions govern your use of our online banking services and
+                            apply to all eligible accounts linked to your profile. In the event of any
+                            conflict between these conditions and your account specific terms, these
+                            online banking conditions shall prevail.
+                        </li>
+
+                        <li>
+                            Where an account is jointly owned, these conditions apply jointly and
+                            individually to all account holders. Each user must maintain separate login
+                            credentials and security information.
+                        </li>
+
+                        <li>
+                            By registering for our online banking services, you consent to electronic
+                            communication from First Havin Bank via email or through our official website.
+                        </li>
+
+                        <li>
+                            You agree to follow all instructions and security procedures provided by the
+                            Bank from time to time. You are responsible for ensuring that your devices,
+                            software, and internet connection are compatible with our online services.
+                        </li>
+
+                        <li>
+                            For your protection, you must always log out after each session and avoid
+                            leaving your device unattended while logged in. For security purposes, your
+                            session may automatically expire after a period of inactivity.
+                        </li>
+                    </ol>
+
+                    <h4>3. SECURITY REQUIREMENTS</h4>
+
+                    <ol class="mb-3">
+                        <li>
+                            As part of the registration process, you are required to provide identity
+                            verification details before gaining access to our online banking platform.
+                        </li>
+
+                        <li>
+                            Each time you access our online services, you must provide your username,
+                            password, and any required authentication information.
+                        </li>
+
+                        <li>
+                            You may update your username or password at any time by following the
+                            instructions provided within the platform.
+                        </li>
+
+                        <li>
+                            For security or administrative reasons, First Havin Bank reserves the right
+                            to require you to change your login credentials at any time.
+                        </li>
+
+                        <li>
+                            You must keep your login credentials and security information confidential.
+                            Do not share, record, or store them insecurely on any device.
+                        </li>
+                    </ol>
+
+                    <h4>4. LIABILITY</h4>
+
+                    <ol class="mb-3">
+                        <li>
+                            If you become a victim of verified online fraud, First Havin Bank will
+                            investigate the matter and, where applicable, reimburse losses in accordance
+                            with our fraud protection policy.
+                        </li>
+
+                        <li>
+                            Except in cases involving verified fraud or negligence by the Bank, you are
+                            responsible for all instructions and transactions carried out using your login
+                            credentials.
+                        </li>
+
+                        <li>
+                            You will not be held liable for unauthorized activity occurring after you
+                            have informed us that your security credentials may have been compromised.
+                        </li>
+
+                        <li>
+                            First Havin Bank shall not be responsible for losses resulting from delayed,
+                            failed, misdirected, or distorted communications unless caused directly by
+                            our negligence or system failure.
+                        </li>
+
+                        <li>
+                            We are not liable for interruptions or failures caused by internet service
+                            providers, third-party systems, or circumstances beyond our reasonable control.
+                        </li>
+                    </ol>
+
+                    <h4>5. CHANGES TO THESE TERMS</h4>
+
+                    <ol class="mb-3">
+                        <li>
+                            First Havin Bank reserves the right to amend these Terms and Conditions at
+                            any time. Updates may be communicated via email or published on our website.
+                        </li>
+
+                        <li>
+                            You are responsible for ensuring that your contact information, including
+                            your email address, remains accurate and up to date.
+                        </li>
+                    </ol>
+
+                    <h4>6. GENERAL CONDITIONS</h4>
+
+                    <p>
+                        First Havin Bank online banking services are available only to individuals who
+                        are at least 18 years of age and meet the Bank’s eligibility requirements.
+                    </p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="{% url 'kyc:kyc_verification' %}" id="acceptBtn" class="btn btn-primary btn-accept btn-ripple">
+                        <i class="bi bi-check-circle"></i>
+                        I Accept & Proceed to Verification
+                    </a >
+
+                    <a href="{% url 'account:logout' %}" id="declineBtn" class="btn btn-outline-secondary btn-decline btn-ripple">
+                        <i class="bi bi-x-circle"></i>
+                        Decline
+                    </a >
+                </div>
+            </div>
+        </div>
+
+    <!-- Support Section -->
+    <div class="support-card">
+        <div class="support-content">
+            <div class="support-icon">
+                <i class="bi bi-life-preserver"></i>
+            </div>
+            <div class="support-text">
+                <h3>Need help with verification?</h3>
+                <p>Our support team is available 24/7 to assist you with the verification process. Reach out with any
+                    questions.</p>
+            </div>
+            <a href="{% url 'support:create_ticket' %}" class="btn btn-outline-primary btn-support">
+                <i class="bi bi-chat-square-text"></i>
+                Contact Support
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'kyc/kyc_terms.js' %}"></script>
+{% endblock %}

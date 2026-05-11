@@ -13,6 +13,7 @@ urlpatterns = [
     path('loan/', include('loan.urls', namespace="loan")),
     path('support/', include('support.urls', namespace="support")),
     path('notification/', include('notification.urls', namespace="notification")),
+    path('kyc/', include('kyc.urls', namespace="kyc")),
 ]
 # urlpatterns += static(
 #     settings.MEDIA_URL,

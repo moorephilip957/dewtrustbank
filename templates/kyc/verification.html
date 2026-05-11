@@ -1,0 +1,524 @@
+{% extends '../customer/base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'kyc/kyc_verification.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container kyc-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">KYC Verification</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Account Verification</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Main Form Card -->
+    <div class="form-card">
+        <div class="card-header">
+            <i class="bi bi-clipboard-check"></i>
+            <div>
+                <h2>Account Information</h2>
+                <p>To comply with regulations, please provide your information to complete the verification process.</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <form id="kycForm" class="space-y-8" method="post" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <!-- Personal Details Section -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="bi bi-person"></i>
+                        <div>
+                            <h3>Personal Details</h3>
+                            <p>Your personal information required for identification</p>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <p class="text-muted small mb-4">Kindly provide the information requested below to enable us to
+                            create an account for you.</p>
+
+                        <div class="row g-4">
+                            <!-- Full Name -->
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">
+                                    Full Name <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-person input-group-icon"></i>
+                                    {{form.full_name}}
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">
+                                    Email <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-envelope input-group-icon"></i>
+                                    {{form.email}}
+                                </div>
+                            </div>
+
+                            <!-- Phone -->
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">
+                                    Phone <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-phone input-group-icon"></i>
+                                    {{form.phone}}
+                                </div>
+                            </div>
+
+                            <!-- Title -->
+                            <div class="col-md-6">
+                                <label for="title" class="form-label">
+                                    Title <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-badge input-group-icon"></i>
+                                    {{form.title}}
+                                </div>
+                            </div>
+
+                            <!-- Gender -->
+                            <div class="col-md-6">
+                                <label for="gender" class="form-label">
+                                    Gender <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-people input-group-icon"></i>
+                                    {{form.gender}}
+                                </div>
+                            </div>
+
+                            <!-- Zipcode -->
+                            <div class="col-md-6">
+                                <label for="zipcode" class="form-label">
+                                    Zipcode <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-geo-alt input-group-icon"></i>
+                                    {{form.zipcode}}
+                                </div>
+                            </div>
+
+                            <!-- Date of birth -->
+                            <div class="col-md-6">
+                                <label for="dob" class="form-label">
+                                    Date of Birth <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-calendar input-group-icon"></i>
+                                    {{form.date_of_birth}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Employment Information Section -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="bi bi-briefcase"></i>
+                        <div>
+                            <h3>Employment Information</h3>
+                            <p>Required in case of loan or facility application</p>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="row g-4">
+                            <!-- State Security Number -->
+                            <div class="col-md-6">
+                                <label for="statenumber" class="form-label">
+                                    State Security Number (SSN, NI, SIN etc.) <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-shield-check input-group-icon"></i>
+                                    {{form.ssn}}
+                                </div>
+                            </div>
+
+                            <!-- Account Type -->
+                            <div class="col-md-6">
+                                <label for="accounttype" class="form-label">
+                                    Account Type <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-bank input-group-icon"></i>
+                                    {{form.account_type}}
+                                </div>
+                            </div>
+
+                            <!-- Type of Employment -->
+                            <div class="col-md-6">
+                                <label for="employer" class="form-label">
+                                    Type of Employment <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-building input-group-icon"></i>
+                                    {{form.employment_type}}
+                                </div>
+                            </div>
+
+                            <!-- Annual income Range -->
+                            <div class="col-md-6">
+                                <label for="income" class="form-label">
+                                    Annual Income Range <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-currency-dollar input-group-icon"></i>
+                                    {{form.annual_income_range}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address Section -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="bi bi-geo-alt"></i>
+                        <div>
+                            <h3>Your Address</h3>
+                            <p>Your location information required for identification</p>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="row g-4">
+                            <!-- Address line -->
+                            <div class="col-12">
+                                <label for="address" class="form-label">
+                                    Address Line <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-house input-group-icon"></i>
+                                    {{form.address_line}}
+                                </div>
+                            </div>
+
+                            <!-- City -->
+                            <div class="col-md-6">
+                                <label for="city" class="form-label">
+                                    City <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-building input-group-icon"></i>
+                                    {{form.city}}
+                                </div>
+                            </div>
+
+                            <!-- State -->
+                            <div class="col-md-6">
+                                <label for="state" class="form-label">
+                                    State/Province <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-map input-group-icon"></i>
+                                    {{form.state}}
+                                </div>
+                            </div>
+
+                            <!-- Nationality -->
+                            <div class="col-md-6">
+                                <label for="country" class="form-label">
+                                    Nationality <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-flag input-group-icon"></i>
+                                    {{form.nationality}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next of Kin Section -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="bi bi-people"></i>
+                        <div>
+                            <h3>Registered Next of Kin</h3>
+                            <p>Information about your beneficiary</p>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="row g-4">
+                            <!-- Beneficiary Legal Name -->
+                            <div class="col-md-6">
+                                <label for="kinname" class="form-label">
+                                    Beneficiary Legal Name <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-person input-group-icon"></i>
+                                    {{form.beneficiary_legal_name}}
+                                </div>
+                            </div>
+
+                            <!-- Next of kin Address -->
+                            <div class="col-md-6">
+                                <label for="kinaddress" class="form-label">
+                                    Next of Kin Address <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-house input-group-icon"></i>
+                                    {{form.next_of_kin_address}}
+                                </div>
+                            </div>
+
+                            <!-- Relationship -->
+                            <div class="col-md-6">
+                                <label for="relationship" class="form-label">
+                                    Relationship <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-heart input-group-icon"></i>
+                                    {{form.relationship}}
+                                </div>
+                            </div>
+
+                            <!-- Age -->
+                            <div class="col-md-6">
+                                <label for="age" class="form-label">
+                                    Age <span class="required">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <i class="bi bi-clock input-group-icon"></i>
+                                    {{form.age}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Document Upload Section -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <div>
+                            <h3>Document Upload</h3>
+                            <p>Personal documents required for identity verification</p>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <!-- Document Type Selection -->
+                        <div class="mb-5">
+                            <label class="form-label d-block mb-3">Select Document Type <span class="required">*</span></label>
+                            {{ form.document_type }}
+                            <div class="row g-3">
+
+                                <div class="col-md-4">
+                                    <div class="doc-type-card" data-type="passport">
+                                        <i class="bi bi-passport"></i>
+                                        International Passport
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="doc-type-card" data-type="national_id">
+                                        <i class="bi bi-card-checklist"></i>
+                                        National ID Card
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="doc-type-card" data-type="drivers_license">
+                                        <i class="bi bi-license"></i>
+                                        Driver's License
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- <div class="row g-3">
+                                <div class="col-12 col-md-4">
+                                    <label class="doc-type-card active" data-doctype="passport">
+                                        <input type="radio" name="document_type" value="passport" checked>
+                                        <i class="bi bi-passport"></i>
+                                        <span>International Passport</span>
+                                    </label>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <label class="doc-type-card" data-doctype="national-id">
+                                        <input type="radio" name="document_type" value="national-id">
+                                        <i class="bi bi-card-checklist"></i>
+                                        <span>National ID Card</span>
+                                    </label>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <label class="doc-type-card" data-doctype="drivers-license">
+                                        <input type="radio" name="document_type" value="drivers-license">
+                                        <i class="bi bi-license"></i>
+                                        <span>Driver's License</span>
+                                    </label>
+                                </div>
+                            </div> -->
+                        </div>
+
+                        <!-- Document Guidelines -->
+                        <div class="guidelines-box">
+                            <h4><i class="bi bi-exclamation-circle"></i> To avoid delays when verifying your account
+                            </h4>
+                            <ul>
+                                <li><i class="bi bi-check-circle-fill"></i> Chosen credential must not have expired</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Document should be in good condition and
+                                    clearly visible</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Make sure that there is no light glare on
+                                    the document</li>
+                                <li><i class="bi bi-check-circle-fill"></i> All four corners of the document must be
+                                    visible</li>
+                            </ul>
+                        </div>
+
+                        <!-- Front Side Upload -->
+                        <div class="mb-5">
+                            <label  id="frontUploadPrompt"
+                                class="w-100 h-100 d-flex flex-column align-items-center justify-content-center cursor-pointer">
+                                Upload front Side <span class="required">*</span>
+                            </label>
+                                
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-md-6">
+                                        <div class="upload-area" id="frontUploadArea">
+                                            {{form.upload_front_side}}
+                                            <label 
+                                                class="w-100 h-100 d-flex flex-column align-items-center justify-content-center cursor-pointer">
+                                                <i class="bi bi-cloud-upload"></i>
+                                                <span>Click to upload or drag and drop</span>
+                                                <small>SVG, PNG, JPG or GIF (max. 2MB)</small>
+                                            </label>
+                                            <div class="upload-preview" id="frontPreview">
+                                                <img src="" alt="Front preview" id="frontPreviewImg">
+                                                <p class="filename" id="frontFileName"></p>
+                                                <button type="button" class="btn-remove" id="frontRemove">
+                                                    <i class="bi bi-trash"></i> Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex justify-content-center">
+                                        <div class="upload-icon-placeholder">
+                                            <i class="bi bi-card-heading"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <!-- Back Side Upload -->
+                        <div class="mb-5">
+                            <label  id="backUploadPrompt"
+                                class="w-100 h-100 d-flex flex-column align-items-center justify-content-center cursor-pointer">
+                                Upload Back Side <span class="required">*</span>
+                            </label>
+                            <div class="row g-4 align-items-center">
+                                <div class="col-md-6">
+                                    <div class="upload-area" id="backUploadArea">
+                                        {{form.upload_back_side}}
+                                        <label 
+                                            class="w-100 h-100 d-flex flex-column align-items-center justify-content-center cursor-pointer">
+                                            <i class="bi bi-cloud-upload"></i>
+                                            <span>Click to upload or drag and drop</span>
+                                            <small>SVG, PNG, JPG or GIF (max. 2MB)</small>
+                                        </label>
+                                        <div class="upload-preview" id="backPreview">
+                                            <img src="" alt="Back preview" id="backPreviewImg">
+                                            <p class="filename" id="backFileName"></p>
+                                            <button type="button" class="btn-remove" id="backRemove">
+                                                <i class="bi bi-trash"></i> Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 d-flex justify-content-center">
+                                    <div class="upload-icon-placeholder">
+                                        <i class="bi bi-card-list"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Passport Photo Upload -->
+                        <div>
+                            <label  id="photoUploadPrompt"
+                                class="w-100 h-100 d-flex flex-column align-items-center justify-content-center cursor-pointer">
+                                Upload Passport Photograph <span class="required">*</span>
+                            </label>
+                            <div class="row g-4 align-items-center">
+                                <div class="col-md-6">
+                                    <div class="upload-area" id="photoUploadArea">
+                                        {{form.passport_photograph}}
+                                        <label 
+                                            class="w-100 h-100 d-flex flex-column align-items-center justify-content-center cursor-pointer">
+                                            <i class="bi bi-cloud-upload"></i>
+                                            <span>Click to upload or drag and drop</span>
+                                            <small>SVG, PNG, JPG or GIF (max. 2MB)</small>
+                                        </label>
+                                        <div class="upload-preview" id="photoPreview">
+                                            <img src="" alt="Photo preview" id="photoPreviewImg">
+                                            <p class="filename" id="photoFileName"></p>
+                                            <button type="button" class="btn-remove" id="photoRemove">
+                                                <i class="bi bi-trash"></i> Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 d-flex justify-content-center">
+                                    <div class="upload-icon-placeholder">
+                                        <i class="bi bi-person-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button Section -->
+                <div class="submit-section">
+                    <div class="alert-warning-custom">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <div>
+                            <strong>Note:</strong> Please ensure all information is accurate before submission.
+                            Incomplete or incorrect information may delay your verification process.
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-submit btn-ripple" id="submitBtn">
+                        <i class="bi bi-check-circle"></i>
+                        Submit Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Support Section -->
+    <div class="support-card">
+        <div class="support-content">
+            <div class="support-icon">
+                <i class="bi bi-life-preserver"></i>
+            </div>
+            <div class="support-text">
+                <h3>Need help with verification?</h3>
+                <p>Our support team is available 24/7 to assist you with the verification process. Reach out with any
+                    questions.</p>
+            </div>
+            <a href="{% url 'support:create_ticket' %}" class="btn btn-outline-primary btn-support">
+                <i class="bi bi-chat-square-text"></i>
+                Contact Support
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'kyc/kyc_verification.js' %}"></script>
+{% endblock %}

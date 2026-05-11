@@ -2,6 +2,13 @@ from django.shortcuts import render, redirect
 from .forms import KYCVerificationForm
 
 
+def kyc_terms(request):
+
+    return render(
+        request,
+        'kyc/terms.html',
+    )
+
 def kyc_verification(request):
 
     if request.method == 'POST':

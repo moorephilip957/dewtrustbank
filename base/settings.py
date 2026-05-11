@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'loan',
     'support',
     'notification',
+    'kyc',
 ]
 
 MIDDLEWARE = [
