@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from dotenv import load_dotenv
 from pathlib import Path
+import dj_database_url
 import cloudinary
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -105,6 +106,8 @@ DATABASES = {
     }
 }
 
+
+DATABASES = {'default': dj_database_url.config(default=os.environ['DATABASE_URL'], engine='django_cockroachdb')}
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -228,6 +231,8 @@ PWA_APP_SPLASH_SCREEN = [
 
 PWA_APP_DIR = "ltr"
 PWA_APP_LANG = "en-US"
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # if DJANGO_ENV == "production":
 #     SECURE_SSL_REDIRECT = True
