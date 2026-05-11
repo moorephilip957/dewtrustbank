@@ -372,8 +372,8 @@
 }
 
 .btn-submit:not(:disabled):hover {
-    background: var(--primary-dark);
-    border-color: var(--primary-dark);
+    background: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(1, 71, 225, 0.25);
 }
@@ -381,7 +381,7 @@
 /* Support Card */
 .support-card {
     border-radius: 16px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--primary-color-dark);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     overflow: hidden;
 }

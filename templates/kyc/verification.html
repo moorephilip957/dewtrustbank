@@ -17,7 +17,8 @@
             </ol>
         </nav>
     </div>
-
+    {% include "../components/form_errors.html" %}
+    {% include "../components/messages.html" %}
     <!-- Main Form Card -->
     <div class="form-card">
         <div class="card-header">
@@ -482,17 +483,53 @@
 
                 <!-- Submit Button Section -->
                 <div class="submit-section">
+                    {% with kyc=request.user.kycverification %}
                     <div class="alert-warning-custom">
                         <i class="bi bi-exclamation-triangle"></i>
+                        {% if kyc.status == "pending" %}
+                        <div>
+                            <strong>Note:</strong> Your application is currently under review. You will be notified once verification is complete.
+
+                        </div>
+                        {% elif kyc.status == "approved" %}
+                        <div>
+                            <strong>Note:</strong> Your identity has been verified successfully.
+                        </div>
+                        {% elif kyc.status == "rejected" %}
+                        <div>
+                            <strong>Note:</strong> Your application was rejected. Please update your information and resubmit.
+                        </div>
+                        {% else %}
                         <div>
                             <strong>Note:</strong> Please ensure all information is accurate before submission.
                             Incomplete or incorrect information may delay your verification process.
                         </div>
+                        {% endif %}
                     </div>
-                    <button type="submit" class="btn btn-primary btn-submit btn-ripple" id="submitBtn">
-                        <i class="bi bi-check-circle"></i>
-                        Submit Application
-                    </button>
+
+                    
+
+                        <button type="submit"
+                                class="btn btn-primary btn-submit btn-ripple"
+                                id="submitBtn"
+                                {% if kyc.is_kyc_locked %}disabled{% endif %}>
+
+                            <i class="bi bi-check-circle"></i>
+
+                            {% if kyc.status == "approved" %}
+                                KYC Verified
+                            {% elif kyc.status == "pending" %}
+                                Under Review
+                            {% elif kyc.status == "rejected" %}
+                                Resubmit Application
+                            {% else %}
+                                Submit Application
+                            {% endif %}
+
+                        </button>
+
+                    {% endwith %}
+
                 </div>
             </form>
         </div>

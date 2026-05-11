@@ -125,10 +125,6 @@ class KYCVerificationForm(forms.ModelForm):
                 'placeholder': 'Age in years'
             }),
 
-            # 'document_type': forms.Select(attrs={
-            #     'class': 'form-select',
-            #     'id': 'name'
-            # }),
 
             'document_type': forms.HiddenInput(),
 

@@ -4,14 +4,14 @@ from django.contrib import messages
 
 from .forms import LoanApplicationForm
 from .models import LoanApplication
+from kyc.decorator import kyc_required
 
 
 @login_required
+@kyc_required
 def apply_loan(request):
     active_loans = LoanApplication.active_loans_count(request.user)
     
-    print(active_loans)
-
     if request.method == 'POST':
         form = LoanApplicationForm(request.POST)
 
@@ -40,6 +40,7 @@ def apply_loan(request):
 
 
 @login_required
+@kyc_required
 def loan_history(request):
 
     status = request.GET.get('status')

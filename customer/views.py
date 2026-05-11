@@ -9,9 +9,11 @@ from django.contrib.auth import update_session_auth_hash
 from .models import UserBankAccount, DebitCard
 from .forms import DebitCardApplicationForm, ChangePasswordForm
 from transaction.models import TransactionHistory
+from kyc.decorator import kyc_required
 
 
 @login_required
+@kyc_required
 def dashboard(request):
     bank_account = UserBankAccount.objects.select_related('user').get(
                         user=request.user
@@ -26,6 +28,7 @@ def dashboard(request):
     )
 
 @login_required
+@kyc_required
 def transaction_list(request):
 
     transactions = TransactionHistory.objects.filter(
@@ -42,6 +45,7 @@ def transaction_list(request):
 
 
 @login_required
+@kyc_required
 def card(request):
 
     account = request.user.bank_account
@@ -102,6 +106,7 @@ def deposit(request):
 
 
 @login_required
+@kyc_required
 def save_invest(request):
 
     return render(
@@ -129,6 +134,7 @@ def loan_history(request):
 
 
 @login_required
+@kyc_required
 def download_app(request):
 
     return render(
@@ -137,6 +143,7 @@ def download_app(request):
     )
 
 @login_required
+@kyc_required
 def settings(request):
 
     user = request.user
@@ -162,6 +169,7 @@ def support(request):
 
 
 @login_required
+@kyc_required
 def change_password(request):
 
     return render(
@@ -171,6 +179,7 @@ def change_password(request):
 
 
 @login_required
+@kyc_required
 def apply_card(request):
 
     account = request.user.bank_account
@@ -228,6 +237,7 @@ def payment(request):
 
 
 @login_required
+@kyc_required
 def change_transaction_pin(request):
 
     if request.method == "POST":
@@ -281,6 +291,7 @@ def change_transaction_pin(request):
 
 
 @login_required
+@kyc_required
 def change_password(request):
 
     if request.method == 'POST':

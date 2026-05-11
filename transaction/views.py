@@ -7,8 +7,11 @@ from customer.models import UserBankAccount
 from .models import TransactionHistory, Deposit, CryptoWallet
 from .utils import generate_reference
 from notification.utils import create_notification
+from kyc.decorator import kyc_required
+
 
 @login_required
+@kyc_required
 def local_transfer(request):
     if request.method == "POST":
 
@@ -51,6 +54,7 @@ def local_transfer(request):
 
 
 @login_required
+@kyc_required
 def wire_transfer(request):
     if request.method == 'POST':
         form = InternationalTransferForm(request.POST, user=request.user)
@@ -94,6 +98,7 @@ def wire_transfer(request):
 
 
 @login_required
+@kyc_required
 def transfer_success(request, tx_id):
 
     transaction = get_object_or_404(
@@ -111,6 +116,7 @@ def transfer_success(request, tx_id):
     )
 
 @login_required
+@kyc_required
 def transfer_pending(request, tx_id):
 
     transaction = get_object_or_404(
@@ -129,6 +135,7 @@ def transfer_pending(request, tx_id):
 
 
 @login_required
+@kyc_required
 def transfer_failed(request, tx_id):
 
     transaction = get_object_or_404(
@@ -147,6 +154,7 @@ def transfer_failed(request, tx_id):
 
 
 @login_required
+@kyc_required
 def create_deposit(request):
 
     if request.method == "POST":
@@ -179,6 +187,7 @@ def create_deposit(request):
 
 
 @login_required
+@kyc_required
 def deposit_detail(request, deposit_id):
 
     deposit = get_object_or_404(
@@ -278,6 +287,7 @@ def deposit_detail(request, deposit_id):
 
 
 @login_required
+@kyc_required
 def deposit_pending(request, deposit_id):
 
     deposit = get_object_or_404(

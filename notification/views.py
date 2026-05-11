@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Notification
+from kyc.decorator import kyc_required
 
 
 @login_required
+@kyc_required
 def notification_list(request):
     notifications = request.user.notifications.all()
     unread_count = notifications.filter(read=False).count()
@@ -14,6 +16,7 @@ def notification_list(request):
 
 
 @login_required
+@kyc_required
 def mark_all_notifications_read(request):
     request.user.notifications.filter(read=False).update(read=True)
     return redirect(request.META.get('HTTP_REFERER', 'notification:notification_list'))

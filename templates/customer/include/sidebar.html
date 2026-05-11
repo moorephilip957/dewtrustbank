@@ -10,12 +10,7 @@
                     
                 </div> -->
                 <img src="{% static 'frontend/custom/logo-favicon.png' %}" alt="" width="60">
-                <span class="ms-2 fw-semibold text-dark">DTB</span>
-                <!-- <div class="bg-primary text-white rounded-lg d-flex align-items-center justify-content-center"
-                    style="width: 2.5rem; height: 2.5rem;">
-                    <i class="bi bi-building"></i>
-                </div>
-                <span class="ms-2 fw-semibold text-dark">BANK</span> -->
+                <span class="ms-2 fw-semibold text-dark">FHB</span>
             </a>
         </div>
 
@@ -31,9 +26,32 @@
                 </div>
             </div>
             <div class="mb-2">
-                <span class="badge-verified">
-                    <i class="bi bi-check-circle-fill"></i> KYC Verified
-                </span>
+
+                {% with kyc=request.user.kycverification %}
+
+                    {% if kyc.status == "approved" and kyc.is_kyc_verified %}
+                        <span class="badge-kyc badge-verified">
+                            <i class="bi bi-check-circle-fill"></i> KYC Verified
+                        </span>
+
+                    {% elif kyc.status == "pending" %}
+                        <span class="badge-kyc badge-pending">
+                            <i class="bi bi-hourglass-split"></i> KYC Under Review
+                        </span>
+
+                    {% elif kyc.status == "rejected" %}
+                        <span class="badge-kyc badge-rejected">
+                            <i class="bi bi-x-circle-fill"></i> KYC Rejected
+                        </span>
+
+                    {% else %}
+                        <span class="badge-kyc badge-none">
+                            <i class="bi bi-exclamation-triangle-fill"></i> KYC Not Submitted
+                        </span>
+                    {% endif %}
+
+                {% endwith %}
+
             </div>
             <div class="d-flex gap-2">
                 <a href="{% url 'customer:settings' %}"

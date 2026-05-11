@@ -122,9 +122,25 @@
                     <div class="p-3 border-bottom">
                         <p class="mb-0 fw-medium text-dark">{{request.user.full_name}}</p>
                         <p class="mb-0 text-xs text-muted">ID: {{request.user.id}}</p>
-                        <span class="badge-verified mt-1">
-                            <i class="bi bi-check-circle-fill"></i> Verified
-                        </span>
+                        {% with kyc=request.user.kycverification %}
+
+                            <span class="badge-kyc
+                                {% if kyc.status == 'approved' %}badge-verified
+                                {% elif kyc.status == 'pending' %}badge-pending
+                                {% elif kyc.status == 'rejected' %}badge-rejected
+                                {% else %}badge-none{% endif %} mt-1">
+
+                                <i class="bi
+                                    {% if kyc.status == 'approved' %}bi-check-circle-fill
+                                    {% elif kyc.status == 'pending' %}bi-hourglass-split
+                                    {% elif kyc.status == 'rejected' %}bi-x-circle-fill
+                                    {% else %}bi-exclamation-circle{% endif %}"></i>
+
+                                {{ kyc.status|capfirst }}
+
+                            </span>
+
+                            {% endwith %}
                     </div>
                     <a href="{% url 'support:create_ticket' %}" class="dropdown-item">
                         <i class="bi bi-question-circle"></i> Support Ticket

@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 class KYCVerification(models.Model):
 
@@ -53,7 +55,7 @@ class KYCVerification(models.Model):
     # =========================
     # Personal Details
     # =========================
-
+    user = models.OneToOneField(User, related_name="kycverification", on_delete=models.CASCADE)
     full_name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20)
@@ -157,6 +159,12 @@ class KYCVerification(models.Model):
     )
 
     verified = models.BooleanField(default=False)
+    status = models.CharField(
+        max_length=30,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -169,3 +177,10 @@ class KYCVerification(models.Model):
         Returns True if KYC is approved and verified
         """
         return self.verified and self.status == 'approved'
+    
+    @property
+    def is_kyc_locked(self):
+        """
+        Returns True if KYC should NOT be editable (pending or approved)
+        """
+        return self.status in ["pending", "approved"]
