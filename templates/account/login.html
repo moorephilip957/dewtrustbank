@@ -43,7 +43,7 @@
 
                         
                         <!-- 🔑 Updated form action & method -->
-                        <form id="loginForms" action="{% url 'account:login' %}" method="POST">
+                        <form id="loginForms" action="{% url 'account:login' %}" method="POST" class="spinner-form">
                             {% csrf_token %}
 
                             <!-- Email Field (Changed from username to match your auth flow) -->
@@ -84,7 +84,7 @@
 
                             <!-- Actions -->
                             <div class="d-grid gap-3">
-                                <button type="submit" class="btn btn-primary-custom">
+                                <button type="submit" class="btn btn-primary-custom spinner-btn">
                                     <i class="bi bi-box-arrow-in-right"></i> Sign In
                                 </button>
                                 <a href="{% url 'account:register' %}" class="btn btn-outline-custom">

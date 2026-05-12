@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+import time
 def home_view(request):
     return render(request, 'frontend/index.html')
 

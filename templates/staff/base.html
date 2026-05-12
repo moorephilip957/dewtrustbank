@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+        Staff Dashboard
+        {% endblock %}
+    </title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'staff/style.css' %}">
+</head>
+<body>
+
+<!-- Mobile Overlay -->
+<div class="sidebar-overlay"></div>
+
+<div class="dashboard-wrapper">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <!-- Logo -->
+        <div class="logo-area">
+
+            <div class="logo-text">
+                <h3>Demo Bank</h3>
+            </div>
+
+            <!-- Close Button Mobile -->
+            <button class="close-sidebar d-lg-none">
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+        </div>
+
+        <!-- Navigation -->
+        <ul class="sidebar-menu">
+
+            <li>
+                <a
+                    href="{% url 'staff:staff_dashboard' %}"
+                    class="{% if request.resolver_match.url_name == 'staff_dashboard' %}active{% endif %}"
+                >
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bi bi-people"></i>
+                    <span>Account Holders</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bi bi-wallet2"></i>
+                    <span>Fund Account</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bi bi-cash-stack"></i>
+                    <span>Debit Account</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bi bi-shield-check"></i>
+                    <span>KYC Requests</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bi bi-arrow-left-right"></i>
+                    <span>Transactions</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bi bi-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+
+        <!-- Topbar -->
+        <div class="topbar">
+
+            <div class="topbar-left">
+
+                <!-- Sidebar Toggle -->
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <h4 class="page-title">
+                    {% block page_title %}
+                    Dashboard
+                    {% endblock %}
+                </h4>
+
+            </div>
+
+            <div class="admin-info">
+                <div class="admin-avatar">
+                    A
+                </div>
+
+                <div>
+                    <h6 class="mb-0">Admin Staff</h6>
+                    <small>Super Admin</small>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Page Content -->
+        <div class="content-area">
+
+            {% block content %}
+
+            {% endblock %}
+
+        </div>
+
+    </main>
+
+</div>
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- JS -->
+<script src="{% static 'staff/app.js' %}"></script>
+
+</body>
+</html>

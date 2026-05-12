@@ -1,0 +1,88 @@
+{% extends 'staff/base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block page_title %}
+Dashboard Overview
+{% endblock %}
+
+{% block content %}
+
+<div class="row g-4">
+
+    <div class="col-md-3">
+        <div class="stat-card">
+            <h6>Total Customers</h6>
+            <h2>2,540</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="stat-card">
+            <h6>Total Deposits</h6>
+            <h2>$250K</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="stat-card">
+            <h6>Total Transfers</h6>
+            <h2>1,240</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="stat-card">
+            <h6>Pending KYC</h6>
+            <h2>48</h2>
+        </div>
+    </div>
+
+</div>
+
+<div class="card mt-4 border-0 shadow-sm">
+    <div class="card-body">
+        <h5>Recent Transactions</h5>
+
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>John Doe</td>
+                    <td>Deposit</td>
+                    <td>$500</td>
+                    <td>
+                        <span class="badge bg-success">
+                            Completed
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Jane Smith</td>
+                    <td>Withdrawal</td>
+                    <td>$200</td>
+                    <td>
+                        <span class="badge bg-warning text-dark">
+                            Pending
+                        </span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -14,6 +14,7 @@ urlpatterns = [
     path('support/', include('support.urls', namespace="support")),
     path('notification/', include('notification.urls', namespace="notification")),
     path('kyc/', include('kyc.urls', namespace="kyc")),
+    path('staff/', include('staff.urls', namespace="staff")),
     path("", include("pwa.urls")),
 ]
 # urlpatterns += static(

@@ -59,7 +59,7 @@
                 Enter your 6-digit verification PIN
             </p>
 
-            <form method="POST" id="otpForm">
+            <form method="POST" id="otpForm" class="spinner-form">
                 {% csrf_token %}
 
                 <!-- DESKTOP INPUT -->
@@ -83,7 +83,7 @@
                 <!-- MOBILE INPUT -->
                 <div class="mobile-only">
 
-                    <input id="mobileOtp" class="form-control text-center mb-3" readonly placeholder="Enter OTP">
+                    <input id="mobileOtp" class="form-control text-center mb-3" readonly placeholder="Enter Your Pin">
 
                     <!-- Hidden mobile OTP -->
                     <input type="hidden" name="mobile_otp" id="mobileHiddenOtp">
@@ -110,7 +110,7 @@
 
                 </div>
 
-                <button type="submit" class="btn-verify">
+                <button type="submit" class="btn-verify spinner-btn">
                     Verify Pin
                 </button>
 
@@ -120,7 +120,7 @@
 
     </div>
 
-
+    <script src="{% static 'general/spinner.js' %}"></script>
     <script>
         /* ================= DESKTOP OTP ================= */
 
