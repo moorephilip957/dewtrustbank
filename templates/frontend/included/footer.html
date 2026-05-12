@@ -31,9 +31,9 @@
                 <div class="footer-links">
                     <h3>solutions</h3>
                     <ul>
-                        <li><a href="register.html">Quick Account Opening</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="{% url 'account:register' %}">Quick Account Opening</a></li>
+                        <li><a href="{% url 'frontend:contact' %}">Contact Us</a></li>
+                        <li><a href="{% url 'frontend:terms' %}">Terms of Service</a></li>
                     </ul>
                 </div>
                 <!-- Footer Links End -->
@@ -44,10 +44,10 @@
                 <div class="footer-links">
                     <h3>Loans & Insurance</h3>
                     <ul>
-                        <li><a href="loans.html">Business Loan</a></li>
-                        <li><a href="loans.html">Automobile Refinancing</a></li>
-                        <li><a href="maortgage">Mortgage Plans</a></li>
-                        <li><a href="insurance.html">Core Insurance Program</a></li>
+                        <li><a href="{% url 'frontend:loans' %}">Business Loan</a></li>
+                        <li><a href="{% url 'frontend:loans' %}">Automobile Refinancing</a></li>
+                        <li><a href="{% url 'frontend:mortgages' %}">Mortgage Plans</a></li>
+                        <li><a href="{% url 'frontend:insurance' %}">Core Insurance Program</a></li>
                     </ul>
                 </div>
                 <!-- Footer Links End -->
