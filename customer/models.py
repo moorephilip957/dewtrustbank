@@ -51,11 +51,20 @@ class UserBankAccount(models.Model):
         ('USD', 'US Dollar ($)'),
         ('EUR', 'Euro (€)'),
         ('GBP', 'British Pound (£)'),
-        ('NGN', 'Nigerian Naira (₦)'),
-        ('GHS', 'Ghanaian Cedi (₵)'),
-        ('ZAR', 'South African Rand (R)'),
         ('CAD', 'Canadian Dollar (C$)'),
         ('AUD', 'Australian Dollar (A$)'),
+
+        # Dubai / UAE
+        ('AED', 'UAE Dirham (د.إ)'),
+
+        # Kuwait
+        ('KWD', 'Kuwaiti Dinar (د.ك)'),
+
+        # Japan
+        ('JPY', 'Japanese Yen (¥)'),
+
+        # South Korea
+        ('KRW', 'South Korean Won (₩)'),
     ]
 
     user = models.OneToOneField(
@@ -222,11 +231,20 @@ class UserBankAccount(models.Model):
             'USD': '$',
             'EUR': '€',
             'GBP': '£',
-            'NGN': '₦',
-            'GHS': '₵',
-            'ZAR': 'R',
             'CAD': 'C$',
             'AUD': 'A$',
+
+            # UAE / Dubai
+            'AED': 'د.إ',
+
+            # Kuwait
+            'KWD': 'د.ك',
+
+            # Japan
+            'JPY': '¥',
+
+            # South Korea
+            'KRW': '₩',
         }
 
         return symbols.get(self.currency, self.currency)

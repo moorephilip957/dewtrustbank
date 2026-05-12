@@ -27,11 +27,31 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, username, password, **extra_fields)
 
 class CustomUser(AbstractUser):
+    SMS_ALERT_CHOICES = (
+        ('activate', 'Activate'),
+        ('deactivate', 'Deactivate'),
+    )
+
+    STATUS_CHOICES = (
+        ('active', 'Active'),
+        ('blocked', 'Blocked'),
+    )
     # Override email to enforce uniqueness (AbstractUser leaves it blank by default)
     email = models.EmailField(_('email address'), unique=True)
     middle_name = models.CharField(_('middle name'), max_length=150, blank=True, null=True)
     phone_number = models.CharField(_('phone number'), max_length=20, blank=True)
     country = CountryField(blank=True)
+    sms_alert = models.CharField(
+        max_length=20,
+        choices=SMS_ALERT_CHOICES,
+        default='deactivate'
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='active'
+    )
 
     objects = CustomUserManager()
 
@@ -42,7 +62,8 @@ class CustomUser(AbstractUser):
     @property
     def full_name(self):
         """Combines first, middle, and last names, ignoring blanks/None."""
-        parts = [self.first_name, self.middle_name, self.last_name]
+        parts = [self.first_name, self.last_name]
+        # parts = [self.first_name, self.middle_name, self.last_name]
         return ' '.join(part for part in parts if part)
 
     def __str__(self):

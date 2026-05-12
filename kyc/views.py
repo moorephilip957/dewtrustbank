@@ -4,6 +4,7 @@ from django.contrib import messages
 from .forms import KYCVerificationForm
 from .models import KYCVerification
 from .decorator import kyc_block_if_approved
+from notification.utils import create_notification
 
 
 @kyc_block_if_approved
@@ -43,6 +44,27 @@ def kyc_verification(request):
             kyc = form.save(commit=False)
             kyc.user = request.user  
             kyc.save()
+
+            # =========================
+            # CREATE NOTIFICATION
+            # =========================
+            if is_edit:
+                create_notification(
+                    user=request.user,
+                    title="KYC Verification Resubmitted",
+                    message=f"Your updated KYC verification documents have been successfully resubmitted and are currently under review. You will be notified once the verification process is complete.",
+                    notif_type="info",
+                    related_object=kyc  
+                )
+
+            else:
+                create_notification(
+                    user=request.user,
+                    title="KYC verification Submitted",
+                    message=f"Your KYC verification documents have been successfully submitted and are currently under review. You will be notified as soon as the verification process is completed.",
+                    notif_type="info",
+                    related_object=kyc  
+                )
 
             if is_edit:
                 messages.success(request, "Your KYC request has been edited successfully. You will be notified once the review process is complete.")

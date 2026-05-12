@@ -1,0 +1,264 @@
+{% extends '../customer/base.html' %}
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'account/custom_css/account_blocked.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4 px-3 px-md-4">
+
+    <!-- Page Header -->
+    <div class="d-flex flex-column mb-4">
+        <h1 class="h4 fw-bold text-dark mb-1">Account Restricted</h1>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item">
+                    <a href="#" class="text-decoration-none text-muted">
+                        Account
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item active text-secondary">
+                    Restricted
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <div style="max-width: 900px; margin: 0 auto;">
+
+        <!-- Main Card -->
+        <div class="card border-0 shadow-sm overflow-hidden blocked-card">
+
+            <!-- Header -->
+            <div class="card-header blocked-header border-0 text-white py-5 px-4">
+
+                <div class="d-flex flex-column align-items-center text-center">
+
+                    <div class="blocked-icon-wrapper mb-4">
+                        <i data-lucide="shield-alert"
+                           class="blocked-icon"></i>
+                    </div>
+
+                    <h2 class="fw-bold mb-2">
+                        Your Account Has Been Restricted
+                    </h2>
+
+                    <p class="mb-0 opacity-75 blocked-subtitle">
+                        Access to some platform features has been temporarily limited.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Body -->
+            <div class="card-body p-4 p-md-5">
+
+                <!-- Alert -->
+                <div class="alert custom-alert border-0 d-flex align-items-start gap-3 mb-4">
+
+                    <div class="alert-icon">
+                        <i data-lucide="info"></i>
+                    </div>
+
+                    <div>
+                        <h6 class="fw-bold mb-1">
+                            Why am I seeing this?
+                        </h6>
+
+                        <p class="mb-0 small text-muted">
+                            Your account has been flagged for review by our compliance or security team.
+                            This restriction may occur due to suspicious activity, incomplete verification,
+                            policy violations, failed compliance checks, or unusual transaction behavior.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- Restriction Details -->
+                <div class="row g-4 mb-4">
+
+                    <div class="col-md-6">
+
+                        <div class="info-card h-100">
+
+                            <div class="d-flex align-items-center mb-3">
+
+                                <div class="info-icon me-3">
+                                    <i data-lucide="lock"></i>
+                                </div>
+
+                                <h6 class="fw-bold mb-0">
+                                    Restricted Features
+                                </h6>
+
+                            </div>
+
+                            <ul class="list-unstyled mb-0 small text-muted">
+
+                                <li class="mb-2 d-flex align-items-center gap-2">
+                                    <i data-lucide="x-circle" class="text-danger small-icon"></i>
+                                    Loan applications temporarily disabled
+                                </li>
+
+                                <li class="mb-2 d-flex align-items-center gap-2">
+                                    <i data-lucide="x-circle" class="text-danger small-icon"></i>
+                                    Fund transfers may be restricted
+                                </li>
+
+                                <li class="mb-2 d-flex align-items-center gap-2">
+                                    <i data-lucide="x-circle" class="text-danger small-icon"></i>
+                                    Certain account actions unavailable
+                                </li>
+
+                                <li class="d-flex align-items-center gap-2">
+                                    <i data-lucide="x-circle" class="text-danger small-icon"></i>
+                                    Security review currently in progress
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="info-card h-100">
+
+                            <div class="d-flex align-items-center mb-3">
+
+                                <div class="info-icon me-3 success-icon">
+                                    <i data-lucide="shield-check"></i>
+                                </div>
+
+                                <h6 class="fw-bold mb-0">
+                                    What You Can Do
+                                </h6>
+
+                            </div>
+
+                            <ul class="list-unstyled mb-0 small text-muted">
+
+                                <li class="mb-2 d-flex align-items-center gap-2">
+                                    <i data-lucide="check-circle" class="text-success small-icon"></i>
+                                    Contact customer support immediately
+                                </li>
+
+                                <li class="mb-2 d-flex align-items-center gap-2">
+                                    <i data-lucide="check-circle" class="text-success small-icon"></i>
+                                    Verify your account information
+                                </li>
+
+                                <li class="mb-2 d-flex align-items-center gap-2">
+                                    <i data-lucide="check-circle" class="text-success small-icon"></i>
+                                    Submit requested verification documents
+                                </li>
+
+                                <li class="d-flex align-items-center gap-2">
+                                    <i data-lucide="check-circle" class="text-success small-icon"></i>
+                                    Await review completion from our team
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Support Section -->
+                <div class="support-box">
+
+                    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-4">
+
+                        <div>
+
+                            <div class="d-flex align-items-center mb-2">
+
+                                <div class="support-icon me-3">
+                                    <i data-lucide="headphones"></i>
+                                </div>
+
+                                <h5 class="fw-bold mb-0">
+                                    Need Assistance?
+                                </h5>
+
+                            </div>
+
+                            <p class="text-muted mb-3 small">
+                                If you believe this restriction was applied in error,
+                                please contact our support team. Our representatives are available
+                                to assist you with account reviews and verification processes.
+                            </p>
+
+                            <div class="small text-muted">
+
+                                <div class="mb-2 d-flex align-items-center gap-2">
+                                    <i data-lucide="mail" class="small-icon"></i>
+                                    support@yourcompany.com
+                                </div>
+
+                                <div class="mb-2 d-flex align-items-center gap-2">
+                                    <i data-lucide="phone" class="small-icon"></i>
+                                    +234 800 000 0000
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <i data-lucide="clock-3" class="small-icon"></i>
+                                    Monday - Friday | 8:00 AM - 6:00 PM
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="d-flex flex-column gap-2">
+
+                            <a href="mailto:support@yourcompany.com"
+                               class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
+
+                                <i data-lucide="mail"></i>
+                                Contact Support
+
+                            </a>
+
+                            <a href="{% url 'customer:dashboard' %}"
+                               class="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2">
+
+                                <i data-lucide="arrow-left"></i>
+                                Back to Dashboard
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Footer Notice -->
+        <div class="text-center text-muted small mt-4">
+
+            <i data-lucide="shield-check"
+               class="me-1 text-success"
+               style="width:14px;height:14px;"></i>
+
+            Your security and account protection remain our highest priority.
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

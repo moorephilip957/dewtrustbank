@@ -1,3 +1,4 @@
+import random
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -26,25 +27,30 @@ def register_view(request):
 
                     # 2. Create bank account but don't commit yet
                     account = bank_form.save(commit=False, user=user)
-                    print(account.account_type)
                     account.save()
 
                     # 3. Login user
-                    # login(request, user)
+                    login(request, user)
 
-                    messages.success(
-                        request,
-                        'Account and bank profile created successfully!'
-                    )
+                    # messages.success(
+                    #     request,
+                    #     'Account and bank profile created successfully!'
+                    # )
 
-                    return redirect('frontend:home')
-
+                    return redirect('customer:dashboard')
+                
             except Exception as e:
-                print(e) 
                 messages.error(
                     request,
-                    'Something went wrong while creating your account.'
+                    f'Something went wrong: {str(e)}'
                 )
+
+            # except Exception as e:
+            #     print(e) 
+            #     messages.error(
+            #         request,
+            #         'Something went wrong while creating your account.'
+                # )
 
         else:
             messages.error(
@@ -62,7 +68,6 @@ def register_view(request):
         'account_types': account_types,
     })
 
-import random
 
 def login_view(request):
 

@@ -39,7 +39,7 @@
 
                     <!-- Hero Content Btn Start -->
                     <div class="hero-content-btn">
-                        <a href="register.html" class="btn-default">Enroll</a>
+                        <a href="{% url 'account:register' %}" class="btn-default">Enroll</a>
                     </div>
                     <!-- Hero Content Btn End -->
 
@@ -188,7 +188,7 @@
                                     </div>
 
                                     <div class="expertise-btn">
-                                        <a href="contact.html" class="btn-default">contact now</a>
+                                        <a href="{% url 'frontend:contact' %}" class="btn-default">contact now</a>
                                     </div>
 
                                 </div>
@@ -252,7 +252,7 @@
                                     </div>
 
                                     <div class="expertise-btn">
-                                        <a href="contact.html" class="btn-default">contact now</a>
+                                        <a href="{% url 'frontend:contact' %}" class="btn-default">contact now</a>
                                     </div>
 
                                 </div>
@@ -316,7 +316,7 @@
                                     </div>
 
                                     <div class="expertise-btn">
-                                        <a href="contact.html" class="btn-default">contact now</a>
+                                        <a href="{% url 'frontend:contact' %}" class="btn-default">contact now</a>
                                     </div>
 
                                 </div>
@@ -380,7 +380,7 @@
                                     </div>
 
                                     <div class="expertise-btn">
-                                        <a href="register.html" class="btn-default">New Account Enrolment</a>
+                                        <a href="{% url 'account:register' %}" class="btn-default">New Account Enrolment</a>
                                     </div>
 
                                 </div>
@@ -443,8 +443,8 @@
 
                     <!-- CTA Box Button Start -->
                     <div class="cta-box-btn wow fadeInUp" data-wow-delay="0.5s">
-                        <a href="register.html" class="btn-highlighted btn-cta-1">get started today</a>
-                        <a href="about.html" class="btn-highlighted btn-cta-2">explore our services</a>
+                        <a href="{% url 'account:register' %}" class="btn-highlighted btn-cta-1">get started today</a>
+                        <a href="{% url 'frontend:about' %}" class="btn-highlighted btn-cta-2">explore our services</a>
                     </div>
                     <!-- CTA Box Button End -->
 

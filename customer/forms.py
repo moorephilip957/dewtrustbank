@@ -12,13 +12,14 @@ class UserBankAccountForm(forms.ModelForm):
         min_length=4,
         widget=forms.PasswordInput(attrs={
             'class': 'form-control form-control-custom',
-            'placeholder': '••••',
-            'pattern': '[0-9]{4,6}',
-            'title': 'Enter 4-6 digit numeric PIN',
+            'placeholder': '••••••',
+            'pattern': '[0-9]{5-6}',
+            "maxlength":"6",
+            'title': 'Enter 6 digit numeric PIN',
             'inputmode': 'numeric',
             'autocomplete': 'new-password'
         }),
-        help_text='4-6 digit numeric PIN for authorizing transactions',
+        help_text='6 digit numeric PIN for authorizing transactions',
         required=True
     )
 
@@ -44,14 +45,15 @@ class UserBankAccountForm(forms.ModelForm):
             # Optional UX improvements per field
             if field_name == 'transaction_pin':
                 field.widget.attrs.update({
-                    'placeholder': '••••',
+                    'placeholder': '••••••',
                 })
 
     def clean_transaction_pin(self):
         pin = self.cleaned_data.get('transaction_pin')
-
-        if pin and not (pin.isdigit() and 4 <= len(pin) <= 6):
-            raise ValidationError('PIN must be 4-6 numeric digits only.')
+        if pin and not (pin.isdigit() and len(pin) == 6):
+            raise ValidationError('PIN must be exactly 6 numeric digits.')
+        # if pin and not (pin.isdigit() and 4 <= len(pin) <= 6):
+        #     raise ValidationError('PIN must be 4-6 numeric digits only.')
 
         return pin
 

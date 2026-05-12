@@ -53,8 +53,10 @@
                     </div>
                     <div class="overflow-auto" style="max-height: 15rem;">
                         {% for notif in navbar_notifications %}
-                        <a href="{% if notif.content_object %}{{ notif.content_object.get_absolute_url }}{% else %}#{% endif %}" 
+                        <a href="{% url 'notification:mark_read' notif.pk %}" 
                         class="notification-item d-flex {% if not notif.read %}fw-bold{% endif %}">
+                        <!-- <a href="{% if notif.content_object %}{{ notif.content_object.get_absolute_url }}{% else %}{% url 'notification:mark_read' notif.pk %}{% endif %}" 
+                        class="notification-item d-flex {% if not notif.read %}fw-bold{% endif %}"> -->
                             <div class="notification-icon {{ notif.notif_type }} me-3">
                                 {% if notif.notif_type == 'success' %}
                                     <i class="bi bi-check-circle"></i>
