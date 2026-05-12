@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import time
 def home_view(request):
-    return render(request, 'frontend/index.html')
+    return render(request, 'frontend/home.html')
 
 def personal_view(request):
     return render(request, 'frontend/personal.html')
