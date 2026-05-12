@@ -46,7 +46,7 @@
         <!-- Form -->
         <div class="card-body p-4 p-md-5">
 
-            <form id="internationalTransferForm" method="post">
+            <form id="internationalTransferForm" method="post" class="spinner-form">
 
                 {% csrf_token %}
 
@@ -236,7 +236,7 @@
                     </a>
 
                     <button type="submit"
-                            class="btn btn-primary px-5">
+                            class="btn btn-primary px-5 spinner-btn">
                         Send
                     </button>
                 </div>

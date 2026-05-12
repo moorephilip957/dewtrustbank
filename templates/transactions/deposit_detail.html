@@ -271,7 +271,7 @@
                 </div>
 
                 <!-- FORM -->
-                <form method="post" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data" class="spinner-form">
 
                     {% csrf_token %}
 
@@ -356,7 +356,7 @@
                     <div class="d-grid">
 
                         <button type="submit"
-                                class="btn btn-primary submit-btn" id="submitBtn" disabled>
+                                class="btn btn-primary submit-btn spinner-btn" id="submitBtn" disabled>
 
                             <i data-lucide="check-circle"
                                class="me-2"
