@@ -4601,7 +4601,7 @@ fieldset:disabled .btn {
   float: left;
   padding-right: var(--bs-breadcrumb-item-padding-x);
   color: var(--bs-breadcrumb-divider-color);
-  content: var(--bs-breadcrumb-divider, "https://demo.awaikenthemes.com/");
+  content: var(--bs-breadcrumb-divider, ">");
 }
 .breadcrumb-item.active {
   color: var(--bs-breadcrumb-item-active-color);
