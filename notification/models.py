@@ -16,8 +16,8 @@ class Notification(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
     message = models.TextField()
-    title = models.CharField(max_length=20, choices=NOTIF_TYPES, default='info')
-    notif_type = models.CharField(max_length=20, choices=NOTIF_TYPES, default='info')
+    title = models.CharField(max_length=200, choices=NOTIF_TYPES, default='info')
+    notif_type = models.CharField(max_length=200, choices=NOTIF_TYPES, default='info')
     read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

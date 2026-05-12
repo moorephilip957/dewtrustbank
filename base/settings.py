@@ -142,6 +142,9 @@ USE_TZ = True
 # settings.py
 AUTH_USER_MODEL = 'account.CustomUser'
 
+LOGIN_URL = 'account:login'
+# LOGIN_REDIRECT_URL = 'customer:dashboard'
+LOGOUT_REDIRECT_URL = 'account:login'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
