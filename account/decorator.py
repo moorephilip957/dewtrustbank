@@ -11,7 +11,7 @@ def block_blocked_users(view_func):
 
             # Redirect blocked users
             if request.user.status == "blocked":
-                return redirect("account:blocked")
+                return redirect("customer:blocked")
 
         return view_func(request, *args, **kwargs)
 

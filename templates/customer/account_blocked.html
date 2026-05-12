@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block styles %}
-<link rel="stylesheet" href="{% static 'account/custom_css/account_blocked.css' %}">
+<link rel="stylesheet" href="{% static 'customer/custom_css/account_blocked.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@
     <div class="d-flex flex-column mb-4">
         <h1 class="h4 fw-bold text-dark mb-1">Account Restricted</h1>
 
-        <nav aria-label="breadcrumb">
+        <!-- <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0 small">
                 <li class="breadcrumb-item">
                     <a href="#" class="text-decoration-none text-muted">
@@ -25,7 +25,7 @@
                     Restricted
                 </li>
             </ol>
-        </nav>
+        </nav> -->
     </div>
 
     <div style="max-width: 900px; margin: 0 auto;">
@@ -201,12 +201,12 @@
 
                                 <div class="mb-2 d-flex align-items-center gap-2">
                                     <i data-lucide="mail" class="small-icon"></i>
-                                    support@yourcompany.com
+                                    support@firsthavinbk.com
                                 </div>
 
                                 <div class="mb-2 d-flex align-items-center gap-2">
                                     <i data-lucide="phone" class="small-icon"></i>
-                                    +234 800 000 0000
+                                    +447457407395
                                 </div>
 
                                 <div class="d-flex align-items-center gap-2">
@@ -220,7 +220,7 @@
 
                         <div class="d-flex flex-column gap-2">
 
-                            <a href="mailto:support@yourcompany.com"
+                            <a href="{% url 'support:create_ticket' %}"
                                class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
 
                                 <i data-lucide="mail"></i>

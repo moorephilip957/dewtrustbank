@@ -10,10 +10,15 @@ from .models import UserBankAccount, DebitCard
 from .forms import DebitCardApplicationForm, ChangePasswordForm
 from transaction.models import TransactionHistory
 from kyc.decorator import kyc_required
+from account.decorator import block_blocked_users
+
+
+
 
 
 @login_required
 @kyc_required
+@block_blocked_users
 def dashboard(request):
     bank_account = UserBankAccount.objects.select_related('user').get(
                         user=request.user
@@ -29,6 +34,7 @@ def dashboard(request):
 
 @login_required
 @kyc_required
+@block_blocked_users
 def transaction_list(request):
 
     transactions = TransactionHistory.objects.filter(
@@ -46,6 +52,7 @@ def transaction_list(request):
 
 @login_required
 @kyc_required
+@block_blocked_users
 def card(request):
 
     account = request.user.bank_account
@@ -79,6 +86,7 @@ def card(request):
 
 
 @login_required
+@block_blocked_users
 def local_transfer(request):
 
     return render(
@@ -107,6 +115,7 @@ def deposit(request):
 
 @login_required
 @kyc_required
+@block_blocked_users
 def save_invest(request):
 
     return render(
@@ -135,6 +144,7 @@ def loan_history(request):
 
 @login_required
 @kyc_required
+@block_blocked_users
 def download_app(request):
 
     return render(
@@ -144,6 +154,7 @@ def download_app(request):
 
 @login_required
 @kyc_required
+@block_blocked_users
 def settings(request):
 
     user = request.user
@@ -170,6 +181,7 @@ def support(request):
 
 @login_required
 @kyc_required
+@block_blocked_users
 def change_password(request):
 
     return render(
@@ -180,6 +192,7 @@ def change_password(request):
 
 @login_required
 @kyc_required
+@block_blocked_users
 def apply_card(request):
 
     account = request.user.bank_account
@@ -238,6 +251,7 @@ def payment(request):
 
 @login_required
 @kyc_required
+@block_blocked_users
 def change_transaction_pin(request):
 
     if request.method == "POST":
@@ -292,6 +306,7 @@ def change_transaction_pin(request):
 
 @login_required
 @kyc_required
+@block_blocked_users
 def change_password(request):
 
     if request.method == 'POST':
@@ -337,4 +352,18 @@ def change_password(request):
         {
             'form': form
         }
+    )
+
+
+@login_required
+@kyc_required
+def account_blocked(request):
+
+    # If user is not actually blocked, redirect them away
+    if request.user.status != "blocked":
+        return redirect("customer:dashboard")
+
+    return render(
+        request,
+        "customer/account_blocked.html",
     )

@@ -5,10 +5,11 @@ from django.contrib import messages
 from .forms import LoanApplicationForm
 from .models import LoanApplication
 from kyc.decorator import kyc_required
-
+from account.decorator import block_blocked_users
 
 @login_required
 @kyc_required
+@block_blocked_users
 def apply_loan(request):
     active_loans = LoanApplication.active_loans_count(request.user)
     
@@ -41,6 +42,7 @@ def apply_loan(request):
 
 @login_required
 @kyc_required
+@block_blocked_users
 def loan_history(request):
 
     status = request.GET.get('status')

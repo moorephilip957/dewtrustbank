@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Notification
 from kyc.decorator import kyc_required
-
+from account.decorator import block_blocked_users
 
 @login_required
 @kyc_required
+@block_blocked_users
 def notification_list(request):
     notifications = request.user.notifications.all()
     unread_count = notifications.filter(read=False).count()
@@ -17,6 +18,7 @@ def notification_list(request):
 
 @login_required
 @kyc_required
+@block_blocked_users
 def mark_all_notifications_read(request):
     request.user.notifications.filter(read=False).update(read=True)
     return redirect(request.META.get('HTTP_REFERER', 'notification:notification_list'))
@@ -24,6 +26,7 @@ def mark_all_notifications_read(request):
 
 @login_required
 @kyc_required
+@block_blocked_users
 def mark_notification_read(request, pk):
     notification = get_object_or_404(
         Notification,

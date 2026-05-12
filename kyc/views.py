@@ -5,9 +5,11 @@ from .forms import KYCVerificationForm
 from .models import KYCVerification
 from .decorator import kyc_block_if_approved
 from notification.utils import create_notification
+from account.decorator import block_blocked_users
 
 
 @kyc_block_if_approved
+@block_blocked_users
 def kyc_terms(request):
 
     return render(
@@ -17,6 +19,7 @@ def kyc_terms(request):
 
 
 @kyc_block_if_approved
+@block_blocked_users
 def kyc_verification(request):
 
     # try to get existing KYC (edit mode)

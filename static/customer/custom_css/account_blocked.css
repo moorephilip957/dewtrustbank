@@ -1,4 +1,9 @@
 .blocked-header{
+    /* background: linear-gradient(
+        135deg,
+        #0037CC,
+        #2F7BFF
+    ); */
     background: linear-gradient(
         135deg,
         var(--primary-color),

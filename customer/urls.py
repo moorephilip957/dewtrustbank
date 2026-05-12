@@ -18,7 +18,8 @@ urlpatterns = [
         path('support/', views.support, name='support'), 
         path('change_password/', views.change_password, name='change_password'), 
         path('apply_card/', views.apply_card, name='apply_card'), 
-        path('payment/', views.payment, name='payment'), 
+        path('payment/', views.payment, name='payment'),
+        path("blocked/", views.account_blocked, name="blocked"),
 
         path("change-transaction-pin/", views.change_transaction_pin,name="change_transaction_pin"),
         path('change-password/', views.change_password, name='change_password'),
