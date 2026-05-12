@@ -34,12 +34,12 @@ def create_ticket(request):
                 # attachment=ticket.attachment  # optional
             )
 
-            messages.success(
-                request,
-                f"Ticket submitted successfully. Your reference ID is {ticket.reference_id}"
-            )
+            # messages.success(
+            #     request,
+            #     f"Ticket submitted successfully. Your reference ID is {ticket.reference_id}"
+            # )
 
-            return redirect("customer:ticket_success", reference_id=ticket.reference_id)
+            return redirect("support:ticket_success", reference_id=ticket.reference_id)
 
         messages.error(request, "Please correct the errors below.")
 

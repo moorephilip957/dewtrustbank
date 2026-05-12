@@ -287,7 +287,14 @@
                                 </div>
                                 <div class="flex-grow-1">
                                     <p class="mb-0 text-sm text-muted">Account Age</p>
-                                    <p class="mb-0 fw-bold">{{bank_account.account.age}} years</p>
+                                    <p class="mb-0 fw-bold">
+
+                                        {% if bank_account.account_age > 0 %}
+                                            {{ bank_account.account_age }} year{{ bank_account.account_age|pluralize }}
+                                        {% else %}
+                                            {{ bank_account.created_at|timesince }} old
+                                        {% endif %}
+                                    </p>
                                 </div>
                             </div>
                         </div>

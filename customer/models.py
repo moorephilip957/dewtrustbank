@@ -122,6 +122,8 @@ class UserBankAccount(models.Model):
 
     is_active = models.BooleanField(_('active'), default=True)
 
+    account_age = models.PositiveIntegerField(default=0)
+
     created_at = models.DateTimeField(
         _('created at'),
         auto_now_add=True

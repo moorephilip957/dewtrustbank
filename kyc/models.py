@@ -12,6 +12,7 @@ class KYCVerification(models.Model):
         ('miss', 'Miss'),
         ('dr', 'Dr'),
         ('prof', 'Prof'),
+        ('other', 'Other'),
     ]
 
     GENDER_CHOICES = [
@@ -21,9 +22,12 @@ class KYCVerification(models.Model):
     ]
 
     ACCOUNT_TYPE_CHOICES = [
-        ('savings', 'Savings'),
-        ('current', 'Current'),
-        ('business', 'Business'),
+        ('savings', 'Savings Account'),
+        ('checking', 'Checking Account'),
+        ('non_resident', 'Non-Resident Account'),
+        ('offshore_corp', 'Offshore Corperate Account'),
+        ('offshore_personal', '	Offshore personal Account'),
+        ('wealth_management', 'Wealth Management Account'),
     ]
 
     EMPLOYMENT_TYPE_CHOICES = [

@@ -108,8 +108,8 @@
                     <div>
                         <div class="ticket-id">#{{ ticket.reference_id }}</div>
                         <div class="ticket-title">{{ ticket.subject }}</div>
-                        <div class="ticket-meta">
-                            Last updated: {{ ticket.updated_at }}
+                        <div class="ticket-meta local-time" data-utc="{{ ticket.updated_at|date:'c' }}">
+                            <!-- Last updated: {{ ticket.updated_at }} -->
                         </div>
                     </div>
 
