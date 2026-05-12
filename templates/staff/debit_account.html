@@ -1,0 +1,62 @@
+{% extends 'staff/base.html' %}
+
+{% block title %}
+Debit Account
+{% endblock %}
+
+{% block page_title %}
+Debit Customer Account
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-lg-7">
+
+        <div class="form-card">
+
+            <form>
+
+                <div class="mb-4">
+                    <label>Account Number</label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter account number"
+                    >
+                </div>
+
+                <div class="mb-4">
+                    <label>Amount</label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        placeholder="Enter amount"
+                    >
+                </div>
+
+                <div class="mb-4">
+                    <label>Reason</label>
+
+                    <textarea
+                        class="form-control"
+                        rows="4"
+                    ></textarea>
+                </div>
+
+                <button class="primary-btn">
+                    Debit Account
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

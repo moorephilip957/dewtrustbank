@@ -1,0 +1,77 @@
+{% extends 'staff/base.html' %}
+
+{% block title %}
+KYC Management
+{% endblock %}
+
+{% block page_title %}
+KYC Verification Requests
+{% endblock %}
+
+{% block content %}
+
+<div class="custom-card">
+
+    <div class="card-title-area">
+
+        <h5>Pending KYC Requests</h5>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="custom-table">
+
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>ID Type</th>
+                    <th>Status</th>
+                    <th>Submitted</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>John Doe</td>
+
+                    <td>International Passport</td>
+
+                    <td>
+                        <span class="status-badge status-pending">
+                            Pending
+                        </span>
+                    </td>
+
+                    <td>12 May 2026</td>
+
+                    <td>
+
+                        <div class="d-flex gap-2">
+
+                            <button class="btn btn-success btn-sm">
+                                Approve
+                            </button>
+
+                            <button class="btn btn-danger btn-sm">
+                                Reject
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

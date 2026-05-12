@@ -1,0 +1,166 @@
+{% extends 'staff/base.html' %}
+{% load humanize %}
+
+{% block title %}
+Account Holders
+{% endblock %}
+
+{% block page_title %}
+Account Holders
+{% endblock %}
+
+{% block content %}
+
+<div class="custom-card">
+
+    <div class="card-title-area">
+
+        <h5>All Customers</h5>
+
+        <input
+            type="text"
+            class="form-control table-search"
+            placeholder="Search customer..."
+        >
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="custom-table">
+
+            <thead>
+                <tr>
+                    <th>Account Name</th>
+                    <th>Account Number</th>
+                    <th>Balance</th>
+                    <th>Status</th>
+                    <th>KYC</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for customer in customers %}
+
+                <tr>
+
+                    <!-- Customer Name -->
+                    <td>
+
+                        {% if customer.user.get_full_name %}
+                            {{ customer.user.get_full_name }}
+                        {% else %}
+                            {{ customer.user.username }}
+                        {% endif %}
+
+                    </td>
+
+                    <!-- Account Number -->
+                    <td>
+                        {{ customer.account_number }}
+                    </td>
+
+                    <!-- Balance -->
+                    <td>
+                        {{ customer.currency }}
+                        {{ customer.balance|intcomma }}
+                    </td>
+
+                    <!-- Status -->
+                    <td>
+
+                        {% if customer.account_status == 'active' %}
+
+                            <span class="status-badge status-active">
+                                Active
+                            </span>
+
+                        {% elif customer.account_status == 'blocked' %}
+
+                            <span class="status-badge status-blocked">
+                                Blocked
+                            </span>
+
+                        {% else %}
+
+                            <span class="status-badge status-pending">
+                                Pending
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <!-- KYC -->
+                    <td>
+
+                        {% if customer.user.kycverification.verified %}
+
+                            <span class="text-success">
+                                Verified
+                            </span>
+
+                        {% else %}
+
+                            <span class="text-warning">
+                                Pending
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <!-- Actions -->
+                    <td>
+
+                        <div class="d-flex gap-2">
+
+                            <!-- View -->
+                            <a
+                                href="{% url 'staff:customer_details' customer.pk %}"
+                                class="action-btn d-flex align-items-center justify-content-center"
+                            >
+                                <i class="bi bi-eye"></i>
+                            </a>
+
+                            <!-- Edit -->
+                            <button class="action-btn">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+
+                            <!-- Block -->
+                            <button class="action-btn">
+                                <i class="bi bi-lock"></i>
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="6" class="text-center py-4">
+
+                        No account holders found.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

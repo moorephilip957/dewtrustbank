@@ -1,0 +1,493 @@
+{% extends 'staff/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}
+Customer Details
+{% endblock %}
+
+{% block page_title %}
+Customer Account Details
+{% endblock %}
+
+{% block content %}
+
+<!-- PROFILE SECTION -->
+<div class="customer-profile-card">
+
+    <div class="row align-items-center">
+
+        <!-- Left -->
+        <div class="col-lg-8">
+
+            <div class="customer-profile-wrapper">
+
+                <!-- Avatar -->
+                <div class="customer-avatar">
+                    {% if customer.user.kycverification.passport_photograph %}
+                    <img
+                        src="{{ customer.user.kycverification.passport_photograph.url}}"
+                        alt="Customer"
+                    >
+                    {% else %}
+                    <img
+                        src="{% static 'frontend/custom/default-img.jpg' %}"
+                        alt="Customer"
+                    >
+                    {% endif %}
+
+                </div>
+
+                <!-- Info -->
+                <div class="customer-info">
+
+                    <h3>{{ customer.user.get_full_name }}</h3>
+
+                    <div class="customer-meta">
+
+                        <div>
+                            <span>Email</span>
+                            <h6>{{ customer.user.email }}</h6>
+                        </div>
+
+                        <div>
+                            <span>Phone</span>
+                            <h6>{{ customer.user.phone_number }}</h6>
+                        </div>
+
+                        <div>
+                            <span>Account Number</span>
+                            <h6>{{ customer.account_number}}</h6>
+                        </div>
+
+                        <div>
+                            <span>Account Balance</span>
+                            <h6>{{customer.get_currency_symbol}} {{ customer.balance|intcomma }}</h6>
+                        </div>
+
+                        <div>
+                            <span>KYC Status</span>
+                            {% if customer.user.kycverification.status == 'approved' %}
+
+                                <h6 class="text-success">
+                                    {{ customer.user.kycverification.status }}
+                                </h6>
+
+                            {% elif customer.user.kycverification.status == 'pending' %}
+
+                                <h6 class="text-warning">
+                                    {{ customer.user.kycverification.status }}
+                                </h6>
+
+                            {% elif customer.user.kycverification.status == 'rejected' %}
+
+                                <h6 class="text-danger">
+                                    {{ customer.user.kycverification.status }}
+                                </h6>
+
+                            {% else %}
+
+                                <h6 class="text-secondary">
+                                    {{ customer.user.kycverification.status }}
+                                </h6>
+
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <span>Account Status</span>
+                            {% if customer.user.status == 'active' %}
+
+                                <h6 class="text-success">
+                                    {{ customer.user.status|title }}
+                                </h6>
+
+                            {% elif customer.user.status == 'pending' %}
+
+                                <h6 class="text-warning">
+                                    {{ customer.user.status|title }}
+                                </h6>
+
+                            {% elif customer.user.status == 'blocked' %}
+
+                                <h6 class="text-danger">
+                                    {{ customer.user.status|title }}
+                                </h6>
+
+                            {% elif customer.user.status == 'suspended' %}
+
+                                <h6 class="text-dark">
+                                    {{ customer.user.status|title }}
+                                </h6>
+
+                            {% else %}
+
+                                <h6 class="text-secondary">
+                                    {{ customer.user.status|title }}
+                                </h6>
+
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Right -->
+        <div class="col-lg-4">
+
+            <div class="customer-actions">
+
+                <button class="btn-action-primary">
+                    <i class="bi bi-bell"></i>
+                    Activate SMS Alert
+                </button>
+
+                <button class="btn-action-warning">
+                    <i class="bi bi-lock"></i>
+                    Block Account
+                </button>
+
+                <button class="btn-action-dark">
+                    <i class="bi bi-key"></i>
+                    Change Password
+                </button>
+
+                <button class="btn-action-success">
+                    <i class="bi bi-wallet2"></i>
+                    View Pending Transactions
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- TRANSACTION SECTION -->
+<div class="transaction-card mt-4">
+
+    <!-- Tabs -->
+    <ul
+        class="nav nav-pills transaction-tabs mb-4"
+        id="pills-tab"
+        role="tablist"
+    >
+
+        <li class="nav-item" role="presentation">
+
+            <button
+                class="nav-link active"
+                id="deposit-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#deposit"
+                type="button"
+            >
+                Deposits
+            </button>
+
+        </li>
+
+        <li class="nav-item" role="presentation">
+
+            <button
+                class="nav-link"
+                id="local-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#local"
+                type="button"
+            >
+                Local Transfers
+            </button>
+
+        </li>
+
+        <li class="nav-item" role="presentation">
+
+            <button
+                class="nav-link"
+                id="wire-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#wire"
+                type="button"
+            >
+                Wire Transfers
+            </button>
+
+        </li>
+
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+
+        <!-- DEPOSITS -->
+        <div
+            class="tab-pane fade show active"
+            id="deposit"
+        >
+
+            <div class="table-responsive">
+
+                <table class="custom-table">
+
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Reference</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for deposit in deposits %}
+
+                        <tr>
+
+                            <td>
+                                {{ deposit.created_at|date:"d M Y" }}
+                            </td>
+
+                            <td>
+                                {{ deposit.method }}
+                            </td>
+
+                            <td>
+                                ${{ deposit.amount }}
+                            </td>
+
+                            <td>
+
+                                {% if deposit.status == 'confirmed' %}
+
+                                    <span class="status-badge status-active">
+                                        Confirmed
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge status-pending">
+                                        Pending
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="4" class="text-center py-4">
+
+                                No deposit history found.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- LOCAL TRANSFERS -->
+        <div
+            class="tab-pane fade"
+            id="local"
+        >
+
+            <div class="table-responsive">
+
+                <table class="custom-table">
+
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Bank</th>
+                            <th>Beneficiary</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for transfer in local_transfers %}
+
+                        <tr>
+
+                            <td>
+                                {{ transfer.created_at|date:"d M Y" }}
+                            </td>
+
+                            <td>
+                                {{ transfer.bank_name }}
+                            </td>
+
+                            <td>
+                                {{ transfer.beneficiary_name }}
+                            </td>
+
+                            <td>
+                                ${{ transfer.amount }}
+                            </td>
+
+                            <td>
+
+                                {% if transfer.status == 'successful' %}
+
+                                    <span class="status-badge status-active">
+                                        Successful
+                                    </span>
+
+                                {% elif transfer.status == 'pending' %}
+
+                                    <span class="status-badge status-pending">
+                                        Pending
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge status-blocked">
+                                        Failed
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="5" class="text-center py-4">
+
+                                No local transfers found.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- WIRE TRANSFER -->
+        <div
+            class="tab-pane fade"
+            id="wire"
+        >
+
+            <div class="table-responsive">
+
+                <table class="custom-table">
+
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Country</th>
+                            <th>Bank</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for wire in wire_transfers %}
+
+                        <tr>
+
+                            <td>
+                                {{ wire.created_at|date:"d M Y" }}
+                            </td>
+
+                            <td>
+                                {{ wire.country }}
+                            </td>
+
+                            <td>
+                                {{ wire.bank_name }}
+                            </td>
+
+                            <td>
+                                ${{ wire.amount }}
+                            </td>
+
+                            <td>
+
+                                {% if wire.status == 'successful' %}
+
+                                    <span class="status-badge status-active">
+                                        Successful
+                                    </span>
+
+                                {% elif wire.status == 'pending' %}
+
+                                    <span class="status-badge status-pending">
+                                        Pending
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge status-blocked">
+                                        Failed
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="5" class="text-center py-4">
+
+                                No wire transfers found.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

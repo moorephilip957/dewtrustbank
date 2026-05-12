@@ -83,6 +83,9 @@ def login_view(request):
             user = authenticate(request, email=email, password=password)
 
             if user is not None and user.is_active:
+                if user.is_staff:
+                    login(request, user)
+                    return redirect('staff:staff_dashboard')
 
                 # Save OTP + user in session
                 request.session['pin_user_id'] = user.id
