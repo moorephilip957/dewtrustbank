@@ -4,12 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static pwa %}
+    {% progressive_web_app_meta %}
 
     <title>
         {% block title %}
         Staff Dashboard
         {% endblock %}
     </title>
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'frontend/custom/favicons/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'frontend/custom/favicons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'frontend/custom/favicons/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'frontend/custom/favicons/site.webmanifest' %}">
 
     <!-- Bootstrap -->
     <link
@@ -75,7 +83,7 @@
 
             <li>
                 <a
-                    href="{% url 'staff:fund_account' %}"
+                    href="{% url 'staff:fund_customer' %}"
                     class="{% if request.resolver_match.url_name == 'fund_account' %}active{% endif %}"
                 >
                     <i class="bi bi-wallet2"></i>
@@ -85,7 +93,7 @@
 
             <li>
                 <a
-                    href="{% url 'staff:debit_account' %}"
+                    href="{% url 'staff:debit_customer' %}"
                     class="{% if request.resolver_match.url_name == 'debit_account' %}active{% endif %}"
                 >
                     <i class="bi bi-cash-stack"></i>
@@ -95,8 +103,8 @@
 
             <li>
                 <a
-                    href="{% url 'staff:kyc_management' %}"
-                    class="{% if request.resolver_match.url_name == 'kyc_management' %}active{% endif %}"
+                    href="{% url 'staff:kyc_requests' %}"
+                    class="{% if request.resolver_match.url_name == 'kyc_requests' %}active{% endif %}"
                 >
                     <i class="bi bi-shield-check"></i>
                     <span>KYC Requests</span>
@@ -104,9 +112,15 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="{% url 'staff:ticket_list' %}">
                     <i class="bi bi-gear"></i>
-                    <span>Settings</span>
+                    <span>Tickets</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'account:logout' %}">
+                    <i class="bi bi-lock"></i>
+                    <span>Logout</span>
                 </a>
             </li>
 
@@ -166,6 +180,9 @@
 
 <!-- JS -->
 <script src="{% static 'staff/app.js' %}"></script>
+
+<!-- local time js -->
+<script src="{% static 'general/local_time.js' %}"></script>
 
 </body>
 </html>

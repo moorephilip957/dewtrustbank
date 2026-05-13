@@ -1,0 +1,72 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+
+<div class="dashboard-card">
+
+    <h3>Support Tickets</h3>
+
+    <!-- FILTER -->
+    <div class="mb-3">
+
+        <a href="?status=open" class="btn btn-warning btn-sm">Open</a>
+        <a href="?status=in_progress" class="btn btn-primary btn-sm">In Progress</a>
+        <a href="?status=resolved" class="btn btn-success btn-sm">Resolved</a>
+        <a href="?status=closed" class="btn btn-dark btn-sm">Closed</a>
+        <a href="{% url 'staff:ticket_list' %}" class="btn btn-secondary btn-sm">All</a>
+
+    </div>
+
+    <table class="table table-hover">
+
+        <thead>
+            <tr>
+                <th>Ref</th>
+                <th>User</th>
+                <th>Subject</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Updated</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for ticket in tickets %}
+
+            <tr>
+
+                <td>{{ ticket.reference_id }}</td>
+
+                <td>{{ ticket.user.get_full_name }}</td>
+
+                <td>{{ ticket.subject }}</td>
+
+                <td>{{ ticket.priority|title }}</td>
+
+                <td>
+                    <span class="status-badge status-{{ ticket.status }}">
+                        {{ ticket.status|title }}
+                    </span>
+                </td>
+
+                <td class="local-time" data-utc="{{ ticket.updated_at|date:'c' }}"></td>
+
+                <td>
+                    <a href="{% url 'staff:ticket_detail' ticket.pk %}" class="btn btn-sm btn-primary">
+                        View
+                    </a>
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

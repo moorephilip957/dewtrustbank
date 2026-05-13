@@ -11,21 +11,53 @@ urlpatterns = [
     ),
 
     path(
-        'fund-account/',
-        fund_account,
-        name='fund_account'
+        'update-customer/<int:pk>/',
+        update_customer,
+        name='update_customer'
     ),
 
     path(
-        'debit-account/',
-        debit_account,
-        name='debit_account'
+        'delete-customer/<int:pk>/',
+        delete_customer,
+        name='delete_customer'
     ),
 
     path(
-        'kyc-management/',
-        kyc_management,
-        name='kyc_management'
+        'fund-customer/',
+        fund_customer,
+        name='fund_customer'
+    ),
+
+    path(
+        'debit-customer/',
+        debit_customer,
+        name='debit_customer'
+    ),
+
+    path(
+        'kyc-requests/',
+        kyc_requests,
+        name='kyc_requests'
+    ),
+
+    path(
+        'kyc-requests/<int:pk>/',
+        kyc_detail,
+        name='kyc_detail'
+    ),
+
+    path('kyc-approve/<int:pk>/', approve_kyc, name='approve_kyc'),
+    path('kyc-reject/<int:pk>/', reject_kyc, name='reject_kyc'),
+
+    path(
+        'tickets/',
+        ticket_list,
+        name='ticket_list'
+    ),
+    path(
+        'tickets/<int:pk>/',
+        ticket_detail,
+        name='ticket_detail'
     ),
 
     path(

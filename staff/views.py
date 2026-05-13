@@ -2,6 +2,9 @@ from django.db import transaction
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from decimal import Decimal
+from django.db.models import Sum, Count
+
 
 from transaction.models import (
     Deposit,
@@ -9,17 +12,85 @@ from transaction.models import (
     InternationalTransfer,
     TransactionHistory,
 )
+from .forms import (
+    CustomerUpdateForm,
+    BankAccountUpdateForm,
+    AccountAdjustmentForm
+)
+from .models import AccountFunding
 from transaction.utils import generate_reference
 from account.models import CustomUser
 from .decorators import staff_required
 from customer.models import UserBankAccount
 from notification.utils import create_notification
+from kyc.models import KYCVerification
+from support.models import Ticket, TicketMessage
+from .forms import TicketMessageForm
 
 
 @login_required
 @staff_required
 def staff_dashboard(request):
-    return render(request, 'staff/dashboard.html')
+
+    # =========================
+    # COUNTS
+    # =========================
+
+    total_customers = CustomUser.objects.filter(
+        is_staff=False
+    ).count()
+
+    total_deposits = Deposit.objects.aggregate(
+        total=Sum('amount')
+    )['total'] or 0
+
+    total_local_transfers = LocalTransfer.objects.aggregate(
+        total=Sum('amount')
+    )['total'] or 0
+
+    total_international_transfers = InternationalTransfer.objects.aggregate(
+        total=Sum('amount')
+    )['total'] or 0
+
+    total_transfers = (
+        total_local_transfers +
+        total_international_transfers
+    )
+
+    pending_kyc = KYCVerification.objects.filter(
+        status='pending'
+    ).count()
+
+    # =========================
+    # RECENT TRANSACTIONS
+    # =========================
+
+    recent_transactions = TransactionHistory.objects.select_related(
+        'user'
+    ).order_by('-created_at')[:20]
+
+    # =========================
+    # CONTEXT
+    # =========================
+
+    context = {
+
+        'total_customers': total_customers,
+
+        'total_deposits': total_deposits,
+
+        'total_transfers': total_transfers,
+
+        'pending_kyc': pending_kyc,
+
+        'recent_transactions': recent_transactions,
+    }
+
+    return render(
+        request,
+        'staff/dashboard.html',
+        context
+    )
 
 
 @login_required
@@ -40,20 +111,456 @@ def account_holders(request):
         context
     )
 
-@login_required
-@staff_required
-def fund_account(request):
-    return render(request, 'staff/fund_account.html')
 
 @login_required
 @staff_required
-def debit_account(request):
-    return render(request, 'staff/debit_account.html')
+def update_customer(request, pk):
+
+    customer = get_object_or_404(
+        UserBankAccount.objects.select_related('user'),
+        pk=pk
+    )
+
+    user = customer.user
+
+    user_form = CustomerUpdateForm(
+        request.POST or None,
+        request.FILES or None,
+        instance=user
+    )
+
+    bank_form = BankAccountUpdateForm(
+        request.POST or None,
+        instance=customer
+    )
+
+    if request.method == 'POST':
+
+        if user_form.is_valid() and bank_form.is_valid():
+
+            user_form.save()
+            bank_form.save()
+
+            messages.success(
+                request,
+                'Customer information updated successfully.'
+            )
+
+            return redirect(
+                'staff:account_holders',
+            )
+
+    context = {
+        'customer': customer,
+        'user_form': user_form,
+        'bank_form': bank_form,
+    }
+
+    return render(
+        request,
+        'staff/update_customer.html',
+        context
+    )
+
 
 @login_required
 @staff_required
-def kyc_management(request):
-    return render(request, 'staff/kyc_management.html')
+def delete_customer(request, pk):
+
+    customer = get_object_or_404(
+        UserBankAccount,
+        pk=pk
+    )
+
+    user = customer.user
+
+    # Delete User
+    # Bank account deletes automatically because of CASCADE
+    user.delete()
+
+    messages.success(
+        request,
+        'Customer account deleted successfully.'
+    )
+
+    return redirect('staff:account_holders')
+
+
+@login_required
+@staff_required
+@transaction.atomic
+def fund_customer(request):
+
+    form = AccountAdjustmentForm(
+        request.POST or None
+    )
+
+    # Change labels ONLY for credit view
+    form.fields['beneficiary_name'].label = "Sender Name"
+    form.fields['beneficiary_number'].label = "Sender Account / ID"
+    form.fields['bank_name'].label = "Sender Bank"
+
+    # Hide adjustment type from staff
+    form.fields.pop('transaction_type')
+
+    if request.method == 'POST':
+
+        if form.is_valid():
+
+            funding = form.save(commit=False)
+
+            funding.staff = request.user
+
+            funding.transaction_type = 'credit'
+
+            funding.save()
+
+            customer = funding.customer
+
+            bank_account = customer.bank_account
+
+            # Add Balance
+            bank_account.balance += funding.amount
+            bank_account.save()
+
+            # Transaction History
+            TransactionHistory.objects.create(
+                user=customer,
+
+                amount=funding.amount,
+
+                transaction_type='deposit',
+
+                direction='credit',
+
+                description=(
+                    funding.description
+                    if funding.description
+                    else '******** Deposit'
+                ),
+
+                reference=generate_reference(),
+
+                status='success',
+
+                beneficiary_name=funding.beneficiary_name,
+
+                beneficiary_number=funding.beneficiary_number,
+
+                bank_name=funding.bank_name,
+
+                created_at=funding.transaction_date
+            )
+
+            # Notification
+            # create_notification(
+            #     user=customer,
+
+            #     title='Account Credited',
+
+            #     message=(
+            #         f'Your account has been credited with '
+            #         f'{bank_account.get_currency_symbol()}'
+            #         f'{funding.amount}.'
+            #     ),
+
+            #     notif_type='success',
+
+            #     related_object=funding
+            # )
+
+            messages.success(
+                request,
+                'Customer funded successfully.'
+            )
+
+            return redirect(
+                'staff:account_holders'
+            )
+
+    context = {
+        'form': form,
+        'page_title': 'Fund Customer Account',
+        'button_text': 'Fund Customer',
+    }
+
+    return render(
+        request,
+        'staff/account_adjustment.html',
+        context
+    )
+
+
+@login_required
+@staff_required
+@transaction.atomic
+def debit_customer(request):
+
+    form = AccountAdjustmentForm(
+        request.POST or None
+    )
+
+    # Hide adjustment type
+    form.fields.pop('transaction_type')
+
+    if request.method == 'POST':
+
+        if form.is_valid():
+
+            debit = form.save(commit=False)
+
+            debit.staff = request.user
+
+            debit.transaction_type = 'debit'
+
+            customer = debit.customer
+
+            bank_account = customer.bank_account
+
+            # Prevent overdraft
+            if bank_account.balance < debit.amount:
+
+                messages.error(
+                    request,
+                    'Insufficient customer balance.'
+                )
+
+                return redirect(
+                    'staff:debit_customer'
+                )
+
+            debit.save()
+
+            # Deduct Balance
+            bank_account.balance -= debit.amount
+            bank_account.save()
+
+            # Transaction History
+            TransactionHistory.objects.create(
+                user=customer,
+
+                amount=debit.amount,
+
+                transaction_type='withdrawal',
+
+                direction='debit',
+
+                description=(
+                    debit.description
+                    if debit.description
+                    else '******* withdrawal'
+                ),
+
+                reference=generate_reference(),
+
+                status='success',
+
+                beneficiary_name=debit.beneficiary_name,
+
+                beneficiary_number=debit.beneficiary_number,
+
+                bank_name=debit.bank_name,
+
+                created_at=debit.transaction_date
+            )
+
+            # Notification
+            # create_notification(
+            #     user=customer,
+
+            #     title='Account Debited',
+
+            #     message=(
+            #         f'Your account has been debited with '
+            #         f'{bank_account.get_currency_symbol()}'
+            #         f'{debit.amount}.'
+            #     ),
+
+            #     notif_type='warning',
+
+            #     related_object=debit
+            # )
+
+            messages.success(
+                request,
+                'Customer debited successfully.'
+            )
+
+            return redirect(
+                'staff:account_holders'
+            )
+
+    context = {
+        'form': form,
+        'page_title': 'Debit Customer Account',
+        'button_text': 'Debit Customer',
+    }
+
+    return render(
+        request,
+        'staff/account_adjustment.html',
+        context
+    )
+
+@login_required
+@staff_required
+def kyc_requests(request):
+
+    status = request.GET.get('status')
+
+    kyc_qs = KYCVerification.objects.select_related('user')
+
+    if status:
+        kyc_qs = kyc_qs.filter(status=status)
+
+    context = {
+        'kyc_requests': kyc_qs.order_by('-created_at'),
+        'status': status
+    }
+
+    return render(
+        request,
+        'staff/kyc_requests.html',
+        context
+    )
+
+@login_required
+@staff_required
+def kyc_detail(request, pk):
+
+    kyc = get_object_or_404(
+        KYCVerification.objects.select_related('user'),
+        pk=pk
+    )
+
+    context = {
+        'kyc': kyc
+    }
+
+    return render(
+        request,
+        'staff/kyc_detail.html',
+        context
+    )
+
+
+@login_required
+@staff_required
+def approve_kyc(request, pk):
+
+    kyc = get_object_or_404(KYCVerification, pk=pk)
+
+    kyc.status = 'approved'
+    kyc.verified = True
+    kyc.save()
+
+    # Optional: update user status
+    kyc.user.status = 'active'
+    kyc.user.save()
+
+    messages.success(request, 'KYC approved successfully.')
+
+    return redirect('staff:kyc_requests')
+
+
+@login_required
+@staff_required
+def reject_kyc(request, pk):
+
+    kyc = get_object_or_404(KYCVerification, pk=pk)
+
+    kyc.status = 'rejected'
+    kyc.verified = False
+    kyc.save()
+
+    messages.warning(request, 'KYC rejected.')
+
+    return redirect('staff:kyc_requests')
+
+
+@login_required
+@staff_required
+def ticket_list(request):
+
+    status = request.GET.get('status')
+
+    tickets = Ticket.objects.select_related('user').prefetch_related('messages')
+
+    if status:
+        tickets = tickets.filter(status=status)
+
+    context = {
+        'tickets': tickets.order_by('-updated_at'),
+        'status': status
+    }
+
+    return render(
+        request,
+        'staff/ticket_list.html',
+        context
+    )
+
+
+@login_required
+@staff_required
+def ticket_detail(request, pk):
+
+    ticket = get_object_or_404(
+        Ticket.objects.select_related('user').prefetch_related('messages'),
+        pk=pk
+    )
+
+    form = TicketMessageForm()
+
+    if request.method == "POST":
+
+        form = TicketMessageForm(request.POST, request.FILES)
+
+        if form.is_valid():
+
+            message = form.save(commit=False)
+
+            message.ticket = ticket
+            message.sender = "support"
+
+            message.save()
+
+            # optional: update ticket status
+            if ticket.status == "open":
+                ticket.status = "in_progress"
+                ticket.save()
+
+            # =========================
+            # NOTIFICATION TO CUSTOMER
+            # =========================
+
+            create_notification(
+                user=ticket.user,
+
+                title="New Support Response",
+
+                message=(
+                    f"Support has replied to your ticket "
+                    f"({ticket.reference_id})."
+                ),
+
+                notif_type="info",
+
+                related_object=ticket
+            )
+
+            return redirect('staff:ticket_detail', pk=ticket.pk)
+
+    context = {
+        'ticket': ticket,
+        'form': form
+    }
+
+    return render(
+        request,
+        'staff/ticket_detail.html',
+        context
+    )
 
 
 @login_required

@@ -1,0 +1,59 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+
+<div class="dashboard-card">
+
+    <h3>{{ ticket.subject }}</h3>
+
+    <p>
+        <strong>Ref:</strong> {{ ticket.reference_id }} |
+        <strong>Status:</strong> {{ ticket.status|title }}
+    </p>
+
+    <hr>
+
+    <!-- CHAT BOX -->
+    <div class="chat-box">
+
+        {% for msg in ticket.messages.all %}
+
+            {% if msg.sender == "user" %}
+
+                <div class="chat-message user-msg">
+                    <p>{{ msg.content }}</p>
+                    <small class="text-muted">{{ msg.created_at }}</small>
+                </div>
+
+            {% else %}
+
+                <div class="chat-message support-msg">
+                    <p>{{ msg.content }}</p>
+                    <small class="text-muted">{{ msg.created_at }}</small>
+                </div>
+
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+    <hr>
+
+    <!-- REPLY FORM -->
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form.content }}
+        <!-- {{ form.attachment }} -->
+
+        <button class="btn btn-primary mt-2">
+            Send Reply
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

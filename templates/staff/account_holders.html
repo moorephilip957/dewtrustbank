@@ -12,7 +12,7 @@ Account Holders
 {% block content %}
 
 <div class="custom-card">
-
+        {% include "../components/messages.html" %}
     <div class="card-title-area">
 
         <h5>All Customers</h5>
@@ -71,13 +71,13 @@ Account Holders
                     <!-- Status -->
                     <td>
 
-                        {% if customer.account_status == 'active' %}
+                        {% if customer.user.status == 'active' %}
 
                             <span class="status-badge status-active">
                                 Active
                             </span>
 
-                        {% elif customer.account_status == 'blocked' %}
+                        {% elif customer.user.status == 'blocked' %}
 
                             <span class="status-badge status-blocked">
                                 Blocked
@@ -126,14 +126,25 @@ Account Holders
                             </a>
 
                             <!-- Edit -->
-                            <button class="action-btn">
-                                <i class="bi bi-pencil"></i>
-                            </button>
+                            <a
+                                href="{% url 'staff:update_customer' customer.pk %}"
+                                class="action-btn d-flex align-items-center justify-content-center"
+                            >
 
-                            <!-- Block -->
-                            <button class="action-btn">
-                                <i class="bi bi-lock"></i>
-                            </button>
+                                <i class="bi bi-pencil"></i>
+
+                            </a>
+                            
+                            <!-- delete button -->
+                            <a
+                                href="{% url 'staff:delete_customer' customer.pk %}"
+                                class="action-btn d-flex align-items-center justify-content-center delete-btn"
+                                onclick="return confirm('Are you sure you want to delete this customer account?')"
+                            >
+
+                                <i class="bi bi-trash"></i>
+
+                            </a>
 
                         </div>
 

@@ -2,6 +2,7 @@
 import random
 import string
 from django.db import models
+from django.utils import timezone
 
 from account.models import CustomUser
 
@@ -88,7 +89,7 @@ class TransactionHistory(models.Model):
         null=True
     )
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def generate_reference(self):
 

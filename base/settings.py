@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'support',
     'notification',
     'kyc',
+    'staff',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,112 @@
+{% extends 'staff/base.html' %}
+
+{% block title %}
+Fund Customer Account
+{% endblock %}
+
+{% block page_title %}
+Fund Customer Account
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-6">
+
+        <div class="dashboard-card">
+
+            <!-- Header -->
+            <div class="mb-4">
+
+                <h3>
+                    Fund Account
+                </h3>
+
+                <p class="text-muted mb-0">
+
+                    {{ customer.user.get_full_name }}
+
+                </p>
+
+                <small class="text-muted">
+
+                    {{ customer.account_number }}
+
+                </small>
+
+            </div>
+
+            <!-- Balance -->
+            <div class="alert alert-primary">
+
+                Current Balance:
+
+                <strong>
+
+                    {{ customer.formatted_balance }}
+
+                </strong>
+
+            </div>
+
+            <!-- Form -->
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <!-- Amount -->
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        Amount
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        name="amount"
+                        class="form-control"
+                        placeholder="Enter amount"
+                        required
+                    >
+
+                </div>
+
+                <!-- Description -->
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        Description
+                    </label>
+
+                    <textarea
+                        name="description"
+                        rows="3"
+                        class="form-control"
+                        placeholder="Optional"
+                    ></textarea>
+
+                </div>
+
+                <!-- Submit -->
+                <button
+                    type="submit"
+                    class="btn btn-primary w-100"
+                >
+
+                    <i class="bi bi-wallet2"></i>
+
+                    Fund Account
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

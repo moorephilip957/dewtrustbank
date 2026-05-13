@@ -1,0 +1,122 @@
+{% extends 'staff/base.html' %}
+
+{% block title %}
+Update Customer
+{% endblock %}
+
+{% block page_title %}
+Update {{customer.user.get_full_name}}
+{% endblock %}
+
+{% block content %}
+
+<div class="card  shadow" style="background-color: rgb(197, 209, 220);">
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="row">
+
+                <!-- USER INFO -->
+                <div class="col-lg-6">
+
+                    <div class="dashboard-card">
+
+                        <h4 class="mb-4">
+                            Customer Information
+                        </h4>
+
+                        <div class="row g-3">
+
+                            {% for field in user_form %}
+
+                            <div class="col-12">
+
+                                <label class="form-label">
+
+                                    {{ field.label }}
+
+                                </label>
+
+                                {{ field }}
+
+                                {% if field.errors %}
+
+                                <small class="text-danger">
+
+                                    {{ field.errors|striptags }}
+
+                                </small>
+
+                                {% endif %}
+
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- BANK INFO -->
+                <div class="col-lg-6">
+
+                    <div class="dashboard-card">
+
+                        <h4 class="mb-4">
+                            Bank Information
+                        </h4>
+
+                        <div class="row g-3">
+
+                            {% for field in bank_form %}
+
+                            <div class="col-12">
+
+                                <label class="form-label">
+
+                                    {{ field.label }}
+
+                                </label>
+
+                                {{ field }}
+
+                                {% if field.errors %}
+
+                                <small class="text-danger">
+
+                                    {{ field.errors|striptags }}
+
+                                </small>
+
+                                {% endif %}
+
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- BUTTON -->
+            <div class="mt-4">
+
+                <button type="submit" class="btn btn-primary px-5">
+                    Update Customer
+                </button>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}

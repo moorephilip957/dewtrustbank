@@ -1,0 +1,76 @@
+{% extends 'staff/base.html' %}
+
+{% block title %}
+{{ page_title }}
+{% endblock %}
+
+{% block page_title %}
+{{ page_title }}
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-7">
+
+        <div class="dashboard-card">
+
+            <h3 class="mb-4">
+
+                {{ page_title }}
+
+            </h3>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="row g-4">
+
+                    {% for field in form %}
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+
+                                {{ field.label }}
+
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.errors %}
+
+                                <small class="text-danger">
+
+                                    {{ field.errors|striptags }}
+
+                                </small>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary w-100 mt-4"
+                >
+
+                    {{ button_text }}
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

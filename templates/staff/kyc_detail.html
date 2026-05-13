@@ -1,0 +1,74 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+
+<div class="dashboard-card">
+
+    <h3>KYC Details</h3>
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <p><strong>Name:</strong> {{ kyc.full_name }}</p>
+            <p><strong>Email:</strong> {{ kyc.email }}</p>
+            <p><strong>Phone:</strong> {{ kyc.phone }}</p>
+            <p><strong>Status:</strong> {{ kyc.status|title }}</p>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <p><strong>Country:</strong> {{ kyc.nationality }}</p>
+            <p><strong>City:</strong> {{ kyc.city }}</p>
+            <p><strong>Account Type:</strong> {{ kyc.account_type }}</p>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <h5>Documents</h5>
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <img src="{{ kyc.upload_front_side.url }}" class="img-fluid">
+        </div>
+
+        <div class="col-md-4">
+            <img src="{{ kyc.upload_back_side.url }}" class="img-fluid">
+        </div>
+
+        <div class="col-md-4">
+            <img src="{{ kyc.passport_photograph.url }}" class="img-fluid">
+        </div>
+
+    </div>
+
+    <hr>
+
+    <!-- ACTIONS -->
+
+    {% if kyc.status == 'pending' %}
+
+        <a href="{% url 'staff:approve_kyc' kyc.pk %}" class="btn btn-success">
+            Approve
+        </a>
+
+        <a href="{% url 'staff:reject_kyc' kyc.pk %}" class="btn btn-danger">
+            Reject
+        </a>
+
+    {% else %}
+
+        <div class="alert alert-info">
+            This KYC has already been {{ kyc.status }}.
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

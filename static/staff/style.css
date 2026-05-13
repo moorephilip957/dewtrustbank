@@ -609,3 +609,183 @@ body {
     }
 
 }
+
+
+.delete-btn {
+    background: #ffe5e5;
+    color: #d60000;
+}
+
+.delete-btn:hover {
+    background: #d60000;
+    color: white;
+}
+
+
+/* =========================
+   KYC DASHBOARD WRAPPER
+========================= */
+.kyc-wrapper {
+    padding: 20px;
+}
+
+/* =========================
+   KYC CARDS
+========================= */
+.kyc-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    margin-bottom: 20px;
+}
+
+/* =========================
+   KYC HEADER SECTION
+========================= */
+.kyc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.kyc-header h3 {
+    margin: 0;
+    font-weight: 600;
+    color: #1e1e1e;
+}
+
+/* =========================
+   FILTER BUTTONS
+========================= */
+.kyc-filters .btn {
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 13px;
+}
+
+/* =========================
+   TABLE STYLING
+========================= */
+.kyc-table {
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    border-collapse: collapse;
+}
+
+.kyc-table thead {
+    background: #0037CC;
+    color: white;
+}
+
+.kyc-table th,
+.kyc-table td {
+    padding: 12px 15px;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.kyc-table tbody tr {
+    border-bottom: 1px solid #f1f1f1;
+    transition: 0.2s;
+}
+
+.kyc-table tbody tr:hover {
+    background: #f5f8ff;
+}
+
+/* =========================
+   STATUS BADGES
+========================= */
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-approved {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.status-rejected {
+    background: #f8d7da;
+    color: #842029;
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+.kyc-action-btn {
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #eef2ff;
+    color: #0037CC;
+    transition: 0.2s;
+    font-size: 14px;
+}
+
+.kyc-action-btn:hover {
+    background: #0037CC;
+    color: white;
+}
+
+/* =========================
+   DETAIL PAGE CARDS
+========================= */
+.kyc-detail-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+/* =========================
+   IMAGE PREVIEW
+========================= */
+.kyc-image {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    margin-bottom: 10px;
+}
+
+
+.chat-box {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    background: #f8f9ff;
+    border-radius: 10px;
+}
+
+.chat-message {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    max-width: 70%;
+}
+
+.user-msg {
+    background: #e9f0ff;
+    margin-right: auto;
+    text-align: left;
+}
+
+.support-msg {
+    background: #0037CC;
+    color: white;
+    margin-left: auto;
+    text-align: left;
+}

@@ -53,23 +53,35 @@ const currentStepEl = $('currentStep');
 function updateStep() {
     // Toggle steps
     steps.forEach((id, idx) => {
-        $(id).classList.toggle('active', idx + 1 === currentStep);
+        const element = $(id);
+
+        if (element) {
+            element.classList.toggle('active', idx + 1 === currentStep);
+        }
     });
 
     // Progress bar
-    const progress = (currentStep / totalSteps) * 100;
-    progressBar.style.width = `${progress}%`;
-    currentStepEl.textContent = currentStep;
+    if (progressBar) {
+        const progress = (currentStep / totalSteps) * 100;
+        progressBar.style.width = `${progress}%`;
+    }
+
+    if (currentStepEl) {
+        currentStepEl.textContent = currentStep;
+    }
 
     // Indicators
     for (let i = 1; i <= totalSteps; i++) {
         const indicator = $(`stepIndicator${i}`);
         const label = $(`label${i}`);
 
+        if (!indicator || !label) continue;
+
         indicator.classList.remove('active', 'completed');
         label.classList.remove('active');
 
         if (i < currentStep) indicator.classList.add('completed');
+
         if (i === currentStep) {
             indicator.classList.add('active');
             label.classList.add('active');
@@ -77,11 +89,21 @@ function updateStep() {
     }
 
     // Buttons
-    prevBtn.style.display = currentStep === 1 ? 'none' : 'inline-flex';
-    nextBtn.style.display = currentStep === totalSteps ? 'none' : 'inline-flex';
-    submitBtn.style.display = currentStep === totalSteps ? 'inline-flex' : 'none';
-}
+    if (prevBtn) {
+        prevBtn.style.display =
+            currentStep === 1 ? 'none' : 'inline-flex';
+    }
 
+    if (nextBtn) {
+        nextBtn.style.display =
+            currentStep === totalSteps ? 'none' : 'inline-flex';
+    }
+
+    if (submitBtn) {
+        submitBtn.style.display =
+            currentStep === totalSteps ? 'inline-flex' : 'none';
+    }
+}
 prevBtn?.addEventListener('click', () => {
     if (currentStep > 1) {
         currentStep--;
@@ -216,4 +238,6 @@ $('password')?.addEventListener('input', function () {
 });
 
 // ===== Init =====
-updateStep();
+if (window.location.pathname.includes("/auth/register/")) {
+    updateStep();
+}

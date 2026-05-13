@@ -15,28 +15,28 @@ Dashboard Overview
     <div class="col-md-3">
         <div class="stat-card">
             <h6>Total Customers</h6>
-            <h2>2,540</h2>
+            <h2>{{ total_customers }}</h2>
         </div>
     </div>
 
     <div class="col-md-3">
         <div class="stat-card">
             <h6>Total Deposits</h6>
-            <h2>$250K</h2>
+            <h2>${{ total_deposits|floatformat:2 }}</h2>
         </div>
     </div>
 
     <div class="col-md-3">
         <div class="stat-card">
             <h6>Total Transfers</h6>
-            <h2>1,240</h2>
+            <h2>${{ total_transfers|floatformat:2 }}</h2>
         </div>
     </div>
 
     <div class="col-md-3">
         <div class="stat-card">
             <h6>Pending KYC</h6>
-            <h2>48</h2>
+            <h2>{{ pending_kyc }}</h2>
         </div>
     </div>
 
@@ -58,27 +58,43 @@ Dashboard Overview
 
             <tbody>
 
+                {% for tx in recent_transactions %}
+
                 <tr>
-                    <td>John Doe</td>
-                    <td>Deposit</td>
-                    <td>$500</td>
+
+                    <td>{{ tx.user.get_full_name|default:tx.user.username }}</td>
+
+                    <td>{{ tx.transaction_type|title }}</td>
+
                     <td>
-                        <span class="badge bg-success">
-                            Completed
-                        </span>
+                        {% if tx.direction == "credit" %}
+                            <span class="text-success">+ ${{ tx.amount }}</span>
+                        {% else %}
+                            <span class="text-danger">- ${{ tx.amount }}</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if tx.status == "successful" %}
+                            <span class="badge bg-success">Completed</span>
+                        {% elif tx.status == "pending" %}
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        {% else %}
+                            <span class="badge bg-danger">Failed</span>
+                        {% endif %}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="4" class="text-center text-muted">
+                        No transactions yet
                     </td>
                 </tr>
 
-                <tr>
-                    <td>Jane Smith</td>
-                    <td>Withdrawal</td>
-                    <td>$200</td>
-                    <td>
-                        <span class="badge bg-warning text-dark">
-                            Pending
-                        </span>
-                    </td>
-                </tr>
+                {% endfor %}
 
             </tbody>
         </table>

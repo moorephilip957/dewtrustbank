@@ -1,0 +1,78 @@
+{% extends 'staff/base.html' %}
+
+{% block title %}
+Fund Customer
+{% endblock %}
+
+{% block page_title %}
+Fund Customer Account
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-7">
+
+        <div class="dashboard-card">
+
+            <h3 class="mb-4">
+
+                Staff Account Funding
+
+            </h3>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="row g-4">
+
+                    {% for field in form %}
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+
+                                {{ field.label }}
+
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.errors %}
+
+                                <small class="text-danger">
+
+                                    {{ field.errors|striptags }}
+
+                                </small>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary w-100 mt-4"
+                >
+
+                    <i class="bi bi-wallet2"></i>
+
+                    Fund Customer
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
