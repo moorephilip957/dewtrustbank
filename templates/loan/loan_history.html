@@ -145,7 +145,7 @@
                                 </td>
 
                                 <!-- Date -->
-                                <td class="py-3 px-4 text-muted">
+                                <td class="py-3 px-4 text-muted local-time" data-utc="{{ loan.date_applied|date:'c' }}">
 
                                     {{ loan.date_applied|date:"M d, Y" }}
 
@@ -179,7 +179,7 @@
                                             Start your first loan application
                                         </p>
 
-                                        <a href="{% url 'loan:apply' %}"
+                                        <a href="{% url 'loan:apply_loan' %}"
                                         class="btn btn-primary btn-sm d-inline-flex align-items-center gap-2">
 
                                             <i data-lucide="plus"

@@ -190,10 +190,12 @@
                         <td>
                             {% if card.status == "active" %}
                             <span class="badge bg-success bg-opacity-10 text-success">Active</span>
-                            {% elif card.status == "PENDING" %}
+                            {% elif card.status == "pending" %}
                             <span class="badge bg-warning bg-opacity-10 text-warning">Pending</span>
+                            {% elif card.status == "blocked" %}
+                            <span class="badge bg-danger bg-opacity-10 text-secondary">Inactive</span>
                             {% else %}
-                            <span class="badge bg-secondary bg-opacity-10 text-secondary">Inactive</span>
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary">Expired</span>
                             {% endif %}
                         </td>
                         <td class="fw-medium">${{ card.account.balance|intcomma }}</td>
