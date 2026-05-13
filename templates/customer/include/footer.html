@@ -25,12 +25,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="text-center w-100">
-                    <div class="bg-primary-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                    <div class="d-inline-flex align-items-center justify-content-center mb-3"
                         style="width: 4rem; height: 4rem;">
-                        <i class="bi bi-building text-primary fs-3"></i>
+                        <!-- <i class="bi bi-building text-primary fs-3"></i> -->
+                        <img src="{% static 'frontend/custom/firsthavin-logo.png' %}" alt="logo" width="130">
                     </div>
                     <h5 class="modal-title fw-bold">Bank Account Details</h5>
-                    <p class="text-muted mb-0">BANKING DASHBOARD</p>
+                    <p class="text-muted mb-0">{{request.user.get_full_name}}</p>
                 </div>
                 <button type="button" class="btn-close position-absolute top-0 end-0 m-3"
                     data-bs-dismiss="modal"></button>
@@ -68,7 +69,7 @@
                             <span class="text-sm">Payment Reference</span>
                         </div>
                         <div class="d-flex align-items-center">
-                            <span class="fw-medium me-2">{{request.user.id}}</span>
+                            <span class="fw-medium me-2">{{request.user.bank_account.payment_reference}}</span>
                             <button class="copy-btn" onclick="copyToClipboard('7068987377', this)">
                                 <i class="bi bi-clipboard"></i>
                             </button>
@@ -80,7 +81,7 @@
                             <span class="text-sm">Sort Code</span>
                         </div>
                         <div class="d-flex align-items-center">
-                            <span class="fw-medium me-2">{{request.user.id}}</span>
+                            <span class="fw-medium me-2">{{request.user.bank_account.sort_code}}</span>
                             <button class="copy-btn" onclick="copyToClipboard('388130', this)">
                                 <i class="bi bi-clipboard"></i>
                             </button>
@@ -117,7 +118,7 @@
                     data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <a href="#" class="d-block mb-3">
+                <a href="{% url 'transaction:local_transfer' %}" class="d-block mb-3">
                     <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3 border">
                         <div class="d-flex align-items-center">
                             <div class="bg-primary-light rounded-circle d-flex align-items-center justify-content-center me-3"
@@ -136,7 +137,7 @@
                         </div>
                     </div>
                 </a>
-                <a href="#" class="d-block">
+                <a href="{% url 'transaction:wire_transfer' %}" class="d-block">
                     <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3 border">
                         <div class="d-flex align-items-center">
                             <div class="bg-primary-light rounded-circle d-flex align-items-center justify-content-center me-3"

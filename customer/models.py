@@ -113,6 +113,20 @@ class UserBankAccount(models.Model):
         default='success'
     )
 
+    payment_reference = models.CharField(
+        max_length=12,
+        # unique=True,
+        blank=True,
+        editable=False
+    )
+
+    sort_code = models.CharField(
+        max_length=8,
+        # unique=True,
+        blank=True,
+        editable=False
+    )
+
     is_active = models.BooleanField(_('active'), default=True)
 
     account_age = models.PositiveIntegerField(default=0)
@@ -148,6 +162,12 @@ class UserBankAccount(models.Model):
         if not self.account_number:
             self.account_number = self.generate_account_number()
 
+        if not self.payment_reference:
+            self.payment_reference = self.generate_payment_reference()
+
+        if not self.sort_code:
+            self.sort_code = self.generate_sort_code()
+
         # Hash PIN only if not already hashed
         if self.transaction_pin:
 
@@ -180,6 +200,31 @@ class UserBankAccount(models.Model):
 
             if not exists:
                 return account_number
+            
+    def generate_payment_reference(self):
+        """Generate unique payment reference (e.g. PR-8H3K9D2F1L)."""
+
+        prefix = "PR"
+
+        while True:
+            random_part = ''.join(
+                random.choices(string.ascii_uppercase + string.digits, k=10)
+            )
+
+            ref = f"{prefix}-{random_part}"
+
+            if not UserBankAccount.objects.filter(payment_reference=ref).exists():
+                return ref
+            
+
+    def generate_sort_code(self):
+        """Generate bank-style sort code (e.g. 12-34-56)."""
+
+        while True:
+            sort_code = f"{random.randint(10,99)}-{random.randint(10,99)}-{random.randint(10,99)}"
+
+            if not UserBankAccount.objects.filter(sort_code=sort_code).exists():
+                return sort_code
 
     # =========================
     # PIN METHODS

@@ -4,7 +4,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.contrib.auth import update_session_auth_hash
-
+from django.db.models import Sum
+from django.db.models.functions import TruncMonth
+from django.utils import timezone
 
 from .models import UserBankAccount, DebitCard
 from .forms import DebitCardApplicationForm, ChangePasswordForm
@@ -13,19 +15,81 @@ from kyc.decorator import kyc_required
 from account.decorator import block_blocked_users
 
 
-
-
-
 @login_required
 @kyc_required
 @block_blocked_users
 def dashboard(request):
+
     bank_account = UserBankAccount.objects.select_related('user').get(
-                        user=request.user
-                    )
+        user=request.user
+    )
+
+    now = timezone.now()
+
+    # Monthly Incoming
+    monthly_incoming = (
+        TransactionHistory.objects.filter(
+            user=request.user,
+            status=TransactionHistory.Status.SUCCESS,
+            direction=TransactionHistory.Direction.CREDIT,
+            created_at__year=now.year,
+            created_at__month=now.month
+        ).aggregate(total=Sum('amount'))['total'] or 0
+    )
+
+    # Monthly Outgoing
+    monthly_outgoing = (
+        TransactionHistory.objects.filter(
+            user=request.user,
+            status=TransactionHistory.Status.SUCCESS,
+            direction=TransactionHistory.Direction.DEBIT,
+            created_at__year=now.year,
+            created_at__month=now.month
+        ).aggregate(total=Sum('amount'))['total'] or 0
+    )
+
+    # Pending Transactions Total
+    pending_transactions = (
+        TransactionHistory.objects.filter(
+            user=request.user,
+            status=TransactionHistory.Status.PENDING
+        ).aggregate(total=Sum('amount'))['total'] or 0
+    )
+
+    # Total Transaction Volume
+    transaction_volume = (
+        TransactionHistory.objects.filter(
+            user=request.user,
+            status=TransactionHistory.Status.SUCCESS
+        ).aggregate(total=Sum('amount'))['total'] or 0
+    )
+
+    # Recent Transactions
+    recent_transactions = (
+        TransactionHistory.objects.filter(
+            user=request.user
+        )
+        .order_by('-created_at')[:7]
+    )
+
+    cards = (
+        DebitCard.objects.filter(
+            account=bank_account
+        )
+        .order_by('-created_at')[:3]
+    )
+
+
     context = {
         'bank_account': bank_account,
+        'cards': cards,
+        'monthly_incoming': monthly_incoming,
+        'monthly_outgoing': monthly_outgoing,
+        'pending_transactions': pending_transactions,
+        'transaction_volume': transaction_volume,
+        'recent_transactions': recent_transactions,
     }
+
     return render(
         request,
         'customer/dashboard.html',
