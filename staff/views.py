@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from decimal import Decimal
 from django.db.models import Sum, Count
+from django.utils.timezone import now
 
 
 from transaction.models import (
@@ -26,6 +27,8 @@ from notification.utils import create_notification
 from kyc.models import KYCVerification
 from support.models import Ticket, TicketMessage
 from .forms import TicketMessageForm
+from notification.email import send_html_email
+
 
 
 @login_required
@@ -547,6 +550,19 @@ def ticket_detail(request, pk):
                 notif_type="info",
 
                 related_object=ticket
+            )
+
+            send_html_email(
+                subject="New Support Response - Dew Trust Bank",
+                to_email=ticket.user.email,
+                template_name="emails/ticket_reply.html",
+                context={
+                    "user_name": ticket.user.username,
+                    "ticket_reference": ticket.reference_id,
+                    "message": message.content,
+                    "ticket_url": f"https://firsthavinbk.com/tickets/{ticket.id}/",
+                    "year": now().year
+                }
             )
 
             return redirect('staff:ticket_detail', pk=ticket.pk)
