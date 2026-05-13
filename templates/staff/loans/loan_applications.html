@@ -1,0 +1,156 @@
+{% extends 'staff/base.html' %}
+
+{% block content %}
+
+<div class="dashboard-card">
+    {% include "../../components/messages.html" %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h3>Loan Applications</h3>
+
+        <div>
+
+            <a href="?status=pending" class="btn btn-warning btn-sm">
+                Pending
+            </a>
+
+            <a href="?status=processing" class="btn btn-primary btn-sm">
+                Processing
+            </a>
+
+            <a href="?status=disbursed" class="btn btn-success btn-sm">
+                Disbursed
+            </a>
+
+            <a href="?status=rejected" class="btn btn-danger btn-sm">
+                Rejected
+            </a>
+
+            <a href="{% url 'staff:loan_applications' %}" class="btn btn-dark btn-sm">
+                All
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table align-middle">
+
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Loan Type</th>
+                    <th>Amount</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for loan in loans %}
+
+                <tr>
+
+                    <td>
+                        {{ loan.applicant.get_full_name }}
+                    </td>
+
+                    <td>
+                        {{ loan.loan_type|title }}
+                    </td>
+
+                    <td>
+                        ${{ loan.amount }}
+                    </td>
+
+                    <td>
+                        {{ loan.duration_months }} Months
+                    </td>
+
+                    <td>
+
+                        {% if loan.status == 'pending' %}
+                            <span class="badge bg-warning text-dark">
+                                Pending
+                            </span>
+
+                        {% elif loan.status == 'processing' %}
+                            <span class="badge bg-primary">
+                                Processing
+                            </span>
+
+                        {% elif loan.status == 'disbursed' %}
+                            <span class="badge bg-success">
+                                Disbursed
+                            </span>
+
+                        {% else %}
+                            <span class="badge bg-danger">
+                                Rejected
+                            </span>
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        <div class="d-flex gap-2">
+
+                            {% if loan.status == 'pending' %}
+
+                                <a
+                                    href="{% url 'staff:process_loan' loan.pk %}"
+                                    class="btn btn-primary btn-sm"
+                                >
+                                    Process
+                                </a>
+
+                            {% endif %}
+
+                            {% if loan.status != 'disbursed' %}
+
+                                <a
+                                    href="{% url 'staff:approve_loan' loan.pk %}"
+                                    class="btn btn-success btn-sm"
+                                >
+                                    Approve
+                                </a>
+
+                                <a
+                                    href="{% url 'staff:reject_loan' loan.pk %}"
+                                    class="btn btn-danger btn-sm"
+                                >
+                                    Reject
+                                </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="6" class="text-center text-muted">
+                        No loan applications found
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

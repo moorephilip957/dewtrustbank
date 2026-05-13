@@ -134,6 +134,12 @@
                                             Rejected
                                         </span>
 
+                                    {% elif loan.status == "processing" %}
+
+                                        <span class="badge bg-primary">
+                                            Processing
+                                        </span>
+
                                     {% else %}
 
                                         <span class="badge bg-secondary">

@@ -91,6 +91,30 @@ urlpatterns = [
     ),
 
     path(
+        'loan-applications/',
+        loan_applications,
+        name='loan_applications'
+    ),
+
+    path(
+        'loan/<int:pk>/process/',
+        process_loan,
+        name='process_loan'
+    ),
+
+    path(
+        'loan/<int:pk>/approve/',
+        approve_loan,
+        name='approve_loan'
+    ),
+
+    path(
+        'loan/<int:pk>/reject/',
+        reject_loan,
+        name='reject_loan'
+    ),
+
+    path(
         'customer-details/<int:pk>/',
         customer_details,
         name='customer_details'

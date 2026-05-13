@@ -27,6 +27,7 @@ from notification.utils import create_notification
 from kyc.models import KYCVerification
 from support.models import Ticket, TicketMessage
 from .forms import TicketMessageForm
+from loan.models import LoanApplication
 from notification.email import send_html_email
 
 
@@ -779,6 +780,198 @@ def activate_card(request, pk):
     )
 
     return redirect('staff:card_applications')
+
+
+@login_required
+@staff_required
+def loan_applications(request):
+
+    status = request.GET.get('status')
+
+    loans = LoanApplication.objects.select_related(
+        'applicant',
+        'applicant__bank_account'
+    )
+
+    if status:
+        loans = loans.filter(status=status)
+
+    context = {
+        'loans': loans.order_by('-date_applied'),
+        'status': status
+    }
+
+    return render(
+        request,
+        'staff/loans/loan_applications.html',
+        context
+    )
+
+
+@login_required
+@staff_required
+def process_loan(request, pk):
+
+    loan = get_object_or_404(
+        LoanApplication,
+        pk=pk
+    )
+
+    loan.status = 'processing'
+    loan.save()
+
+    create_notification(
+        user=loan.applicant,
+
+        title="Loan Processing",
+
+        message=(
+            "Your loan application "
+            "is currently under review."
+        ),
+
+        notif_type="info",
+
+        related_object=loan
+    )
+
+    messages.info(
+        request,
+        'Loan moved to processing.'
+    )
+
+    return redirect('staff:loan_applications')
+
+
+@login_required
+@staff_required
+def approve_loan(request, pk):
+
+    loan = get_object_or_404(
+        LoanApplication.objects.select_related(
+            'applicant',
+            'applicant__bank_account'
+        ),
+        pk=pk
+    )
+
+    # prevent duplicate disbursement
+    if loan.status == 'disbursed':
+
+        messages.warning(
+            request,
+            'Loan already disbursed.'
+        )
+
+        return redirect('staff:loan_applications')
+
+    account = loan.applicant.bank_account
+
+    # =========================
+    # CREDIT ACCOUNT
+    # =========================
+
+    account.balance += loan.amount
+    account.save()
+
+    # =========================
+    # UPDATE LOAN STATUS
+    # =========================
+
+    loan.status = 'disbursed'
+    loan.save()
+
+    # =========================
+    # CREATE TRANSACTION HISTORY
+    # =========================
+
+    TransactionHistory.objects.create(
+
+        user=loan.applicant,
+
+        amount=loan.amount,
+
+        transaction_type='loan',
+
+        direction='credit',
+
+        description=(
+            f"Loan disbursement "
+            f"({loan.loan_type})"
+        ),
+
+        reference=generate_reference(),
+
+        status='success',
+
+        beneficiary_name='Loan Department',
+
+        beneficiary_number='LOAN-001',
+
+        bank_name='First Havin Bank',
+    )
+
+    # =========================
+    # NOTIFICATION
+    # =========================
+
+    create_notification(
+        user=loan.applicant,
+
+        title="Loan Approved",
+
+        message=(
+            f"Your loan of "
+            f"{account.get_currency_symbol()}"
+            f"{loan.amount} has been disbursed."
+        ),
+
+        notif_type="success",
+
+        related_object=loan
+    )
+
+    messages.success(
+        request,
+        'Loan approved and disbursed.'
+    )
+
+    return redirect('staff:loan_applications')
+
+
+@login_required
+@staff_required
+def reject_loan(request, pk):
+
+    loan = get_object_or_404(
+        LoanApplication,
+        pk=pk
+    )
+
+    loan.status = 'rejected'
+    loan.save()
+
+    create_notification(
+        user=loan.applicant,
+
+        title="Loan Rejected",
+
+        message=(
+            "Your loan application "
+            "was rejected."
+        ),
+
+        notif_type="warning",
+
+        related_object=loan
+    )
+
+    messages.warning(
+        request,
+        'Loan rejected.'
+    )
+
+    return redirect('staff:loan_applications')
 
 
 @login_required

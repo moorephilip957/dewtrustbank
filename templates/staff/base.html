@@ -123,6 +123,12 @@
                     <span>Card Applications</span>
                 </a>
             </li>
+            <li class="{% if request.resolver_match.url_name == 'loan_applications' %}active{% endif %}">
+                <a href="{% url 'staff:loan_applications' %}">
+                    <i class="bi bi-cash-stack"></i>
+                    <span>Loans</span>
+                </a>
+            </li>
             <li>
                 <a href="{% url 'account:logout' %}">
                     <i class="bi bi-lock"></i>
