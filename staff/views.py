@@ -271,7 +271,7 @@ def approve_deposit(request, pk):
         direction='credit',
         description=f"Approved {deposit.method} deposit",
         reference=generate_reference(),
-        status="successful",
+        status="success",
 
         beneficiary_name="****self",
         beneficiary_number="******self",
@@ -363,7 +363,7 @@ def approve_local_transfer(request, pk):
         direction='debit',
         description=f"Approved local transfer to {transfer.beneficiary_name}",
         reference=generate_reference(),
-        status="successful",
+        status="success",
 
         beneficiary_name=transfer.beneficiary_name,
         beneficiary_number=transfer.beneficiary_number,
@@ -462,7 +462,7 @@ def approve_wire_transfer(request, pk):
         direction='debit',
         description=f"Approved wire transfer to {wire.beneficiary_name}",
         reference=generate_reference(),
-        status="successful",
+        status="success",
 
         beneficiary_name=wire.beneficiary_name,
         beneficiary_number=wire.beneficiary_number,

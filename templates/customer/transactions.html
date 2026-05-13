@@ -126,10 +126,7 @@
                         <td><code>{{transaction.reference}}</code></td>
                         <td>{{transaction.description}}</td>
                         <td>{{transaction.direction}}</td>
-                        <td>{{transaction.created_at}}</td>
-                        <!-- <td>
-                            <button class="btn btn-sm btn-outline-secondary">View</button>
-                        </td> -->
+                        <td class="local-time" data-utc="{{ transaction.created_at|date:'c' }}"></td>
                     </tr>
                     {% empty %}
                     <!-- Empty State (shown when no transactions) -->
