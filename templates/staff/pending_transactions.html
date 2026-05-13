@@ -1,0 +1,387 @@
+{% extends 'staff/base.html' %}
+
+{% block title %}
+Pending Transactions
+{% endblock %}
+
+{% block page_title %}
+Pending Transactions
+{% endblock %}
+
+{% block content %}
+
+<div class="transaction-card">
+
+    <!-- Tabs -->
+    <ul
+        class="nav nav-pills transaction-tabs mb-4"
+        role="tablist"
+    >
+
+        <!-- Deposits -->
+        <li class="nav-item">
+
+            <button
+                class="nav-link active"
+                data-bs-toggle="pill"
+                data-bs-target="#deposit-tab"
+            >
+                Deposits
+            </button>
+
+        </li>
+
+        <!-- Local Transfers -->
+        <li class="nav-item">
+
+            <button
+                class="nav-link"
+                data-bs-toggle="pill"
+                data-bs-target="#local-tab"
+            >
+                Local Transfers
+            </button>
+
+        </li>
+
+        <!-- Wire Transfers -->
+        <li class="nav-item">
+
+            <button
+                class="nav-link"
+                data-bs-toggle="pill"
+                data-bs-target="#wire-tab"
+            >
+                Wire Transfers
+            </button>
+
+        </li>
+
+    </ul>
+
+    <!-- TAB CONTENT -->
+    <div class="tab-content">
+
+        <!-- ================================================= -->
+        <!-- DEPOSITS -->
+        <!-- ================================================= -->
+
+        <div
+            class="tab-pane fade show active"
+            id="deposit-tab"
+        >
+
+            <div class="table-responsive">
+
+                <table class="custom-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Customer</th>
+                            <th>Method</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Proof</th>
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for deposit in deposits %}
+
+                        <tr>
+
+                            <td>
+                                {{ deposit.user.get_full_name }}
+                            </td>
+
+                            <td>
+                                {{ deposit.method }}
+                            </td>
+
+                            <td>
+                                ${{ deposit.amount }}
+                            </td>
+
+                            <td>
+                                {{ deposit.created_at|date:"d M Y" }}
+                            </td>
+
+                            <td>
+
+                                {% if deposit.proof %}
+
+                                    <a
+                                        href="{% url 'staff:view_deposit_proof' deposit.pk %}"
+                                        target="_blank"
+                                        class="btn btn-sm btn-dark"
+                                    >
+                                        View Proof
+                                    </a>
+
+                                {% else %}
+
+                                    No Proof
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                <div class="d-flex gap-2">
+
+                                    <!-- Approve -->
+                                    <a
+                                        href="{% url 'staff:approve_deposit' deposit.pk %}"
+                                        class="btn btn-success btn-sm"
+                                    >
+                                        Approve
+                                    </a>
+
+                                    <!-- Decline -->
+                                    <a
+                                        href="{% url 'staff:decline_deposit' deposit.pk %}"
+                                        class="btn btn-danger btn-sm"
+                                    >
+                                        Decline
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="6" class="text-center py-4">
+
+                                No pending deposits.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- ================================================= -->
+        <!-- LOCAL TRANSFERS -->
+        <!-- ================================================= -->
+
+        <div
+            class="tab-pane fade"
+            id="local-tab"
+        >
+
+            <div class="table-responsive">
+
+                <table class="custom-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Customer</th>
+                            <th>Beneficiary</th>
+                            <th>Bank</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for transfer in local_transfers %}
+
+                        <tr>
+
+                            <td>
+                                {{ transfer.user.get_full_name }}
+                            </td>
+
+                            <td>
+                                {{ transfer.beneficiary_name }}
+                            </td>
+
+                            <td>
+                                {{ transfer.bank_name }}
+                            </td>
+
+                            <td>
+                                ${{ transfer.amount }}
+                            </td>
+
+                            <td>
+                                {{ transfer.created_at|date:"d M Y" }}
+                            </td>
+
+                            <td>
+
+                                <div class="d-flex gap-2">
+
+                                    <a
+                                        href="{% url 'staff:approve_local_transfer' transfer.pk %}"
+                                        class="btn btn-success btn-sm"
+                                    >
+                                        Approve
+                                    </a>
+
+                                    <a
+                                        href="{% url 'staff:decline_local_transfer' transfer.pk %}"
+                                        class="btn btn-danger btn-sm"
+                                    >
+                                        Decline
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="6" class="text-center py-4">
+
+                                No pending local transfers.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- ================================================= -->
+        <!-- WIRE TRANSFERS -->
+        <!-- ================================================= -->
+
+        <div
+            class="tab-pane fade"
+            id="wire-tab"
+        >
+
+            <div class="table-responsive">
+
+                <table class="custom-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Customer</th>
+                            <th>Country</th>
+                            <th>Bank</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for wire in wire_transfers %}
+
+                        <tr>
+
+                            <td>
+                                {{ wire.user.get_full_name }}
+                            </td>
+
+                            <td>
+                                {{ wire.country }}
+                            </td>
+
+                            <td>
+                                {{ wire.bank_name }}
+                            </td>
+
+                            <td>
+                                ${{ wire.amount }}
+                            </td>
+
+                            <td>
+                                {{ wire.created_at|date:"d M Y" }}
+                            </td>
+
+                            <td>
+
+                                <div class="d-flex gap-2">
+
+                                    <a
+                                        href="{% url 'staff:approve_wire_transfer' wire.pk %}"
+                                        class="btn btn-success btn-sm"
+                                    >
+                                        Approve
+                                    </a>
+
+                                    <a
+                                        href="{% url 'staff:decline_wire_transfer' wire.pk %}"
+                                        class="btn btn-danger btn-sm"
+                                    >
+                                        Decline
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="6" class="text-center py-4">
+
+                                No pending wire transfers.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

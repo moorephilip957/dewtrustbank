@@ -1,0 +1,64 @@
+{% extends 'staff/base.html' %}
+
+{% block title %}
+Deposit Proof
+{% endblock %}
+
+{% block page_title %}
+Deposit Proof
+{% endblock %}
+
+{% block content %}
+
+<div class="proof-card">
+
+    <div class="proof-header">
+
+        <div>
+
+            <h4>
+                Deposit Proof
+            </h4>
+
+            <p class="text-muted mb-0">
+
+                {{ deposit.user.get_full_name }}
+
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'staff:pending_transactions' %}"
+            class="btn btn-dark"
+        >
+            Back
+        </a>
+
+    </div>
+
+    <div class="proof-body">
+
+        {% if deposit.proof %}
+
+            <img
+                src="{{ deposit.proof.url }}"
+                alt="Deposit Proof"
+                class="proof-image"
+            >
+
+        {% else %}
+
+            <div class="alert alert-warning">
+
+                No proof uploaded.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

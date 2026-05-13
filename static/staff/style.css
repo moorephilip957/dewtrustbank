@@ -560,3 +560,52 @@ body {
     }
 
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| Deposit Proof
+|--------------------------------------------------------------------------
+*/
+
+.proof-card {
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 25px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.proof-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.proof-image {
+    width: 100%;
+
+    max-height: 800px;
+
+    object-fit: contain;
+
+    border-radius: 15px;
+
+    border: 1px solid #eee;
+}
+
+@media (max-width: 768px) {
+
+    .proof-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+}
