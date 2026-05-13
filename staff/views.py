@@ -22,7 +22,7 @@ from .models import AccountFunding
 from transaction.utils import generate_reference
 from account.models import CustomUser
 from .decorators import staff_required
-from customer.models import UserBankAccount
+from customer.models import UserBankAccount, DebitCardApplication, DebitCard
 from notification.utils import create_notification
 from kyc.models import KYCVerification
 from support.models import Ticket, TicketMessage
@@ -577,6 +577,208 @@ def ticket_detail(request, pk):
         'staff/ticket_detail.html',
         context
     )
+
+
+@login_required
+@staff_required
+def card_applications(request):
+
+    status = request.GET.get('status')
+
+    cards = DebitCard.objects.select_related(
+        'account',
+        'account__user'
+    )
+
+    if status:
+        cards = cards.filter(status=status)
+
+    context = {
+        'cards': cards.order_by('-created_at'),
+        'status': status
+    }
+
+    return render(
+        request,
+        'staff/card_applications.html',
+        context
+    )
+
+
+@login_required
+@staff_required
+def approve_card_application(request, pk):
+
+    card = get_object_or_404(
+        DebitCard,
+        pk=pk
+    )
+
+    # =========================
+    # ACTIVATE CARD
+    # =========================
+
+    card.status = 'active'
+    card.save()
+
+    # =========================
+    # NOTIFICATION
+    # =========================
+
+    create_notification(
+        user=card.account.user,
+
+        title="Debit Card Approved",
+
+        message=(
+            "Your debit card has been approved "
+            "and activated successfully."
+        ),
+
+        notif_type="success",
+
+        related_object=card
+    )
+
+    messages.success(
+        request,
+        'Card approved successfully.'
+    )
+
+    return redirect('staff:card_applications')
+
+
+@login_required
+@staff_required
+def decline_card_application(request, pk):
+
+    card = get_object_or_404(
+        DebitCard,
+        pk=pk
+    )
+
+    # =========================
+    # BLOCK / DECLINE CARD
+    # =========================
+
+    card.status = 'blocked'
+    card.save()
+
+    # =========================
+    # NOTIFICATION
+    # =========================
+
+    create_notification(
+        user=card.account.user,
+
+        title="Debit Card Declined",
+
+        message=(
+            "Your debit card application "
+            "was declined."
+        ),
+
+        notif_type="warning",
+
+        related_object=card
+    )
+
+    messages.warning(
+        request,
+        'Card application declined.'
+    )
+
+    return redirect('staff:card_applications')
+
+
+@login_required
+@staff_required
+def deactivate_card(request, pk):
+
+    card = get_object_or_404(
+        DebitCard,
+        pk=pk
+    )
+
+    # =========================
+    # BLOCK CARD
+    # =========================
+
+    card.status = 'blocked'
+    card.save()
+
+    # =========================
+    # NOTIFICATION
+    # =========================
+
+    create_notification(
+        user=card.account.user,
+
+        title="Debit Card Deactivated",
+
+        message=(
+            "Your debit card has been "
+            "temporarily deactivated."
+        ),
+
+        notif_type="warning",
+
+        related_object=card
+    )
+
+    messages.warning(
+        request,
+        'Card deactivated successfully.'
+    )
+
+    return redirect('staff:card_applications')
+
+
+@login_required
+@staff_required
+def activate_card(request, pk):
+
+    card = get_object_or_404(
+        DebitCard,
+        pk=pk
+    )
+
+    # =========================
+    # ACTIVATE CARD
+    # =========================
+
+    card.status = 'active'
+    card.save()
+
+    # =========================
+    # CREATE NOTIFICATION
+    # =========================
+
+    create_notification(
+        user=card.account.user,
+
+        title="Debit Card Activated",
+
+        message=(
+            "Your debit card has been "
+            "activated successfully."
+        ),
+
+        notif_type="success",
+
+        related_object=card
+    )
+
+    # =========================
+    # DJANGO MESSAGE
+    # =========================
+
+    messages.success(
+        request,
+        'Card activated successfully.'
+    )
+
+    return redirect('staff:card_applications')
 
 
 @login_required

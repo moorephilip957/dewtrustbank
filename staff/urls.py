@@ -61,6 +61,36 @@ urlpatterns = [
     ),
 
     path(
+        'card-applications/',
+        card_applications,
+        name='card_applications'
+    ),
+
+    path(
+        'card-application/<int:pk>/approve/',
+        approve_card_application,
+        name='approve_card_application'
+    ),
+
+    path(
+        'card-application/<int:pk>/decline/',
+        decline_card_application,
+        name='decline_card_application'
+    ),
+
+    path(
+        'deactivate-card/<int:pk>/',
+        deactivate_card,
+        name='deactivate_card'
+    ),
+
+    path(
+        'activate-card/<int:pk>/',
+        activate_card,
+        name='activate_card'
+    ),
+
+    path(
         'customer-details/<int:pk>/',
         customer_details,
         name='customer_details'

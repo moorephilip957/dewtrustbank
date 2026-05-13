@@ -171,7 +171,8 @@ class UserBankAccount(models.Model):
                 random.choices(string.digits, k=10)
             )
 
-            account_number = f"{prefix}{random_digits}"
+            account_number = f"{random_digits}"
+            # account_number = f"{prefix}{random_digits}"
 
             exists = UserBankAccount.objects.filter(
                 account_number=account_number
@@ -389,6 +390,12 @@ class DebitCardApplication(models.Model):
         ('50', 'Black - $50.00'),
     ]
 
+    APPLICATION_STATUS = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('declined', 'Declined'),
+    ]
+
     # User ForeignKey
     account = models.ForeignKey(
         UserBankAccount,
@@ -427,6 +434,12 @@ class DebitCardApplication(models.Model):
     delivery_method = models.CharField(
         max_length=20,
         choices=DELIVERY_METHODS
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=APPLICATION_STATUS,
+        default='pending'
     )
 
     created_at = models.DateTimeField(auto_now_add=True)

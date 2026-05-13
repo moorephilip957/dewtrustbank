@@ -64,7 +64,6 @@
             <table class="table table-hover mb-0">
                 <thead>
                     <tr>
-                        <!-- <th scope="col" style="width: 40px;"></th> -->
                         <th scope="col">Amount</th>
                         <th scope="col">Type</th>
                         <th scope="col">Status</th>
@@ -72,14 +71,12 @@
                         <th scope="col">Description</th>
                         <th scope="col">Direction</th>
                         <th scope="col">Created</th>
-                        <!-- <th scope="col">Action</th> -->
                     </tr>
                 </thead>
                 <tbody id="transactionsBody">
                     
                     {% for transaction in transactions %}
                     <tr>
-                        <!-- <td><i class="bi bi-chevron-right text-muted"></i></td> -->
                         <td>
                             <span class="
                                 {% if transaction.direction == 'credit' %}
@@ -129,7 +126,6 @@
                         <td class="local-time" data-utc="{{ transaction.created_at|date:'c' }}"></td>
                     </tr>
                     {% empty %}
-                    <!-- Empty State (shown when no transactions) -->
                     <tr>
                         <td colspan="9" class="empty-state">
                             <i class="bi bi-inbox empty-icon"></i>

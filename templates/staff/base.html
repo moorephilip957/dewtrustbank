@@ -117,6 +117,12 @@
                     <span>Tickets</span>
                 </a>
             </li>
+            <li class="{% if request.resolver_match.url_name == 'card_applications' %}active{% endif %}">
+                <a href="{% url 'staff:card_applications' %}">
+                    <i class="bi bi-credit-card-2-front"></i>
+                    <span>Card Applications</span>
+                </a>
+            </li>
             <li>
                 <a href="{% url 'account:logout' %}">
                     <i class="bi bi-lock"></i>
