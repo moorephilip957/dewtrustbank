@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 {% load static %}
-
+{% load humanize %}
 {% block content %}
 <!-- Main Layout -->
 <div class="container-fluid p-0">
@@ -267,7 +267,7 @@
                                                 <div>
                                                     <h6 class="fw-semibold mb-0">{{ type.name }}</h6>
                                                     <p class="small text-muted mb-0">
-                                                        {{ type.description|truncatechars:60 }}
+                                                        Activation fee: ${{ type.activation_fee|intcomma}}
                                                     </p>
                                                 </div>
                                             </div>
@@ -294,7 +294,7 @@
                                                         <div>
                                                             <h6 class="fw-semibold mb-0">{{ type.name }}</h6>
                                                             <p class="small text-muted mb-0">
-                                                                {{ type.description|truncatechars:60 }}
+                                                                Activation fee: ${{ type.activation_fee|intcomma}}
                                                             </p>
                                                         </div>
                                                     </div>

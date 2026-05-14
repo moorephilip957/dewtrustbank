@@ -12,6 +12,7 @@ class BankAccountTypeAdmin(admin.ModelAdmin):
         'daily_transfer_limit',
         'single_transfer_limit',
         'minimum_balance',
+        'activation_fee',
         'allows_overdraft',
     )
 
@@ -31,6 +32,7 @@ class BankAccountTypeAdmin(admin.ModelAdmin):
                 'single_transfer_limit',
                 'minimum_balance',
                 'allows_overdraft',
+                'activation_fee',
             )
         }),
     )
