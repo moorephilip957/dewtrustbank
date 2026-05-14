@@ -90,7 +90,7 @@ textarea {
         {% endfor %}
     </div>
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" class="spinner-form">
         {% csrf_token %}
         <div class="mb-3">
             <textarea name="message" class="form-control" rows="3" placeholder="Type your message..."></textarea>
@@ -98,7 +98,7 @@ textarea {
         <!-- <div class="mb-3">
             <input type="file" name="attachment" class="form-control">
         </div> -->
-        <button type="submit" class="btn btn-primary">Send Message</button>
+        <button type="submit" class="btn btn-primary spinner-btn">Send Message</button>
     </form>
 </div>
 {% endblock %}
