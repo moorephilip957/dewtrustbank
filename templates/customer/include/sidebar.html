@@ -28,7 +28,7 @@
                 {% endif %}
                 <div class="ms-2 flex-grow-1 min-w-0">
                     <p class="mb-0 text-sm fw-medium text-dark text-truncate">{{request.user.full_name}}</p>
-                    <p class="mb-0 text-xs text-muted text-truncate">ID: {{request.user.id}}</p>
+                    <p class="mb-0 text-xs text-muted text-truncate">ID: {{request.user.bank_account.payment_reference}}</p>
                 </div>
             </div>
             <div class="mb-2">
