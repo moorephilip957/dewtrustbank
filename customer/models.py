@@ -25,6 +25,11 @@ class BankAccountType(models.Model):
         decimal_places=2,
         default=0
     )
+    activation_fee = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        default=Decimal("0.00")
+    )
     allows_overdraft = models.BooleanField(default=False)
 
     def __str__(self):
@@ -114,14 +119,14 @@ class UserBankAccount(models.Model):
     )
 
     payment_reference = models.CharField(
-        max_length=12,
+        max_length=40,
         # unique=True,
         blank=True,
         editable=False
     )
 
     sort_code = models.CharField(
-        max_length=8,
+        max_length=20,
         # unique=True,
         blank=True,
         editable=False

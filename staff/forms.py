@@ -80,7 +80,7 @@ class BankAccountUpdateForm(forms.ModelForm):
 
         exclude = [
             'balance',
-            'account_number',
+            # 'account_number',
             'transaction_pin',
             'is_active',
             'created_at',
@@ -105,6 +105,14 @@ class BankAccountUpdateForm(forms.ModelForm):
             'account_age': forms.NumberInput(attrs={
                 'class': 'form-control'
             }),
+
+            # 'payment_reference': forms.TextInput(attrs={
+            #     'class': 'form-control'
+            # }),
+
+            # 'sort_code': forms.TextInput(attrs={
+            #     'class': 'form-control'
+            # }),
 
         }
 

@@ -138,6 +138,8 @@ def update_customer(request, pk):
         instance=customer
     )
 
+    print(bank_form.fields.keys())
+
     if request.method == 'POST':
 
         if user_form.is_valid() and bank_form.is_valid():
