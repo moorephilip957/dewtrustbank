@@ -147,3 +147,9 @@ class KYCVerificationForm(forms.ModelForm):
                 "accept":"image/*"
             }),
         }
+
+
+class PassportPhotoForm(forms.ModelForm):
+    class Meta:
+        model = KYCVerification
+        fields = ["passport_photograph"]

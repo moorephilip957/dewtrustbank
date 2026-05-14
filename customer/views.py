@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -13,6 +13,8 @@ from .forms import DebitCardApplicationForm, ChangePasswordForm
 from transaction.models import TransactionHistory
 from kyc.decorator import kyc_required
 from account.decorator import block_blocked_users
+from kyc.models import KYCVerification
+from kyc.forms import PassportPhotoForm
 
 
 @login_required
@@ -373,51 +375,30 @@ def change_transaction_pin(request):
 @block_blocked_users
 def change_password(request):
 
-    if request.method == 'POST':
+    if request.method == "POST":
 
-        form = ChangePasswordForm(
-            request.user,
-            request.POST
-        )
+        form = ChangePasswordForm(request.user, request.POST)
 
         if form.is_valid():
 
-            new_password = form.cleaned_data.get(
-                'new_password1'
-            )
+            new_password = form.cleaned_data.get("password")
 
-            # Set new password
+            # Set password securely
             request.user.set_password(new_password)
-
             request.user.save()
 
-            # Keep user logged in
-            update_session_auth_hash(
-                request,
-                request.user
-            )
+            update_session_auth_hash(request, request.user)
 
-            messages.success(
-                request,
-                'Password changed successfully.'
-            )
+            messages.success(request, "Password changed successfully.")
 
-            return redirect('customer:settings')
+            return redirect("customer:settings")
 
     else:
+        form = ChangePasswordForm(request.user)
 
-        form = ChangePasswordForm(
-            request.user
-        )
-
-    return render(
-        request,
-        'customer/change_password.html',
-        {
-            'form': form
-        }
-    )
-
+    return render(request, "customer/change_password.html", {
+        "form": form
+    })
 
 @login_required
 @kyc_required
@@ -431,3 +412,31 @@ def account_blocked(request):
         request,
         "customer/account_blocked.html",
     )
+
+
+@login_required
+@kyc_required
+def update_passport_photo(request):
+
+    kyc = get_object_or_404(KYCVerification, user=request.user)
+
+    if request.method == "POST":
+        form = PassportPhotoForm(
+            request.POST,
+            request.FILES,
+            instance=kyc
+        )
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(
+                request,
+                "Profile picture updated successfully."
+            )
+
+            return redirect("customer:settings")  # change to your profile view
+
+        messages.error(request, "Failed to update profile picture.")
+
+    return redirect("customer:settings")

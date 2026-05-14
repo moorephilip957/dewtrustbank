@@ -333,7 +333,7 @@
                     <small class="text-muted"><span class="text-danger">*</span> Required fields</small>
                 </div>
                 
-                <form id="loanApplicationForm" method="post">
+                <form id="loanApplicationForm" method="post" class="spinner-form">
                     {% csrf_token %}
                     
                     <!-- Loan Details Section -->
@@ -446,7 +446,7 @@
                                 <span id="submitText">Submit Loan Application</span>
                             </button>
                         {% else %}
-                            <button type="submit" id="submitBtn" class="btn btn-primary px-5">
+                            <button type="submit" id="submitBtn" class="btn btn-primary px-5 spinner-btn">
                                 <span class="spinner-border spinner-border-sm d-none me-2" id="submitSpinner"></span>
                                 <span id="submitText">Submit Loan Application</span>
                             </button>

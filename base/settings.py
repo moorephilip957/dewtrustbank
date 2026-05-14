@@ -244,3 +244,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     CSRF_COOKIE_SECURE = True
 # else:
 #     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+# Session expires after 30 minutes of inactivity
+SESSION_COOKIE_AGE = 60 * 30  # 30 minutes
+
+# IMPORTANT: resets session timer on every request
+SESSION_SAVE_EVERY_REQUEST = True
+
+# Optional: logout when browser closes
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

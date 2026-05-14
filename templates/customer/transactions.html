@@ -8,6 +8,203 @@
 
 {% block content %}
 
+<style>
+    /* =========================
+   CUSTOM MODAL WIDTH
+========================= */
+.custom-transaction-modal{
+    max-width: 480px;
+}
+
+
+/* =========================
+   RECEIPT CARD
+========================= */
+.transaction-receipt-card{
+    border-radius: 24px;
+    overflow: hidden;
+    background: #ffffff;
+    border: none;
+    position: relative;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.10),
+        0 5px 15px rgba(0,0,0,0.05);
+}
+
+
+/* =========================
+   BEAUTIFUL BACKGROUND
+========================= */
+.transaction-receipt-card::before{
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(13,110,253,0.05);
+    top: -100px;
+    right: -100px;
+}
+
+.transaction-receipt-card::after{
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: rgba(25,135,84,0.04);
+    bottom: -90px;
+    left: -90px;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+.receipt-header{
+    padding: 28px 22px 18px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.receipt-header h4{
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #111827;
+}
+
+.receipt-header p{
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 0;
+}
+
+
+/* =========================
+   STATUS ICON
+========================= */
+.receipt-icon{
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #fff;
+    font-size: 24px;
+
+    margin-bottom: 16px;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+
+/* =========================
+   BODY
+========================= */
+.receipt-body{
+    padding: 5px 22px 20px;
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =========================
+   RECEIPT ROWS
+========================= */
+.receipt-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    padding: 14px 0;
+
+    border-bottom: 1px dashed rgba(0,0,0,0.08);
+
+    gap: 15px;
+}
+
+.receipt-row:last-child{
+    border-bottom: none;
+}
+
+.receipt-row span{
+    color: #6b7280;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.receipt-row strong{
+    color: #111827;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: right;
+    max-width: 60%;
+    word-break: break-word;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+.receipt-footer{
+    padding: 15px 22px 25px;
+    position: relative;
+    z-index: 2;
+}
+
+.receipt-footer .btn{
+    border-radius: 12px;
+    padding: 10px 22px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media(max-width:768px){
+
+    .custom-transaction-modal{
+        max-width: 95%;
+        margin: auto;
+    }
+
+    .receipt-row{
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .receipt-row strong{
+        max-width: 100%;
+        text-align: left;
+    }
+
+    .receipt-header{
+        padding: 24px 18px 15px;
+    }
+
+    .receipt-body{
+        padding: 5px 18px 18px;
+    }
+
+    .receipt-footer{
+        padding: 12px 18px 22px;
+    }
+
+    .receipt-header h4{
+        font-size: 24px;
+    }
+}
+</style>
+
 <!-- Page Content -->
 <div class="container-fluid px-3 px-md-4 py-4 mb-5">
     
@@ -71,6 +268,7 @@
                         <th scope="col">Description</th>
                         <th scope="col">Direction</th>
                         <th scope="col">Created</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody id="transactionsBody">
@@ -124,7 +322,150 @@
                         <td>{{transaction.description}}</td>
                         <td>{{transaction.direction}}</td>
                         <td class="local-time" data-utc="{{ transaction.created_at|date:'c' }}"></td>
+                        <td>
+                            <button
+                                class="btn btn-dark btn-sm px-3"
+                                data-bs-toggle="modal"
+                                data-bs-target="#transactionModal{{ transaction.id }}"
+                            >
+                                View Receipt
+                            </button>
+                        </td>
                     </tr>
+
+
+                    <!-- TRANSACTION MODAL -->
+                    <div class="modal fade"
+                        id="transactionModal{{ transaction.id }}"
+                        tabindex="-1"
+                        aria-hidden="true">
+
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content transaction-receipt-card border-0">
+
+                                <div class="modal-body p-0">
+
+                                    <!-- RECEIPT HEADER -->
+                                    <div class="receipt-header text-center">
+
+                                        <div class="receipt-icon
+                                            {% if transaction.status == 'success' %}
+                                                bg-success
+                                            {% elif transaction.status == 'pending' %}
+                                                bg-warning
+                                            {% else %}
+                                                bg-danger
+                                            {% endif %}
+                                        ">
+                                            {% if transaction.status == 'success' %}
+                                                <i class="bi bi-check-lg"></i>
+
+                                            {% elif transaction.status == 'pending' %}
+                                                <i class="bi bi-clock"></i>
+
+                                            {% else %}
+                                                <i class="bi bi-x-lg"></i>
+                                            {% endif %}
+                                        </div>
+
+                                        <h4 class="fw-bold mb-1">
+                                            {{ transaction.user.bank_account.get_currency_symbol }}
+                                            {{ transaction.amount|intcomma }}
+                                        </h4>
+
+                                        <p class="text-muted mb-0">
+                                            {{ transaction.get_transaction_type_display }}
+                                        </p>
+                                    </div>
+
+
+                                    <!-- RECEIPT BODY -->
+                                    <div class="receipt-body">
+
+                                        <div class="receipt-row">
+                                            <span>Reference</span>
+                                            <strong>{{ transaction.reference }}</strong>
+                                        </div>
+
+                                        <div class="receipt-row">
+                                            <span>Status</span>
+
+                                            <strong class="
+                                                {% if transaction.status == 'success' %}
+                                                    text-success
+                                                {% elif transaction.status == 'pending' %}
+                                                    text-warning
+                                                {% else %}
+                                                    text-danger
+                                                {% endif %}
+                                            ">
+                                                {{ transaction.get_status_display }}
+                                            </strong>
+                                        </div>
+
+                                        <div class="receipt-row">
+                                            <span>Direction</span>
+                                            <strong class="text-capitalize">
+                                                {{ transaction.direction }}
+                                            </strong>
+                                        </div>
+
+                                        <div class="receipt-row">
+                                            <span>
+                                                {% if transaction.direction == 'credit' %}
+                                                    Sender Name
+                                                {% else %}
+                                                    Beneficiary Name
+                                                {% endif %}
+                                            </span>
+                                            <strong>
+                                                {{ transaction.beneficiary_name|default:"Not Available" }}
+                                            </strong>
+                                        </div>
+
+                                        <div class="receipt-row">
+                                            <span>Bank Name</span>
+                                            <strong>
+                                                {{ transaction.bank_name|default:"Not Available" }}
+                                            </strong>
+                                        </div>
+
+                                        <div class="receipt-row">
+                                            <span>Account Number</span>
+                                            <strong>
+                                                {{ transaction.beneficiary_number|default:"Not Available" }}
+                                            </strong>
+                                        </div>
+
+                                        <div class="receipt-row">
+                                            <span>Description</span>
+                                            <strong>
+                                                {{ transaction.description }}
+                                            </strong>
+                                        </div>
+
+                                        <div class="receipt-row">
+                                            <span>Date/Time</span>
+                                            <strong class="local-time" data-utc="{{ transaction.created_at|date:'c' }}">
+                                                {{ transaction.created_at }}
+                                            </strong>
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- FOOTER -->
+                                    <div class="receipt-footer text-center">
+                                        <button class="btn btn-dark px-4"
+                                                data-bs-dismiss="modal">
+                                            Close
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {% empty %}
                     <tr>
                         <td colspan="9" class="empty-state">

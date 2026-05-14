@@ -23,4 +23,6 @@ urlpatterns = [
 
         path("change-transaction-pin/", views.change_transaction_pin,name="change_transaction_pin"),
         path('change-password/', views.change_password, name='change_password'),
+
+        path("profile/photo/update/", views.update_passport_photo,name="update_passport_photo"),
 ]

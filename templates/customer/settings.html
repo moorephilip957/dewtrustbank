@@ -212,7 +212,42 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="profilePictureForm">
+                <form id="profilePictureForm"
+                    method="POST"
+                    action="{% url 'customer:update_passport_photo' %}"
+                    enctype="multipart/form-data" class="spinner-form">
+
+                    {% csrf_token %}
+
+                    <div class="mb-4">
+                        <label class="form-label">Select New Profile Picture</label>
+
+                        <label for="photoUpload" class="upload-area d-block">
+                            <i class="bi bi-cloud-upload"></i>
+                            <p><span class="highlight">Click to upload</span> or drag and drop</p>
+                            <p class="small mb-0">PNG, JPG or JPEG (MAX. 2MB)</p>
+
+                            <input type="file"
+                                id="photoUpload"
+                                name="passport_photograph"
+                                class="d-none"
+                                accept="image/*"
+                                required>
+                        </label>
+
+                        <div id="imagePreview" class="mt-3 d-none text-center">
+                            <img src="" alt="Preview"
+                                class="rounded-circle"
+                                style="width: 120px; height: 120px; object-fit: cover;">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 spinner-btn">
+                        <i class="bi bi-upload me-2"></i>
+                        Upload Profile Picture
+                    </button>
+                </form>
+                <!-- <form id="profilePictureForm">
                     <div class="mb-4">
                         <label class="form-label">Select New Profile Picture</label>
                         <label for="photoUpload" class="upload-area d-block">
@@ -229,7 +264,7 @@
                     <button type="submit" class="btn btn-primary w-100 py-2">
                         <i class="bi bi-upload me-2"></i>Upload Profile Picture
                     </button>
-                </form>
+                </form> -->
             </div>
         </div>
     </div>
@@ -246,7 +281,8 @@
             <div class="modal-body">
                 <form id="pinForm"
                     method="POST"
-                    action="{% url 'customer:change_transaction_pin' %}">
+                    action="{% url 'customer:change_transaction_pin' %}"
+                    class="spinner-form">
 
                     {% csrf_token %}
 
@@ -295,7 +331,7 @@
                     </div>
 
                     <button type="submit"
-                            class="btn btn-primary w-100 py-2">
+                            class="btn btn-primary w-100 py-2 spinner-btn">
                         Update Transaction PIN
                     </button>
                 </form>

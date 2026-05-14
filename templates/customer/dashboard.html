@@ -70,7 +70,7 @@
                     </div>
                 </div>
             </div>
-
+            {% include "../components/messages.html" %}
             <!-- Dashboard Grid -->
             <div class="row g-4">
                 <!-- Left Column -->
@@ -80,9 +80,15 @@
                         <div class="position-relative z-1 p-4">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div class="d-flex align-items-center">
-                                    <img src="https://ui-avatars.com/api/?name=Andrew+Levin&background=0147E1&color=fff"
+                                    {% if request.user.kycverification.passport_photograph %}
+                                    <img src="{{request.user.kycverification.passport_photograph.url}}"
                                         alt="User" class="rounded-circle border border-2 border-white-50"
                                         style="width: 3rem; height: 3rem; object-fit: cover;">
+                                    {% else %}
+                                    <img src="{% static 'frontend/custom/default-img.jpg' %}"
+                                        alt="User" class="rounded-circle border border-2 border-white-50"
+                                        style="width: 3rem; height: 3rem; object-fit: cover;">
+                                    {% endif %}
                                     <div class="ms-3">
                                         <p class="mb-0 text-white-75" id="greeting"></p>
                                         <p class="mb-0 fw-medium">{{ bank_account.user.first_name }}</p>

@@ -43,16 +43,22 @@
                 </button>
             </form>
 
-            <form method="POST" action=""
-                  onsubmit="return confirm('Delete all notifications?')">
+            <form method="POST"
+                action="{% url 'notification:delete_all_notifications' %}"
+                onsubmit="return confirm('Delete all notifications?')">
+
                 {% csrf_token %}
-                <button class="btn btn-outline-danger btn-sm">
+
+                <button type="submit"
+                        class="btn btn-outline-danger btn-sm">
                     Delete all
                 </button>
+
             </form>
 
         </div>
     </div>
+    {% include "../components/messages.html" %}
 
     <!-- Notifications Card -->
     <div class="card shadow-sm border-0 animate-fadeIn">
@@ -128,12 +134,13 @@
                             {% endif %}
 
                             <form method="POST"
-                                action=""
+                                action="{% url 'notification:delete_notification' notification.pk %}"
                                 onsubmit="return confirm('Delete this notification?')">
 
                                 {% csrf_token %}
 
-                                <button class="btn btn-sm btn-outline-danger">
+                                <button type="submit"
+                                        class="btn btn-sm btn-outline-danger">
                                     Delete
                                 </button>
 
