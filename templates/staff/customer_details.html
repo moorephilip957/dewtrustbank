@@ -258,12 +258,12 @@ Customer Account Details
                 data-bs-target="#local"
                 type="button"
             >
-                Local Transfers
+                Transaction History
             </button>
 
         </li>
 
-        <li class="nav-item" role="presentation">
+        <!-- <li class="nav-item" role="presentation">
 
             <button
                 class="nav-link"
@@ -275,7 +275,7 @@ Customer Account Details
                 Wire Transfers
             </button>
 
-        </li>
+        </li> -->
 
     </ul>
 
@@ -373,86 +373,108 @@ Customer Account Details
 
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Bank</th>
-                            <th>Beneficiary</th>
                             <th>Amount</th>
+                            <th>Type</th>
                             <th>Status</th>
+                            <th>Description</th>
+                            <th>Direction</th>
+                            <th>Date</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
 
-                    <tbody>
-
-                        {% for transfer in local_transfers %}
-
+                    <tbody id="transactionsBody">
+                    
+                        {% for transaction in history %}
                         <tr>
-
                             <td>
-                                {{ transfer.created_at|date:"d M Y" }}
-                            </td>
+                                <span class="
+                                    {% if transaction.direction == 'credit' %}
+                                        amount-credit
+                                    {% else %}
+                                        amount-debit
+                                    {% endif %}
+                                ">
+                                    {% if transaction.direction == 'credit' %}
+                                        +
+                                    {% else %}
+                                        -
+                                    {% endif %}
 
+                                    {{ transaction.user.bank_account.get_currency_symbol }}
+                                    {{ transaction.amount|intcomma }}
+                                </span>
+                            </td>
+                            <td>{{ transaction.get_transaction_type_display }}</td>
                             <td>
-                                {{ transfer.bank_name }}
-                            </td>
+                                <span class="
+                                    {% if transaction.status == 'success' %}
+                                        badge-completed
+                                    {% elif transaction.status == 'pending' %}
+                                        badge-pending
+                                    {% else %}
+                                        badge-failed
+                                    {% endif %}
+                                ">
 
+                                    {% if transaction.status == 'success' %}
+                                        <i class="bi bi-check-circle-fill"></i>
+
+                                    {% elif transaction.status == 'pending' %}
+                                        <i class="bi bi-clock-fill"></i>
+
+                                    {% else %}
+                                        <i class="bi bi-x-circle-fill"></i>
+                                    {% endif %}
+
+                                    {{ transaction.get_status_display }}
+                                </span>
+                            </td>
+                            <td>{{transaction.description}}</td>
+                            <td>{{transaction.direction}}</td>
+                            <td class="local-time" data-utc="{{ transaction.created_at|date:'c' }}"></td>
                             <td>
-                                {{ transfer.beneficiary_name }}
+                                <a href="{% url 'staff:edit_history' transaction.pk %}" class="btn btn-info">Edit</a>
+                                <a href="{% url 'staff:delete_history' transaction.pk %}" class="btn btn-danger">Delete</a>
                             </td>
-
-                            <td>
-                                ${{ transfer.amount }}
-                            </td>
-
-                            <td>
-
-                                {% if transfer.status == 'successful' %}
-
-                                    <span class="status-badge status-active">
-                                        Successful
-                                    </span>
-
-                                {% elif transfer.status == 'pending' %}
-
-                                    <span class="status-badge status-pending">
-                                        Pending
-                                    </span>
-
-                                {% else %}
-
-                                    <span class="status-badge status-blocked">
-                                        Failed
-                                    </span>
-
-                                {% endif %}
-
-                            </td>
-
                         </tr>
 
                         {% empty %}
-
                         <tr>
-
-                            <td colspan="5" class="text-center py-4">
-
-                                No local transfers found.
-
+                            <td colspan="9" class="empty-state">
+                                <i class="bi bi-inbox empty-icon"></i>
+                                <p class="empty-title">No transactions found</p>
+                                <p class="empty-text">Try adjusting your search or filter parameters</p>
                             </td>
-
                         </tr>
-
                         {% endfor %}
-
+                    
                     </tbody>
 
                 </table>
 
             </div>
+            <hr class="border-dark">
+            <div class="pagination">
+                {% if history.has_previous %}
+                    <a href="?page=1">First</a>
+                    <a href="?page={{ history.previous_page_number }}">Previous</a>
+                {% endif %}
+
+                <span>
+                    Page {{ history.number }} of {{ history.paginator.num_pages }}
+                </span>
+
+                {% if history.has_next %}
+                    <a href="?page={{ history.next_page_number }}">Next</a>
+                    <a href="?page={{ history.paginator.num_pages }}">Last</a>
+                {% endif %}
+            </div>
 
         </div>
 
         <!-- WIRE TRANSFER -->
-        <div
+        <!-- <div
             class="tab-pane fade"
             id="wire"
         >
@@ -539,7 +561,7 @@ Customer Account Details
 
             </div>
 
-        </div>
+        </div> -->
 
     </div>
 

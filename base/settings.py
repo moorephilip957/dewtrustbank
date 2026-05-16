@@ -108,7 +108,7 @@ DATABASES = {
 }
 
 
-DATABASES = {'default': dj_database_url.config(default=os.environ['DATABASE_URL'], engine='django_cockroachdb')}
+# DATABASES = {'default': dj_database_url.config(default=os.environ['DATABASE_URL'], engine='django_cockroachdb')}
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -247,7 +247,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Session expires after 30 minutes of inactivity
-SESSION_COOKIE_AGE = 60 * 30  # 30 minutes
+SESSION_COOKIE_AGE = 60 * 10  # 30 minutes
 
 # IMPORTANT: resets session timer on every request
 SESSION_SAVE_EVERY_REQUEST = True

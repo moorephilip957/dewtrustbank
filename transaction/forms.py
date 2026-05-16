@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.hashers import check_password
 
-from .models import Deposit, LocalTransfer, InternationalTransfer
+from .models import Deposit, LocalTransfer, InternationalTransfer, TransactionHistory
 from customer.models import UserBankAccount
 
 
@@ -324,3 +324,82 @@ class InternationalTransferForm(forms.ModelForm):
             )
 
         return cleaned_data
+    
+
+class TransactionHistoryForm(forms.ModelForm):
+
+    class Meta:
+        model = TransactionHistory
+
+        fields = [
+            'transaction_type',
+            'amount',
+            'status',
+            'direction',
+            'description',
+            'beneficiary_name',
+            'beneficiary_number',
+            'bank_name',
+            'created_at',   
+        ]
+
+        widgets = {
+            'transaction_type': forms.Select(
+                attrs={'class': 'form-control'}
+            ),
+
+            'amount': forms.NumberInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'status': forms.Select(
+                attrs={'class': 'form-control'}
+            ),
+
+            'direction': forms.Select(
+                attrs={'class': 'form-control'}
+            ),
+
+            'description': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'rows': 3
+                }
+            ),
+
+            'balance_before': forms.NumberInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'balance_after': forms.NumberInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'beneficiary_name': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'beneficiary_number': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+
+            'bank_name': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+            'created_at': forms.DateTimeInput(
+                attrs={
+                    'class': 'form-control',
+                    'type': 'datetime-local'
+                },
+                format='%Y-%m-%dT%H:%M'
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # format datetime for datetime-local input
+        if self.instance and self.instance.created_at:
+            self.initial['created_at'] = (
+                self.instance.created_at.strftime('%Y-%m-%dT%H:%M')
+            )

@@ -120,6 +120,18 @@ urlpatterns = [
         name='customer_details'
     ),
 
+    path(
+        'history/edit/<int:pk>/',
+        edit_history,
+        name='edit_history'
+    ),
+
+    path(
+        'history/delete/<int:pk>/',
+        delete_history,
+        name='delete_history'
+    ),
+
     # functioons
     path(
         'toggle-sms-alert/<int:pk>/',

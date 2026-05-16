@@ -7,6 +7,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
 from django.utils import timezone
+from django.core.paginator import Paginator
 
 from .models import UserBankAccount, DebitCard
 from .forms import DebitCardApplicationForm, ChangePasswordForm
@@ -98,6 +99,7 @@ def dashboard(request):
         context
     )
 
+
 @login_required
 @kyc_required
 @block_blocked_users
@@ -107,11 +109,16 @@ def transaction_list(request):
         user=request.user
     ).order_by('-created_at')
 
+    # Pagination
+    paginator = Paginator(transactions, 10)  # 10 transactions per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(
         request,
         'customer/transactions.html',
         {
-            'transactions': transactions
+            'transactions': page_obj
         }
     )
 

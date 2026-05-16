@@ -5,6 +5,7 @@ from django.contrib import messages
 from decimal import Decimal
 from django.db.models import Sum, Count
 from django.utils.timezone import now
+from django.core.paginator import Paginator 
 
 
 from transaction.models import (
@@ -16,7 +17,7 @@ from transaction.models import (
 from .forms import (
     CustomerUpdateForm,
     BankAccountUpdateForm,
-    AccountAdjustmentForm
+    AccountAdjustmentForm,
 )
 from .models import AccountFunding
 from transaction.utils import generate_reference
@@ -29,7 +30,7 @@ from support.models import Ticket, TicketMessage
 from .forms import TicketMessageForm
 from loan.models import LoanApplication
 from notification.email import send_html_email
-
+from transaction.forms import TransactionHistoryForm
 
 
 @login_required
@@ -990,21 +991,20 @@ def customer_details(request, pk):
         user=customer.user
     ).order_by('-created_at')
 
-    # Local Transfers
-    local_transfers = LocalTransfer.objects.filter(
+    # Transaction history
+    history = TransactionHistory.objects.filter(
         user=customer.user
     ).order_by('-created_at')
 
-    # International Transfers
-    wire_transfers = InternationalTransfer.objects.filter(
-        user=customer.user
-    ).order_by('-created_at')
+    # Paginate history
+    paginator = Paginator(history, 10)  # 10 items per page
+    page_number = request.GET.get('page')
+    history_page = paginator.get_page(page_number)
 
     context = {
         'customer': customer,
         'deposits': deposits,
-        'local_transfers': local_transfers,
-        'wire_transfers': wire_transfers,
+        'history': history_page,
     }
 
     return render(
@@ -1012,6 +1012,63 @@ def customer_details(request, pk):
         'staff/customer_details.html',
         context
     )
+
+
+@login_required
+@staff_required
+def edit_history(request, pk):
+
+    history = get_object_or_404(
+        TransactionHistory,
+        pk=pk
+    )
+
+    form = TransactionHistoryForm(
+        request.POST or None,
+        instance=history
+    )
+
+    if form.is_valid():
+
+        form.save()
+
+        messages.success(
+            request,
+            'Transaction history updated successfully.'
+        )
+
+        return redirect(
+            'staff:customer_details',
+            pk=history.user.bank_account.pk
+        )
+
+    context = {
+        'form': form,
+        'history': history
+    }
+
+    return render(
+        request,
+        'staff/edit_history.html',
+        context
+    )
+
+@login_required
+@staff_required
+def delete_history(request, pk):
+
+    history = get_object_or_404(
+        TransactionHistory,
+        pk=pk
+    )
+
+    customer_pk = history.user.bank_account.pk
+
+    history.delete()
+
+    messages.success(request, 'Transaction history deleted successfully.')
+
+    return redirect('staff:customer_details', pk=customer_pk)
 
 
 @login_required

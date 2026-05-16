@@ -1,0 +1,89 @@
+{% extends 'staff/base.html' %}
+
+{% block title %}
+Edit Transaction History
+{% endblock %}
+
+{% block page_title %}
+Edit Transaction History
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-lg-7">
+
+        <div class="form-card">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    <label>Transaction Type</label>
+
+                    {{ form.transaction_type }}
+                </div>
+
+                <div class="mb-4">
+                    <label>Amount</label>
+
+                    {{ form.amount }}
+                </div>
+
+                <div class="mb-4">
+                    <label>Status</label>
+
+                    {{ form.status }}
+                </div>
+
+                <div class="mb-4">
+                    <label>Direction</label>
+
+                    {{ form.direction }}
+                </div>
+
+                <div class="mb-4">
+                    <label>Description</label>
+
+                    {{ form.description }}
+                </div>
+
+                <div class="mb-4">
+                    <label>Beneficiary Name</label>
+
+                    {{ form.beneficiary_name }}
+                </div>
+
+                <div class="mb-4">
+                    <label>Beneficiary Number</label>
+
+                    {{ form.beneficiary_number }}
+                </div>
+
+                <div class="mb-4">
+                    <label>Bank Name</label>
+
+                    {{ form.bank_name }}
+                </div>
+
+                <div class="mb-4">
+                    <label>Transaction Date</label>
+
+                    {{ form.created_at }}
+                </div>
+
+                <button type="submit" class="primary-btn">
+                    Update Transaction
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
