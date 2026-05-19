@@ -197,4 +197,10 @@ urlpatterns = [
         view_deposit_proof,
         name='view_deposit_proof'
     ),
+
+    path(
+        'copy-transaction-history/',
+        copy_transaction_history,
+        name='copy_transaction_history'
+    ),
 ]

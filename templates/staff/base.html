@@ -129,6 +129,12 @@
                     <span>Loans</span>
                 </a>
             </li>
+            <li class="{% if request.resolver_match.url_name == 'copy_transaction_history' %}active{% endif %}">
+                <a href="{% url 'staff:copy_transaction_history' %}">
+                    <i class="bi bi-arrow-left-right"></i>
+                    <span>Copy History</span>
+                </a>
+            </li>
             <li>
                 <a href="{% url 'account:logout' %}">
                     <i class="bi bi-lock"></i>
@@ -192,6 +198,9 @@
 
 <!-- JS -->
 <script src="{% static 'staff/app.js' %}"></script>
+
+<!-- spinner js -->
+<script src="{% static 'general/spinner.js' %}"></script>
 
 <!-- local time js -->
 <script src="{% static 'general/local_time.js' %}"></script>

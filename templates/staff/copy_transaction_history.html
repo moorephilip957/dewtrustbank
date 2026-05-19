@@ -1,0 +1,58 @@
+{% extends 'staff/base.html' %}
+
+{% block title %}
+Copy Transaction History
+{% endblock %}
+
+{% block page_title %}
+Copy Transaction History
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow border-0">
+    {% include "../components/form_errors.html" %}
+    {% include "../components/messages.html" %}
+
+    <div class="card-body">
+
+        <form method="POST" class="spinner-form">
+
+            {% csrf_token %}
+
+            <div class="row g-3">
+
+                {% for field in form %}
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.errors %}
+                    <small class="text-danger">
+                        {{ field.errors|striptags }}
+                    </small>
+                    {% endif %}
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <button class="btn btn-primary mt-4 spinner-btn">
+                <i class="bi bi-arrow-left-right"></i>
+                Copy History
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

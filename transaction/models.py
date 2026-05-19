@@ -89,6 +89,14 @@ class TransactionHistory(models.Model):
         null=True
     )
 
+    copied_from = models.ForeignKey(
+        CustomUser,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='copied_transactions'
+    )
+
     created_at = models.DateTimeField(default=timezone.now)
 
     def generate_reference(self):

@@ -7,7 +7,6 @@ from django.db.models import Sum, Count
 from django.utils.timezone import now
 from django.core.paginator import Paginator 
 
-
 from transaction.models import (
     Deposit,
     LocalTransfer,
@@ -18,6 +17,7 @@ from .forms import (
     CustomerUpdateForm,
     BankAccountUpdateForm,
     AccountAdjustmentForm,
+    CopyTransactionHistoryForm,
 )
 from .models import AccountFunding
 from transaction.utils import generate_reference
@@ -1532,5 +1532,94 @@ def view_deposit_proof(request, pk):
     return render(
         request,
         'staff/view_deposit_proof.html',
+        context
+    )
+
+
+@login_required
+@staff_required
+def copy_transaction_history(request):
+
+    form = CopyTransactionHistoryForm()
+
+    if request.method == 'POST':
+
+        form = CopyTransactionHistoryForm(request.POST)
+
+        if form.is_valid():
+
+            source_user = form.cleaned_data['source_user']
+            target_user = form.cleaned_data['target_user']
+
+            if source_user == target_user:
+
+                messages.error(
+                    request,
+                    'Source and target users cannot be the same.'
+                )
+
+                return redirect(
+                    'staff:copy_transaction_history'
+                )
+
+            transactions = TransactionHistory.objects.filter(
+                user=source_user
+            )
+
+            copied_count = 0
+            skipped_count = 0
+
+            for tx in transactions:
+
+                exists = TransactionHistory.objects.filter(
+                    user=target_user,
+                    copied_from=source_user,
+                    amount=tx.amount,
+                    created_at=tx.created_at,
+                    description=tx.description,
+                ).exists()
+
+                if exists:
+
+                    skipped_count += 1
+                    continue
+
+                TransactionHistory.objects.create(
+                    user=target_user,
+                    amount=tx.amount,
+                    transaction_type=tx.transaction_type,
+                    direction=tx.direction,
+                    description=tx.description,
+                    reference=generate_reference(),
+                    status=tx.status,
+
+                    beneficiary_name=tx.beneficiary_name,
+                    beneficiary_number=tx.beneficiary_number,
+                    bank_name=tx.bank_name,
+
+                    created_at=tx.created_at,
+
+                    copied_from=source_user
+                )
+
+                copied_count += 1
+
+            messages.success(
+                request,
+                f'{copied_count} transactions copied successfully. '
+                f'{skipped_count} duplicates skipped.'
+            )
+
+            return redirect(
+                'staff:copy_transaction_history'
+            )
+
+    context = {
+        'form': form
+    }
+
+    return render(
+        request,
+        'staff/copy_transaction_history.html',
         context
     )

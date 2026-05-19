@@ -205,3 +205,20 @@ class TicketMessageForm(forms.ModelForm):
                 'class': 'form-control'
             }),
         }
+
+
+class CopyTransactionHistoryForm(forms.Form):
+
+    source_user = forms.ModelChoiceField(
+        queryset=CustomUser.objects.all(),
+        widget=forms.Select(attrs={
+            'class': 'form-select'
+        })
+    )
+
+    target_user = forms.ModelChoiceField(
+        queryset=CustomUser.objects.all(),
+        widget=forms.Select(attrs={
+            'class': 'form-select'
+        })
+    )
