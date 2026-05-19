@@ -1,0 +1,35 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}
+Loan Approved
+{% endblock %}
+
+{% block content %}
+
+<h2 style="color:#0037CC;">
+    Loan Approved
+</h2>
+
+<p>
+    Congratulations {{ user.get_full_name }},
+</p>
+
+<p>
+    Your loan application has been approved successfully.
+</p>
+
+<div style="
+    background:#f2f6ff;
+    padding:20px;
+    border-radius:10px;
+">
+
+    <p><strong>Loan Amount:</strong> {{ currency }}{{ amount }}</p>
+
+    <p><strong>Duration:</strong> {{ duration }} months</p>
+
+    <p><strong>Total Repayment:</strong> {{ currency }}{{ repayment }}</p>
+
+</div>
+
+{% endblock %}

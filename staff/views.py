@@ -231,7 +231,7 @@ def fund_customer(request):
             bank_account.save()
 
             # Transaction History
-            TransactionHistory.objects.create(
+            transaction = TransactionHistory.objects.create(
                 user=customer,
 
                 amount=funding.amount,
@@ -258,6 +258,24 @@ def fund_customer(request):
 
                 created_at=funding.transaction_date
             )
+
+            try:
+                send_html_email(
+                    subject="Account Credited",
+                    to_email=customer.email,
+                    template_name="emails/credit_alert.html",
+                    context={
+                        'user': customer,
+                        'amount': funding.amount,
+                        'currency': bank_account.get_currency_symbol(),
+                        'reference': transaction.reference,
+                        'dashboard_url': 'https://www.firsthavinbk.com/account/dashboard/'
+                    }
+                )
+
+            except Exception as e:
+
+                print(f"Email sending failed: {e}")
 
             # Notification
             # create_notification(
@@ -343,7 +361,7 @@ def debit_customer(request):
             bank_account.save()
 
             # Transaction History
-            TransactionHistory.objects.create(
+            transaction = TransactionHistory.objects.create(
                 user=customer,
 
                 amount=debit.amount,
@@ -370,6 +388,24 @@ def debit_customer(request):
 
                 created_at=debit.transaction_date
             )
+
+            try:
+                send_html_email(
+                    subject="Account Debited",
+                    to_email=customer.email,
+                    template_name="emails/debit_alert.html",
+                    context={
+                        'user': customer,
+                        'amount': debit.amount,
+                        'currency': bank_account.get_currency_symbol(),
+                        'reference': transaction.reference,
+                        'dashboard_url': 'https://www.firsthavinbk.com/account/dashboard/'
+                    }
+                )
+
+            except Exception as e:
+
+                print(f"Email sending failed: {e}")
 
             # Notification
             # create_notification(
@@ -465,6 +501,30 @@ def approve_kyc(request, pk):
     kyc.user.status = 'active'
     kyc.user.save()
 
+    # Notification
+    create_notification(
+        user=kyc.user,
+        title="KYC verification Approved",
+        message = f"Your KYC verification has been successfully approved. You now have full access to all verified account features.",
+        notif_type="info",
+        related_object=kyc  
+    )
+
+    try:
+        send_html_email(
+            subject="KYC Verification Approved",
+            to_email=kyc.user.email,
+            template_name="emails/kyc_approved.html",
+            context={
+                'user': kyc.user,
+                'dashboard_url': 'https://www.firsthavinbk.com/account/dashboard/'
+            }
+        )
+
+    except Exception as e:
+
+        print(f"Email sending failed: {e}")
+
     messages.success(request, 'KYC approved successfully.')
 
     return redirect('staff:kyc_requests')
@@ -479,6 +539,30 @@ def reject_kyc(request, pk):
     kyc.status = 'rejected'
     kyc.verified = False
     kyc.save()
+
+    # Notification
+    create_notification(
+        user=kyc.user,
+        title="KYC Verification Rejected",
+        message = f"Your KYC verification was not approved. Please review your submitted documents and try again, or contact support for further assistance.",
+        notif_type="info",
+        related_object=kyc  
+    )
+
+    try:
+        send_html_email(
+            subject="KYC verification Rejected",
+            to_email=kyc.user.email,
+            template_name="emails/kyc_rejected.html",
+            context={
+                'user': kyc.user,
+                'dashboard_url': 'https://www.firsthavinbk.com/account/dashboard/'
+            }
+        )
+
+    except Exception as e:
+
+        print(f"Email sending failed: {e}")
 
     messages.warning(request, 'KYC rejected.')
 
@@ -555,19 +639,20 @@ def ticket_detail(request, pk):
 
                 related_object=ticket
             )
-
-            send_html_email(
-                subject="New Support Response - Dew Trust Bank",
-                to_email=ticket.user.email,
-                template_name="emails/ticket_reply.html",
-                context={
-                    "user_name": ticket.user.username,
-                    "ticket_reference": ticket.reference_id,
-                    "message": message.content,
-                    "ticket_url": f"https://firsthavinbk.com/tickets/{ticket.id}/",
-                    "year": now().year
-                }
-            )
+            try:
+                send_html_email(
+                    subject="New Support Response",
+                    to_email=ticket.user.email,
+                    template_name="emails/support_reply.html",
+                    context={
+                        "user": ticket.user,
+                        "ticket": ticket,
+                        "reply": message.content,
+                        "ticket_url": f"https://firsthavinbk.com/support/tickets/{ticket.id}/",
+                    }
+                )
+            except Exception as e:
+                print(f"Email sending failed: {e}")
 
             return redirect('staff:ticket_detail', pk=ticket.pk)
 
@@ -632,7 +717,7 @@ def approve_card_application(request, pk):
     create_notification(
         user=card.account.user,
 
-        title="Debit Card Approved",
+        title="Debit Card Activated",
 
         message=(
             "Your debit card has been approved "
@@ -643,6 +728,22 @@ def approve_card_application(request, pk):
 
         related_object=card
     )
+
+
+    # email
+    try:
+        send_html_email(
+            subject="Debit Card Activated",
+            to_email=card.account.user.email,
+            template_name="emails/card_activated.html",
+            context={
+                "user": card.account.user,
+                "card": card,
+                "last4": card.card_number[-4:],
+            }
+        )
+    except Exception as e:
+        print(f"Email sending failed: {e}")
 
     messages.success(
         request,
@@ -934,6 +1035,47 @@ def approve_loan(request, pk):
         related_object=loan
     )
 
+
+    # =========================
+    # EMAIL ALERT
+    # =========================
+
+    try:
+
+        send_html_email(
+
+            subject="Loan Disbursed Successfully",
+
+            to_email=loan.applicant.email,
+
+            template_name="emails/loan_approved.html",
+
+            context={
+
+                'user': loan.applicant,
+
+                'amount': loan.amount,
+
+                'currency': account.get_currency_symbol(),
+
+                'duration': loan.duration_months,
+
+                'repayment': loan.total_repayment,
+
+                'dashboard_url': (
+                    'https://www.firsthavinbk.com/'
+                    'account/dashboard/'
+                )
+            }
+
+        )
+
+    except Exception as e:
+
+        print(
+            f"Loan approval email failed: {e}"
+        )
+
     messages.success(
         request,
         'Loan approved and disbursed.'
@@ -1141,26 +1283,129 @@ def toggle_account_status(request, pk):
         pk=pk
     )
 
-    # Toggle Status
+    # =========================
+    # BLOCK ACCOUNT
+    # =========================
+
     if user.status == 'active':
 
         user.status = 'blocked'
+        user.save()
+
+        # =========================
+        # NOTIFICATION
+        # =========================
+
+        create_notification(
+
+            user=user,
+
+            title="Account Restricted",
+
+            message=(
+                "Your account has been temporarily "
+                "restricted. Please contact support "
+                "for assistance."
+            ),
+
+            notif_type="warning"
+        )
+
+        # =========================
+        # EMAIL ALERT
+        # =========================
+
+        try:
+
+            send_html_email(
+
+                subject="Account Restricted",
+
+                to_email=user.email,
+
+                template_name="emails/account_blocked.html",
+
+                context={
+                    'user': user,
+                    'dashboard_url': (
+                        'https://www.firsthavinbk.com/'
+                        'account/dashboard/'
+                    )
+                }
+            )
+
+        except Exception as e:
+
+            print(
+                f"Blocked account email failed: {e}"
+            )
 
         messages.warning(
             request,
             'Customer account has been blocked.'
         )
 
+    # =========================
+    # ACTIVATE ACCOUNT
+    # =========================
+
     else:
 
         user.status = 'active'
+        user.save()
+
+        # =========================
+        # NOTIFICATION
+        # =========================
+
+        create_notification(
+
+            user=user,
+
+            title="Account Unblocked",
+
+            message=(
+                "Your account has been activated "
+                "successfully. You may now continue "
+                "using banking services."
+            ),
+
+            notif_type="success"
+        )
+
+        # =========================
+        # EMAIL ALERT
+        # =========================
+
+        try:
+
+            send_html_email(
+
+                subject="Account Activated",
+
+                to_email=user.email,
+
+                template_name="emails/account_unblocked.html",
+
+                context={
+                    'user': user,
+                    'dashboard_url': (
+                        'https://www.firsthavinbk.com/'
+                        'account/dashboard/'
+                    )
+                }
+            )
+
+        except Exception as e:
+
+            print(
+                f"Account activation email failed: {e}"
+            )
 
         messages.success(
             request,
             'Customer account has been activated.'
         )
-
-    user.save()
 
     return redirect(
         'staff:customer_details',
@@ -1232,44 +1477,118 @@ def approve_deposit(request, pk):
 
     bank_account = deposit.user.bank_account
 
-    # Add Balance
+    # =========================
+    # ADD BALANCE
+    # =========================
+
     bank_account.balance += deposit.amount
     bank_account.save()
 
-    # Update Deposit Status
+    # =========================
+    # UPDATE DEPOSIT STATUS
+    # =========================
+
     deposit.status = 'confirmed'
     deposit.save()
 
-    # Transaction History
-    TransactionHistory.objects.create(
+    # =========================
+    # CREATE TRANSACTION HISTORY
+    # =========================
+
+    transaction = TransactionHistory.objects.create(
+
         user=deposit.user,
+
         amount=deposit.amount,
+
         transaction_type='deposit',
+
         direction='credit',
-        description=f"Approved {deposit.method} deposit",
+
+        description=(
+            f"Approved {deposit.method} deposit"
+        ),
+
         reference=generate_reference(),
+
         status="success",
 
         beneficiary_name="****self",
+
         beneficiary_number="******self",
-        bank_name="Dew Trust Bank",
+
+        bank_name="First havin Bank",
     )
 
-    # Notification
+    # =========================
+    # CREATE NOTIFICATION
+    # =========================
+
     create_notification(
+
         user=deposit.user,
+
         title="Deposit Approved",
-        message=f"Your deposit of {bank_account.get_currency_symbol()}{deposit.amount} has been approved successfully.",
+
+        message=(
+            f"Your deposit of "
+            f"{bank_account.get_currency_symbol()}"
+            f"{deposit.amount} has been approved "
+            f"successfully."
+        ),
+
         notif_type="success",
+
         related_object=deposit
     )
+
+    # =========================
+    # EMAIL ALERT
+    # =========================
+
+    try:
+
+        send_html_email(
+
+            subject="Deposit Approved",
+
+            to_email=deposit.user.email,
+
+            template_name="emails/deposit_approved.html",
+
+            context={
+
+                'user': deposit.user,
+
+                'amount': deposit.amount,
+
+                'currency': (
+                    bank_account.get_currency_symbol()
+                ),
+
+                'reference': transaction.reference,
+
+                'dashboard_url': (
+                    'https://www.firsthavinbk.com/'
+                    'account/dashboard/'
+                )
+            }
+        )
+
+    except Exception as e:
+
+        print(
+            f"Deposit approval email failed: {e}"
+        )
 
     messages.success(
         request,
         'Deposit approved successfully.'
     )
 
-    return redirect('staff:pending_transactions')
+    return redirect(
+        'staff:pending_transactions'
+    )
 
 
 @login_required
@@ -1283,7 +1602,7 @@ def decline_deposit(request, pk):
         status='pending'
     )
 
-    deposit.status = 'declined'
+    deposit.status = 'failed'
     deposit.save()
 
     # Transaction History
@@ -1329,39 +1648,119 @@ def approve_local_transfer(request, pk):
         status='pending'
     )
 
+    # =========================
+    # UPDATE STATUS
+    # =========================
+
     transfer.status = 'successful'
     transfer.save()
 
-    # Transaction History
-    TransactionHistory.objects.create(
+    # =========================
+    # CREATE TRANSACTION HISTORY
+    # =========================
+
+    transaction = TransactionHistory.objects.create(
+
         user=transfer.user,
+
         amount=transfer.amount,
+
         transaction_type='local_transfer',
+
         direction='debit',
-        description=f"Approved local transfer to {transfer.beneficiary_name}",
+
+        description=(
+            f"Approved local transfer to "
+            f"{transfer.beneficiary_name}"
+        ),
+
         reference=generate_reference(),
+
         status="success",
 
         beneficiary_name=transfer.beneficiary_name,
+
         beneficiary_number=transfer.beneficiary_number,
+
         bank_name=transfer.bank_name,
     )
 
-    # Notification
+    # =========================
+    # CREATE NOTIFICATION
+    # =========================
+
     create_notification(
+
         user=transfer.user,
+
         title="Transfer Approved",
-        message=f"Your local transfer of {transfer.user.bank_account.get_currency_symbol()}{transfer.amount} was approved successfully.",
+
+        message=(
+            f"Your local transfer of "
+            f"{transfer.user.bank_account.get_currency_symbol()}"
+            f"{transfer.amount} was approved "
+            f"successfully."
+        ),
+
         notif_type="success",
+
         related_object=transfer
     )
+
+    # =========================
+    # EMAIL ALERT
+    # =========================
+
+    try:
+
+        send_html_email(
+
+            subject="Local Transfer Approved",
+
+            to_email=transfer.user.email,
+
+            template_name="emails/transfer_success.html",
+
+            context={
+
+                'user': transfer.user,
+
+                'amount': transfer.amount,
+
+                'currency': (
+                    transfer.user.bank_account
+                    .get_currency_symbol()
+                ),
+
+                'beneficiary': (
+                    transfer.beneficiary_name
+                ),
+
+                'bank_name': transfer.bank_name,
+
+                'reference': transaction.reference,
+
+                'dashboard_url': (
+                    'https://www.firsthavinbk.com/'
+                    'account/dashboard/'
+                )
+            }
+        )
+
+    except Exception as e:
+
+        print(
+            f"Local transfer email failed: {e}"
+        )
 
     messages.success(
         request,
         'Local transfer approved.'
     )
 
-    return redirect('staff:pending_transactions')
+    return redirect(
+        'staff:pending_transactions'
+    )
 
 
 @login_required
@@ -1377,44 +1776,125 @@ def decline_local_transfer(request, pk):
 
     bank_account = transfer.user.bank_account
 
-    # Refund Balance
+    # =========================
+    # REFUND BALANCE
+    # =========================
+
     bank_account.balance += transfer.amount
     bank_account.save()
 
-    # Update Status
+    # =========================
+    # UPDATE STATUS
+    # =========================
+
     transfer.status = 'failed'
     transfer.save()
 
-    # Transaction History
-    TransactionHistory.objects.create(
+    # =========================
+    # CREATE TRANSACTION HISTORY
+    # =========================
+
+    transaction = TransactionHistory.objects.create(
+
         user=transfer.user,
+
         amount=transfer.amount,
+
         transaction_type='local_transfer',
+
         direction='credit',
-        description=f"Refund for declined transfer to {transfer.beneficiary_name}",
+
+        description=(
+            f"Refund for declined transfer "
+            f"to {transfer.beneficiary_name}"
+        ),
+
         reference=generate_reference(),
+
         status="failed",
 
         beneficiary_name=transfer.beneficiary_name,
+
         beneficiary_number=transfer.beneficiary_number,
+
         bank_name=transfer.bank_name,
     )
 
-    # Notification
+    # =========================
+    # CREATE NOTIFICATION
+    # =========================
+
     create_notification(
+
         user=transfer.user,
+
         title="Transfer Declined",
-        message=f"Your local transfer of {bank_account.get_currency_symbol()}{transfer.amount} was declined and refunded.",
+
+        message=(
+            f"Your local transfer of "
+            f"{bank_account.get_currency_symbol()}"
+            f"{transfer.amount} was declined "
+            f"and refunded."
+        ),
+
         notif_type="error",
+
         related_object=transfer
     )
+
+    # =========================
+    # EMAIL ALERT
+    # =========================
+
+    try:
+
+        send_html_email(
+
+            subject="Local Transfer Declined",
+
+            to_email=transfer.user.email,
+
+            template_name="emails/transfer_declined.html",
+
+            context={
+
+                'user': transfer.user,
+
+                'amount': transfer.amount,
+
+                'currency': (
+                    bank_account.get_currency_symbol()
+                ),
+
+                'beneficiary': (
+                    transfer.beneficiary_name
+                ),
+
+                'bank_name': transfer.bank_name,
+
+                'reference': transaction.reference,
+
+                'dashboard_url': (
+                    'https://www.firsthavinbk.com/'
+                    'account/dashboard/'
+                )
+            }
+        )
+
+    except Exception as e:
+
+        print(
+            f"Declined transfer email failed: {e}"
+        )
 
     messages.warning(
         request,
         'Local transfer declined and refunded.'
     )
 
-    return redirect('staff:pending_transactions')
+    return redirect(
+        'staff:pending_transactions'
+    )
 
 
 @login_required
@@ -1428,39 +1908,119 @@ def approve_wire_transfer(request, pk):
         status='pending'
     )
 
+    # =========================
+    # UPDATE STATUS
+    # =========================
+
     wire.status = 'successful'
     wire.save()
 
-    # Transaction History
-    TransactionHistory.objects.create(
+    # =========================
+    # CREATE TRANSACTION HISTORY
+    # =========================
+
+    transaction = TransactionHistory.objects.create(
+
         user=wire.user,
+
         amount=wire.amount,
+
         transaction_type='wire_transfer',
+
         direction='debit',
-        description=f"Approved wire transfer to {wire.beneficiary_name}",
+
+        description=(
+            f"Approved wire transfer to "
+            f"{wire.beneficiary_name}"
+        ),
+
         reference=generate_reference(),
+
         status="success",
 
         beneficiary_name=wire.beneficiary_name,
+
         beneficiary_number=wire.beneficiary_number,
+
         bank_name=wire.bank_name,
     )
 
-    # Notification
+    # =========================
+    # CREATE NOTIFICATION
+    # =========================
+
     create_notification(
+
         user=wire.user,
+
         title="Wire Transfer Approved",
-        message=f"Your wire transfer of {wire.user.bank_account.get_currency_symbol()}{wire.amount} was approved successfully.",
+
+        message=(
+            f"Your wire transfer of "
+            f"{wire.user.bank_account.get_currency_symbol()}"
+            f"{wire.amount} was approved "
+            f"successfully."
+        ),
+
         notif_type="success",
+
         related_object=wire
     )
+
+    # =========================
+    # EMAIL ALERT
+    # =========================
+
+    try:
+
+        send_html_email(
+
+            subject="Wire Transfer Approved",
+
+            to_email=wire.user.email,
+
+            template_name="emails/transfer_success.html",
+
+            context={
+
+                'user': wire.user,
+
+                'amount': wire.amount,
+
+                'currency': (
+                    wire.user.bank_account
+                    .get_currency_symbol()
+                ),
+
+                'beneficiary': (
+                    wire.beneficiary_name
+                ),
+
+                'bank_name': wire.bank_name,
+
+                'reference': transaction.reference,
+
+                'dashboard_url': (
+                    'https://www.firsthavinbk.com/'
+                    'account/dashboard/'
+                )
+            }
+        )
+
+    except Exception as e:
+
+        print(
+            f"Wire transfer email failed: {e}"
+        )
 
     messages.success(
         request,
         'Wire transfer approved.'
     )
 
-    return redirect('staff:pending_transactions')
+    return redirect(
+        'staff:pending_transactions'
+    )
 
 
 @login_required
@@ -1476,44 +2036,125 @@ def decline_wire_transfer(request, pk):
 
     bank_account = wire.user.bank_account
 
-    # Refund
+    # =========================
+    # REFUND BALANCE
+    # =========================
+
     bank_account.balance += wire.amount
     bank_account.save()
 
-    # Update Status
+    # =========================
+    # UPDATE STATUS
+    # =========================
+
     wire.status = 'failed'
     wire.save()
 
-    # Transaction History
-    TransactionHistory.objects.create(
+    # =========================
+    # CREATE TRANSACTION HISTORY
+    # =========================
+
+    transaction = TransactionHistory.objects.create(
+
         user=wire.user,
+
         amount=wire.amount,
+
         transaction_type='wire_transfer',
+
         direction='credit',
-        description=f"Refund for declined wire transfer to {wire.beneficiary_name}",
+
+        description=(
+            f"Refund for declined wire "
+            f"transfer to {wire.beneficiary_name}"
+        ),
+
         reference=generate_reference(),
+
         status="failed",
 
         beneficiary_name=wire.beneficiary_name,
+
         beneficiary_number=wire.beneficiary_number,
+
         bank_name=wire.bank_name,
     )
 
-    # Notification
+    # =========================
+    # CREATE NOTIFICATION
+    # =========================
+
     create_notification(
+
         user=wire.user,
+
         title="Wire Transfer Declined",
-        message=f"Your wire transfer of {bank_account.get_currency_symbol()}{wire.amount} was declined and refunded.",
+
+        message=(
+            f"Your wire transfer of "
+            f"{bank_account.get_currency_symbol()}"
+            f"{wire.amount} was declined "
+            f"and refunded."
+        ),
+
         notif_type="error",
+
         related_object=wire
     )
+
+    # =========================
+    # EMAIL ALERT
+    # =========================
+
+    try:
+
+        send_html_email(
+
+            subject="Wire Transfer Declined",
+
+            to_email=wire.user.email,
+
+            template_name="emails/transfer_declined.html",
+
+            context={
+
+                'user': wire.user,
+
+                'amount': wire.amount,
+
+                'currency': (
+                    bank_account.get_currency_symbol()
+                ),
+
+                'beneficiary': (
+                    wire.beneficiary_name
+                ),
+
+                'bank_name': wire.bank_name,
+
+                'reference': transaction.reference,
+
+                'dashboard_url': (
+                    'https://www.firsthavinbk.com/'
+                    'account/dashboard/'
+                )
+            }
+        )
+
+    except Exception as e:
+
+        print(
+            f"Declined wire transfer email failed: {e}"
+        )
 
     messages.warning(
         request,
         'Wire transfer declined and refunded.'
     )
 
-    return redirect('staff:pending_transactions')
+    return redirect(
+        'staff:pending_transactions'
+    )
 
 
 @login_required

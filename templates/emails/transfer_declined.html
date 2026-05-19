@@ -1,0 +1,56 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}
+Transfer Declined
+{% endblock %}
+
+{% block content %}
+
+<h2 style="color:#dc3545;">
+    Transfer Declined
+</h2>
+
+<p>
+    Hello {{ user.get_full_name }},
+</p>
+
+<p>
+    Your transfer request could not be completed.
+</p>
+
+<div style="
+    background:#fff5f5;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+">
+
+    <p>
+        <strong>Amount:</strong>
+        {{ currency }}{{ amount }}
+    </p>
+
+    <p>
+        <strong>Beneficiary:</strong>
+        {{ beneficiary }}
+    </p>
+
+    <p>
+        <strong>Bank:</strong>
+        {{ bank_name }}
+    </p>
+
+    <p>
+        <strong>Reference:</strong>
+        {{ reference }}
+    </p>
+
+    <p>
+        The amount has been refunded back to your account.
+    </p>
+
+</div>
+
+{% include 'emails/components/button.html' with url=dashboard_url text="View Dashboard" %}
+
+{% endblock %}

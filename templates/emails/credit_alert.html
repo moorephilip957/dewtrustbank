@@ -1,0 +1,35 @@
+
+{% extends 'emails/base.html' %}
+
+{% block title %}
+Credit Alert
+{% endblock %}
+
+{% block content %}
+
+<h2 style="color:#0037CC;">
+    Credit Alert
+</h2>
+
+<p>
+    Your account has been credited successfully.
+</p>
+
+<div style="
+    background:#f2f6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+">
+
+    <p><strong>Amount:</strong> {{ currency }}{{ amount }}</p>
+
+    <p><strong>Description:</strong> {{ description }}</p>
+
+    <p><strong>Balance:</strong> {{ currency }}{{ balance }}</p>
+
+    <p><strong>Reference:</strong> {{ reference }}</p>
+
+</div>
+
+{% endblock %}

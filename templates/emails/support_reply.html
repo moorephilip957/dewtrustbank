@@ -1,0 +1,41 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}
+Support Reply
+{% endblock %}
+
+{% block content %}
+
+<h2 style="color:#0037CC;">
+    New Support Reply
+</h2>
+
+<p>
+    Hello {{ user.get_full_name }},
+</p>
+
+<p>
+    Our support team replied to your ticket.
+</p>
+
+<div style="
+    background:#f7f9fc;
+    padding:20px;
+    border-radius:10px;
+">
+
+    <p><strong>Ticket:</strong> {{ ticket.reference_id }}</p>
+
+    <p><strong>Subject:</strong> {{ ticket.subject }}</p>
+
+    <hr>
+
+    <p>
+        {{ reply }}
+    </p>
+
+</div>
+
+{% include 'emails/components/button.html' with url=ticket_url text="View Ticket" %}
+
+{% endblock %}

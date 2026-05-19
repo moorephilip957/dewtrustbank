@@ -1,0 +1,34 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}
+KYC Rejected
+{% endblock %}
+
+{% block content %}
+
+<h2 style="color:#dc3545;">
+    KYC Verification Rejected
+</h2>
+
+<p>
+    Hello {{ user.get_full_name }},
+</p>
+
+<p>
+    Unfortunately your KYC verification was rejected.
+</p>
+
+<div style="
+    background:#fff5f5;
+    padding:20px;
+    border-radius:10px;
+">
+
+    <strong>Reason:</strong>
+    {{ reason }}
+
+</div>
+
+{% include 'emails/components/button.html' with url=kyc_url text="Resubmit Verification" %}
+
+{% endblock %}

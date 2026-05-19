@@ -1,0 +1,33 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}
+Card Activated
+{% endblock %}
+
+{% block content %}
+
+<h2 style="color:#0037CC;">
+    Debit Card Activated
+</h2>
+
+<p>
+    Your debit card is now active and ready for use.
+</p>
+
+<div style="
+    background:#f2f6ff;
+    padding:20px;
+    border-radius:10px;
+">
+
+    <p><strong>Card Type:</strong> {{ card.card_type|title }}</p>
+
+    <p><strong>Currency:</strong> {{ card.currency }}</p>
+
+    <p><strong>Card Number:</strong>
+        **** **** **** {{ last4 }}
+    </p>
+
+</div>
+
+{% endblock %}

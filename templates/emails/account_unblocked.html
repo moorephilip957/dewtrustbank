@@ -1,0 +1,34 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}
+Account Activated
+{% endblock %}
+
+{% block content %}
+
+<h2 style="color:#0037CC;">
+    Account Activated
+</h2>
+
+<p>
+    Hello {{ user.get_full_name }},
+</p>
+
+<p style="line-height:28px;">
+    Your account has been unblocked successfully.
+</p>
+
+<div style="
+    background:#eef9f0;
+    border-left:4px solid #28a745;
+    padding:20px;
+    border-radius:10px;
+">
+
+    You may now continue using all banking services.
+
+</div>
+
+{% include 'emails/components/button.html' with url=dashboard_url text="Go to Dashboard" %}
+
+{% endblock %}

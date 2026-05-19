@@ -11,21 +11,47 @@ def send_html_email(
     from_email=None
 ):
 
-    if context is None:
-        context = {}
+    context = context or {}
 
-    from_email = from_email or settings.DEFAULT_FROM_EMAIL
+    from_email = (
+        from_email or
+        settings.DEFAULT_FROM_EMAIL
+    )
 
-    # Render HTML template
-    html_content = render_to_string(template_name, context)
+    html_content = render_to_string(
+        template_name,
+        context
+    )
 
-    # Create email
+    text_content = (
+        "Please view this email in HTML format."
+    )
+
     email = EmailMultiAlternatives(
         subject=subject,
-        body="This email requires HTML support.",
+        body=text_content,
         from_email=from_email,
         to=[to_email],
     )
 
-    email.attach_alternative(html_content, "text/html")
-    email.send()
+    email.attach_alternative(
+        html_content,
+        "text/html"
+    )
+
+    email.send(fail_silently=False)
+
+
+
+# send_html_email(
+#     subject="Deposit Approved",
+#     to_email=user.email,
+#     template_name="emails/deposit_approved.html",
+#     context={
+#         'user': user,
+#         'amount': deposit.amount,
+#         'currency': user.bank_account.get_currency_symbol(),
+#         'reference': transaction.reference,
+#         'dashboard_url': 'https://www.firsthavinbk.com/account/dashboard/'
+#     }
+# )

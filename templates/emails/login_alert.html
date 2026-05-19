@@ -1,0 +1,42 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}
+Login Alert
+{% endblock %}
+
+{% block content %}
+
+<h2 style="color:#0037CC;">
+    New Login Detected
+</h2>
+
+<p>
+    Hello {{ user.get_full_name }},
+</p>
+
+<p style="line-height:28px;">
+    A new login to your Firtst Havin Bank account was detected.
+</p>
+
+<div style="
+    background:#f2f6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+">
+
+    <p><strong>Device:</strong> {{ device }}</p>
+
+    <p><strong>Location:</strong> {{ location }}</p>
+
+    <p><strong>Time:</strong> {{ login_time }}</p>
+
+</div>
+
+<p style="margin-top:25px;">
+    If this wasn't you, please reset your password immediately.
+</p>
+
+{% include 'emails/components/button.html' with url=security_url text="Secure Account" %}
+
+{% endblock %}

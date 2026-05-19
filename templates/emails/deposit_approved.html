@@ -1,0 +1,71 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}
+Deposit Approved
+{% endblock %}
+
+{% block content %}
+
+<h2 style="
+    margin-top:0;
+    color:#0037CC;
+">
+    Deposit Approved
+</h2>
+
+<p style="
+    font-size:15px;
+    line-height:28px;
+">
+    Hello {{ user.get_full_name }},
+</p>
+
+<p style="
+    font-size:15px;
+    line-height:28px;
+    color:#444;
+">
+
+    Your deposit of
+
+    <strong>
+        {{ currency }}{{ amount }}
+    </strong>
+
+    has been approved successfully and added to your account.
+
+</p>
+
+<div style="
+    background:#f2f6ff;
+    border-left:4px solid #0037CC;
+    padding:18px;
+    margin-top:25px;
+    border-radius:8px;
+">
+
+    <p style="margin:0;">
+        <strong>Reference:</strong>
+        {{ reference }}
+    </p>
+
+    <p style="margin:10px 0 0;">
+        <strong>Status:</strong>
+        Successful
+    </p>
+
+</div>
+
+{% include 'emails/components/button.html' with url=dashboard_url text="View Account" %}
+
+<p style="
+    margin-top:35px;
+    color:#666;
+    font-size:14px;
+">
+
+    Thank you for banking with us.
+
+</p>
+
+{% endblock %}

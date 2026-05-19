@@ -142,6 +142,7 @@ class Deposit(models.Model):
     class Status(models.TextChoices):
         PENDING = "pending", "Pending"
         CONFIRMED = "confirmed", "Confirmed"
+        FAILED = "failed", "failed"
 
     user = models.ForeignKey(
         CustomUser,

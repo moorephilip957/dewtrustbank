@@ -108,7 +108,7 @@ DATABASES = {
 }
 
 
-# DATABASES = {'default': dj_database_url.config(default=os.environ['DATABASE_URL'], engine='django_cockroachdb')}
+DATABASES = {'default': dj_database_url.config(default=os.environ['DATABASE_URL'], engine='django_cockroachdb')}
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -254,3 +254,18 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 # Optional: logout when browser closes
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# email smtp
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = "smtp.zoho.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+# Default sender
+DEFAULT_FROM_EMAIL = f"First Havin <{os.getenv('EMAIL_HOST_USER')}>"
+# SERVER_EMAIL = DEFAULT_FROM_EMAIL

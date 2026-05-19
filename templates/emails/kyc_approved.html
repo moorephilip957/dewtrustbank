@@ -1,0 +1,34 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}
+KYC Approved
+{% endblock %}
+
+{% block content %}
+
+<h2 style="color:#0037CC;">
+    KYC Verification Approved
+</h2>
+
+<p>
+    Congratulations {{ user.get_full_name }},
+</p>
+
+<p style="line-height:28px;">
+    Your identity verification has been approved successfully.
+</p>
+
+<div style="
+    background:#eef9f0;
+    border-left:4px solid #28a745;
+    padding:20px;
+    border-radius:10px;
+">
+
+    Your account is now fully verified.
+
+</div>
+
+{% include 'emails/components/button.html' with url=dashboard_url text="Go to Dashboard" %}
+
+{% endblock %}

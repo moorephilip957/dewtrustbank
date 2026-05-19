@@ -1,0 +1,57 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}
+Transfer Failed
+{% endblock %}
+
+{% block content %}
+
+<h2 style="color:#dc3545;">
+    Transfer Failed
+</h2>
+
+<p>
+    Hello {{ user.get_full_name }},
+</p>
+
+<p>
+    We were unable to process your transfer request at this time.
+</p>
+
+<div style="
+    background:#fff5f5;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+    border-left:4px solid #dc3545;
+">
+
+    <p>
+        <strong>Amount:</strong>
+        {{ currency }}{{ amount }}
+    </p>
+
+    <p>
+        <strong>Beneficiary:</strong>
+        {{ beneficiary }}
+    </p>
+
+    <p>
+        <strong>Bank:</strong>
+        {{ bank_name }}
+    </p>
+
+    <p>
+        <strong>Status:</strong>
+        <span style="color:#dc3545;">Failed</span>
+    </p>
+
+    <p style="margin-top:10px;">
+        If this was unexpected, please try again or contact support.
+    </p>
+
+</div>
+
+{% include 'emails/components/button.html' with url=dashboard_url text="Go to Dashboard" %}
+
+{% endblock %}

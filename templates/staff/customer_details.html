@@ -298,6 +298,7 @@ Customer Account Details
                             <th>Reference</th>
                             <th>Amount</th>
                             <th>Status</th>
+                            <!-- <th>Action</th> -->
                         </tr>
                     </thead>
 
@@ -327,6 +328,12 @@ Customer Account Details
                                         Confirmed
                                     </span>
 
+                                {% elif deposit.status == 'failed' %}
+
+                                    <span class="status-badge status-failed">
+                                        Failed
+                                    </span>
+
                                 {% else %}
 
                                     <span class="status-badge status-pending">
@@ -337,16 +344,50 @@ Customer Account Details
 
                             </td>
 
+                            <!-- =========================
+                                ACTION BUTTONS
+                            ========================== -->
+
+                            <!-- <td>
+
+                                {% if deposit.status == "pending" %}
+
+                                    <div class="d-flex gap-2">
+
+                                        <a href="{% url 'staff:approve_deposit' deposit.pk %}"
+                                        class="btn btn-sm btn-success">
+
+                                            <i class="bi bi-check-circle"></i>
+                                            Approve
+                                        </a>
+
+                                        <a href="{% url 'staff:decline_deposit' deposit.pk %}"
+                                        class="btn btn-sm btn-danger">
+
+                                            <i class="bi bi-x-circle"></i>
+                                            Decline
+                                        </a>
+
+                                    </div>
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        —
+                                    </span>
+
+                                {% endif %}
+
+                            </td> -->
+
                         </tr>
 
                         {% empty %}
 
                         <tr>
 
-                            <td colspan="4" class="text-center py-4">
-
+                            <td colspan="5" class="text-center py-4">
                                 No deposit history found.
-
                             </td>
 
                         </tr>

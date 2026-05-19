@@ -9,6 +9,7 @@ from .utils import generate_reference
 from notification.utils import create_notification
 from kyc.decorator import kyc_required
 from account.decorator import block_blocked_users
+from customer.utils import handle_transaction_events
 
 
 @login_required
@@ -36,8 +37,19 @@ def local_transfer(request):
                 bank_name=data["bank_name"],
             )
 
+            # handle email + notifications
+            handle_transaction_events(
+                result=result,
+                user=request.user,
+                data=data,
+                account=account
+            )
 
+            # =========================
+            # REDIRECTS (ONLY HERE)
+            # =========================
             if result.status == "success":
+                
                 return redirect("transaction:transfer_success", tx_id=result.transaction.id)
 
             elif result.status == "pending":
@@ -77,6 +89,14 @@ def wire_transfer(request):
                 beneficiary_name=data["beneficiary_name"],
                 beneficiary_number=data["beneficiary_number"],
                 bank_name=data["bank_name"],
+            )
+
+            # handle email + notifications
+            handle_transaction_events(
+                result=result,
+                user=request.user,
+                data=data,
+                account=account
             )
 
             if result.status == "success":

@@ -1,0 +1,52 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}
+Transfer Submitted
+{% endblock %}
+
+{% block content %}
+
+<h2 style="color:#0037CC;">
+    Transfer Submitted
+</h2>
+
+<p>
+    Hello {{ user.get_full_name }},
+</p>
+
+<p>
+    Your transfer request has been submitted successfully
+    and is currently pending approval.
+</p>
+
+<div style="
+    background:#f2f6ff;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
+">
+
+    <p>
+        <strong>Amount:</strong>
+        {{ currency }}{{ amount }}
+    </p>
+
+    <p>
+        <strong>Beneficiary:</strong>
+        {{ beneficiary }}
+    </p>
+
+    <p>
+        <strong>Bank:</strong>
+        {{ bank_name }}
+    </p>
+
+    <p>
+        Status: Pending Approval
+    </p>
+
+</div>
+
+{% include 'emails/components/button.html' with url=dashboard_url text="View Dashboard" %}
+
+{% endblock %}
