@@ -12,3 +12,4 @@ django-pwa
 dj_database_url
 django-cockroachdb==4.2
 psycopg2-binary
+twilio

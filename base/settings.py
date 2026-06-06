@@ -108,7 +108,7 @@ DATABASES = {
 }
 
 
-DATABASES = {'default': dj_database_url.config(default=os.environ['DATABASE_URL'], engine='django_cockroachdb')}
+# DATABASES = {'default': dj_database_url.config(default=os.environ['DATABASE_URL'], engine='django_cockroachdb')}
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -184,7 +184,6 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
-
 
 
 from django.contrib.messages import constants as messages
@@ -269,3 +268,9 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 # Default sender
 DEFAULT_FROM_EMAIL = f"First Havin <{os.getenv('EMAIL_HOST_USER')}>"
 # SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+# twilio
+TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
+TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
+TWILIO_SENDER_ID = "FirstHavin"
