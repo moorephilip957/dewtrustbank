@@ -119,6 +119,18 @@
         // FINAL SUBMIT TO DJANGO
         // =========================
         document.getElementById('confirmTransferBtn')?.addEventListener('click', function () {
+            const btn = this;
+            const spinner = document.getElementById('confirmBtnSpinner');
+            const text = document.getElementById('confirmBtnText');
+
+            // show spinner
+            spinner.classList.remove('d-none');
+            btn.disabled = true;
+
+            // optional: change text (nice UX)
+            text.textContent = 'Processing...';
+
+            // submit form
             document.getElementById('transferForm').submit();
         });
 
