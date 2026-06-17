@@ -20,6 +20,12 @@
 
     <!-- custom css -->
     <link rel="stylesheet" href="{% static 'account/verifypin.css' %}">
+
+    <style>
+        #resendOtp:hover{
+            color: black !important;
+        }
+    </style>
 </head>
 
 <body class="d-flex align-items-center justify-content-center vh-100">
@@ -37,10 +43,10 @@
             <div class="circle one"></div>
             <div class="circle two"></div>
 
-            <h4>Verify Your Identity</h4>
-            <p>Please enter your secure 6-digit PIN to continue</p>
+            <h4>Verify Your Account</h4>
+            <p>Please enter the 6-digit OTP sent to your email to continue.</p>
             {% include "../components/form_errors.html" %}
-        {% include "../components/messages.html" %}
+            {% include "../components/messages.html" %}
         </div>
         
         <!-- ================= IMAGE SECTION ================= -->
@@ -56,7 +62,7 @@
         <div class="form-section">
 
             <p class="text-center text-muted small">
-                Enter your 6-digit verification PIN
+                Enter the 6-digit OTP sent to your email
             </p>
 
             <form method="POST" id="otpForm" class="spinner-form">
@@ -83,7 +89,7 @@
                 <!-- MOBILE INPUT -->
                 <div class="mobile-only">
 
-                    <input id="mobileOtp" class="form-control text-center mb-3" readonly placeholder="Enter Your Pin">
+                    <input id="mobileOtp" class="form-control text-center mb-3" readonly placeholder="Enter the 6-digit OTP">
 
                     <!-- Hidden mobile OTP -->
                     <input type="hidden" name="mobile_otp" id="mobileHiddenOtp">
@@ -110,11 +116,24 @@
 
                 </div>
 
-                <button type="submit" class="btn-verify spinner-btn">
-                    Verify Pin
+                <button type="submit" class="btn-verify spinner-btn mb-3">
+                    Verify OTP
                 </button>
-
+                
             </form>
+            <center>
+                <!-- <button
+                    type="button"
+                    id="resendOtp"
+                    class="btn btn-link text-primary text-decoration-none p-0">
+                    Resend OTP
+                </button> -->
+                <a href="{% url 'account:resend_login_otp' %}"
+                    id="resendOtp"
+                    class="text-decoration-none text-primary">
+                        Resend OTP
+                </a>
+            </center>
 
         </div>
 

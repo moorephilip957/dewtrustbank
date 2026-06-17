@@ -9,6 +9,8 @@ from .forms import CustomUserRegistrationForm
 from customer.forms import UserBankAccountForm
 from customer.models import BankAccountType,UserBankAccount
 from account.models import CustomUser
+from otp.models import OTP
+from notification.email import send_html_email
 
 def register_view(request):
     account_types = BankAccountType.objects.all()
@@ -87,8 +89,41 @@ def login_view(request):
                     login(request, user)
                     return redirect('staff:staff_dashboard')
 
-                # Save OTP + user in session
+                # Generate OTP
+                code = str(random.randint(100000, 999999))
+
+                # Invalidate old login OTPs
+                OTP.objects.filter(
+                    user=user,
+                    otp_type='login',
+                    is_used=False
+                ).update(is_used=True)
+
+                otp = OTP.objects.create(
+                    user=user,
+                    code=code,
+                    otp_type='login'
+                )
+
                 request.session['pin_user_id'] = user.id
+
+                try:
+
+                    send_html_email(
+                        subject="Login Verification Code",
+                        to_email=user.email,
+                        template_name="emails/login_otp.html",
+                        context={
+                            'user': user,
+                            'otp': otp.code,
+                        }
+                    )
+
+                except Exception as e:
+
+                    print(
+                        f"Login OTP email failed: {e}"
+                    )
 
                 # session expiry handling
                 if remember:
@@ -109,27 +144,33 @@ def login_view(request):
     return render(request, 'account/login.html')
 
 
-
 def pin_verify_view(request):
-
     pin_user_id = request.session.get('pin_user_id')
 
     if not pin_user_id:
         return redirect('account:login')
 
     try:
-        user_account = UserBankAccount.objects.get(
-            user_id=pin_user_id
+
+        user = CustomUser.objects.get(
+            id=pin_user_id
         )
 
-    except UserBankAccount.DoesNotExist:
+    except CustomUser.DoesNotExist:
+
+        request.session.pop(
+            'pin_user_id',
+            None
+        )
 
         messages.error(
             request,
-            "Bank account not found."
+            "User not found."
         )
 
-        return redirect('account:login')
+        return redirect(
+            'account:login'
+        )
 
     if request.method == 'POST':
 
@@ -138,51 +179,172 @@ def pin_verify_view(request):
             or request.POST.get('mobile_otp')
         )
 
-        print(entered_pin)
+        if not entered_pin:
 
-        # CHECK HASHED PIN
-        if user_account.check_transaction_pin(entered_pin):
+            messages.error(
+                request,
+                "Please enter the verification code."
+            )
 
-            try:
-                user = CustomUser.objects.get(
-                    id=pin_user_id
-                )
+            return render(
+                request,
+                'account/verify_pin.html'
+            )
 
-            except CustomUser.DoesNotExist:
+        # Get latest unused login OTP
+        otp = OTP.objects.filter(
 
-                messages.error(
-                    request,
-                    "User not found."
-                )
+            user=user,
 
-                return redirect('account:login')
+            otp_type='login',
 
-            # LOGIN USER
-            login(request, user)
+            is_used=False
 
-            # CLEAN SESSION
-            request.session.pop('pin_user_id', None)
+        ).order_by(
+            '-created_at'
+        ).first()
+
+        if not otp:
+
+            messages.error(
+                request,
+                "No active verification code found."
+            )
+
+        elif otp.is_expired():
+
+            messages.error(
+                request,
+                "OTP has expired."
+            )
+
+        elif otp.code != entered_pin:
+
+            messages.error(
+                request,
+                "Invalid verification code."
+            )
+
+        else:
+
+            otp.mark_used()
+
+            login(
+                request,
+                user
+            )
+
+            request.session.pop(
+                'pin_user_id',
+                None
+            )
 
             messages.success(
                 request,
                 "Login successful!"
             )
 
-            return redirect('customer:dashboard')
-
-        else:
-
-            messages.error(
-                request,
-                "Invalid verification pin. pleasze try again."
+            return redirect(
+                'customer:dashboard'
             )
 
     return render(
         request,
-        'account/verify_pin.html',
-        {
-            'user_account': user_account
-        }
+        'account/verify_pin.html'
+    )
+
+
+def resend_login_otp(request):
+    pin_user_id = request.session.get(
+        'pin_user_id'
+    )
+
+    if not pin_user_id:
+
+        messages.error(
+            request,
+            "Your login session has expired. Please login again."
+        )
+
+        return redirect(
+            'account:login'
+        )
+
+    try:
+
+        user = CustomUser.objects.get(
+            pk=pin_user_id
+        )
+
+    except CustomUser.DoesNotExist:
+
+        request.session.pop(
+            'pin_user_id',
+            None
+        )
+
+        messages.error(
+            request,
+            "User not found."
+        )
+
+        return redirect(
+            'account:login'
+        )
+
+    # Invalidate previous login OTPs
+    OTP.objects.filter(
+        user=user,
+        otp_type='login',
+        is_used=False
+    ).update(
+        is_used=True
+    )
+
+    # Generate new OTP
+    code = str(
+        random.randint(
+            100000,
+            999999
+        )
+    )
+
+    otp = OTP.objects.create(
+        user=user,
+        code=code,
+        otp_type='login'
+    )
+
+    try:
+
+        send_html_email(
+            subject="Login Verification Code",
+            to_email=user.email,
+            template_name="emails/login_otp.html",
+            context={
+                'user': user,
+                'otp': otp.code,
+            }
+        )
+
+        messages.success(
+            request,
+            "A new verification code has been sent to your email."
+        )
+
+    except Exception as e:
+
+        print(
+            f"Resend OTP email failed: {e}"
+        )
+
+        messages.error(
+            request,
+            "Unable to send verification code. Please try again."
+        )
+
+    return redirect(
+        'account:verify_pin'
     )
 
 

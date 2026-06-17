@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'notification',
     'kyc',
     'staff',
+    'otp',
 ]
 
 MIDDLEWARE = [

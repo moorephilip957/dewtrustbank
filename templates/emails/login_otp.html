@@ -1,0 +1,38 @@
+{% extends 'emails/base.html' %}
+
+{% block content %}
+
+<h2>
+    Login Verification
+</h2>
+
+<p>
+    Hello {{ user.get_full_name }},
+</p>
+
+<p>
+    Your login verification code is:
+</p>
+
+<div style="
+    font-size:32px;
+    font-weight:bold;
+    text-align:left;
+    letter-spacing:8px;
+    margin:20px 0;
+">
+
+    {{ otp }}
+
+</div>
+
+<p>
+    This code expires in 10 minutes.
+</p>
+
+<p>
+    If you did not attempt to login,
+    please ignore this email.
+</p>
+
+{% endblock %}
