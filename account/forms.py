@@ -74,5 +74,5 @@ class CustomUserRegistrationForm(UserCreationForm):
                 field.widget.attrs.update({
                     'class': 'form-control form-control-custom',
                     'placeholder': field_name.replace('_', ' ').title(),
-                    'required': 'required' if field_name != 'middle_name' else ''
+                    # 'required': 'required' if field_name != 'middle_name' else ''
                 })
