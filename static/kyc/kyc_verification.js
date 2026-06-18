@@ -87,9 +87,9 @@
                 if (this.files && this.files[0]) {
                     const file = this.files[0];
 
-                    // Validate file size (2MB max)
-                    if (file.size > 2 * 1024 * 1024) {
-                        alert('⚠️ File size exceeds 2MB limit. Please choose a smaller file.');
+                    // Validate file size (15MB max)
+                    if (file.size > 15 * 1024 * 1024) {
+                        alert('⚠️ File size exceeds 15MB limit. Please choose a smaller file.');
                         this.value = '';
                         return;
                     }
