@@ -32,12 +32,12 @@ class OTP(models.Model):
         }.get(self.otp_type, 10)
         return timezone.now() > self.created_at + timezone.timedelta(minutes=expiry_minutes)
 
-    # def mark_used(self):
-    #     self.is_used = True
-    #     self.save()
-
     def mark_used(self):
-        self.delete()
+        self.is_used = True
+        self.save()
+
+    # def mark_used(self):
+    #     self.delete()
 
     def __str__(self):
         return f"{self.otp_type.upper()} OTP for {self.user.email}"
