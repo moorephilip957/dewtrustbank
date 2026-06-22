@@ -5,7 +5,9 @@ from django.contrib import messages
 from decimal import Decimal
 from django.db.models import Sum, Count
 from django.utils.timezone import now
+from datetime import timedelta
 from django.core.paginator import Paginator 
+from django.utils import timezone
 
 from transaction.models import (
     Deposit,
@@ -31,6 +33,7 @@ from .forms import TicketMessageForm
 from loan.models import LoanApplication
 from notification.email import send_html_email
 from transaction.forms import TransactionHistoryForm
+from otp.models import OTP
 
 
 @login_required
@@ -2262,5 +2265,55 @@ def copy_transaction_history(request):
     return render(
         request,
         'staff/copy_transaction_history.html',
+        context
+    )
+
+
+@login_required
+@staff_required
+def otp_list(request):
+
+    search = request.GET.get(
+        'search',
+        ''
+    )
+
+    otp_queryset = OTP.objects.select_related(
+        'user'
+    ).filter(
+        created_at__gte=timezone.now() - timedelta(days=30)
+    )
+
+    if search:
+
+        otp_queryset = otp_queryset.filter(
+            user__email__icontains=search
+        )
+
+    otp_queryset = otp_queryset.order_by(
+        '-created_at'
+    )
+
+    paginator = Paginator(
+        otp_queryset,
+        20
+    )
+
+    page_number = request.GET.get(
+        'page'
+    )
+
+    otps = paginator.get_page(
+        page_number
+    )
+
+    context = {
+        'otps': otps,
+        'search': search,
+    }
+
+    return render(
+        request,
+        'staff/otp_list.html',
         context
     )

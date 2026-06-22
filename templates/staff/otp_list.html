@@ -1,0 +1,221 @@
+{% extends 'staff/base.html' %}
+
+{% block title %}
+OTP Management
+{% endblock %}
+
+{% block page_title %}
+OTP Management
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm border-0">
+    <form method="GET" class="mb-3">
+
+    <input
+        type="text"
+        name="search"
+        value="{{ search }}"
+        class="form-control"
+        placeholder="Search by email..."
+    >
+
+</form>
+
+    <div class="card-body">
+
+        <table class="table align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Type</th>
+                    <th>Code</th>
+                    <th>Created</th>
+                    <th>Status</th>
+                    <!-- <th>Action</th> -->
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for otp in otps %}
+
+                <tr>
+
+                    <td>
+                        {{ otp.user.get_full_name }}
+                    </td>
+
+                    <td>
+                        {{ otp.user.email }}
+                    </td>
+
+                    <td>
+                        {{ otp.get_otp_type_display }}
+                    </td>
+
+                    <td>
+
+                        <span class="badge bg-dark">
+                            {{ otp.code }}
+                        </span>
+
+                    </td>
+
+                    <td>
+                        {{ otp.created_at }}
+                    </td>
+
+                    <td>
+
+                        {% if otp.is_used %}
+
+                            <span class="badge bg-secondary">
+                                Used
+                            </span>
+
+                        {% elif otp.is_expired %}
+
+                            <span class="badge bg-danger">
+                                Expired
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-success">
+                                Active
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <!-- <td>
+
+                        <a
+                            href=""
+                            class="btn btn-sm btn-primary"
+                        >
+
+                            Resend
+
+                        </a>
+
+                    </td> -->
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="7" class="text-center">
+
+                        No active OTPs found.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% if otps.has_other_pages %}
+
+            <nav class="mt-4">
+
+                <ul class="pagination justify-content-center">
+
+                    {% if otps.has_previous %}
+
+                        <li class="page-item">
+
+                            <a
+                                class="page-link"
+                                href="?page=1"
+                            >
+
+                                First
+
+                            </a>
+
+                        </li>
+
+                        <li class="page-item">
+
+                            <a
+                                class="page-link"
+                                href="?page={{ otps.previous_page_number }}"
+                            >
+
+                                Previous
+
+                            </a>
+
+                        </li>
+
+                    {% endif %}
+
+                    <li class="page-item active">
+
+                        <span class="page-link">
+
+                            Page {{ otps.number }}
+                            of
+                            {{ otps.paginator.num_pages }}
+
+                        </span>
+
+                    </li>
+
+                    {% if otps.has_next %}
+
+                        <li class="page-item">
+
+                            <a
+                                class="page-link"
+                                href="?page={{ otps.next_page_number }}"
+                            >
+
+                                Next
+
+                            </a>
+
+                        </li>
+
+                        <li class="page-item">
+
+                            <a
+                                class="page-link"
+                                href="?page={{ otps.paginator.num_pages }}"
+                            >
+
+                                Last
+
+                            </a>
+
+                        </li>
+
+                    {% endif %}
+
+                </ul>
+
+            </nav>
+
+            {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

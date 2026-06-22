@@ -203,4 +203,10 @@ urlpatterns = [
         copy_transaction_history,
         name='copy_transaction_history'
     ),
+
+    path(
+        'otp-management/',
+        otp_list,
+        name='otp_list'
+    ),
 ]
