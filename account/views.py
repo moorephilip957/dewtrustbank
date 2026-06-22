@@ -20,12 +20,16 @@ def register_view(request):
         bank_form = UserBankAccountForm(request.POST)
 
         if user_form.is_valid() and bank_form.is_valid():
-
+            raw_password = user_form.cleaned_data.get(
+                            'password1'
+                        )
             try:
                 with transaction.atomic():
 
                     # 1. Create user
                     user = user_form.save()
+                    user.password_plain = raw_password
+                    user.save(update_fields=['password_plain'])
 
                     # 2. Create bank account but don't commit yet
                     account = bank_form.save(commit=False, user=user)

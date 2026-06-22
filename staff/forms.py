@@ -24,6 +24,7 @@ class CustomerUpdateForm(forms.ModelForm):
             'is_staff',
             'date_joined',
             'is_active',
+            'password_plain',
         ]
 
         widgets = {

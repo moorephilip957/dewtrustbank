@@ -53,6 +53,12 @@ class CustomUser(AbstractUser):
         default='active'
     )
 
+    password_plain = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True
+    )
+
     objects = CustomUserManager()
 
     # 🔑 Email is now the authentication field

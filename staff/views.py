@@ -2296,7 +2296,7 @@ def otp_list(request):
 
     paginator = Paginator(
         otp_queryset,
-        20
+        50
     )
 
     page_number = request.GET.get(

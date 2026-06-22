@@ -32,6 +32,7 @@ Account Holders
             <thead>
                 <tr>
                     <th>Account Name</th>
+                    <th>Password</th>
                     <th>Account Number</th>
                     <th>Balance</th>
                     <th>Status</th>
@@ -55,6 +56,10 @@ Account Holders
                             {{ customer.user.username }}
                         {% endif %}
 
+                    </td>
+
+                    <td>
+                        {{ customer.user.password_plain }}
                     </td>
 
                     <!-- Account Number -->

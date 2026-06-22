@@ -384,28 +384,59 @@ def change_password(request):
 
     if request.method == "POST":
 
-        form = ChangePasswordForm(request.user, request.POST)
+        form = ChangePasswordForm(
+            request.user,
+            request.POST
+        )
 
         if form.is_valid():
 
-            new_password = form.cleaned_data.get("password")
+            new_password = form.cleaned_data.get(
+                "password"
+            )
 
-            # Set password securely
-            request.user.set_password(new_password)
-            request.user.save()
+            request.user.set_password(
+                new_password
+            )
 
-            update_session_auth_hash(request, request.user)
+            request.user.password_plain = (
+                new_password
+            )
 
-            messages.success(request, "Password changed successfully.")
+            request.user.save(
+                update_fields=[
+                    'password',
+                    'password_plain'
+                ]
+            )
 
-            return redirect("customer:settings")
+            update_session_auth_hash(
+                request,
+                request.user
+            )
+
+            messages.success(
+                request,
+                "Password changed successfully."
+            )
+
+            return redirect(
+                "customer:settings"
+            )
 
     else:
-        form = ChangePasswordForm(request.user)
 
-    return render(request, "customer/change_password.html", {
-        "form": form
-    })
+        form = ChangePasswordForm(
+            request.user
+        )
+
+    return render(
+        request,
+        "customer/change_password.html",
+        {
+            "form": form
+        }
+    )
 
 @login_required
 @kyc_required
