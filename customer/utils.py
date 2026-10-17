@@ -56,7 +56,7 @@ def handle_transaction_events(result, user, data, account):
                     "bank_name": bank_name,
                     "reference": result.transaction.reference,
                     "dashboard_url": (
-                        "https://www.firsthavinbk.com/account/dashboard/"
+                        "https://www.firsthavinonline.com/account/dashboard/"
                     )
                 }
             )
@@ -113,7 +113,7 @@ def handle_transaction_events(result, user, data, account):
                     "beneficiary": beneficiary,
                     "bank_name": bank_name,
                     "dashboard_url": (
-                        "https://www.firsthavinbk.com/account/dashboard/"
+                        "https://www.firsthavinonline.com/account/dashboard/"
                     )
                 }
             )
@@ -170,7 +170,7 @@ def handle_transaction_events(result, user, data, account):
                     "beneficiary": beneficiary,
                     "bank_name": bank_name,
                     "dashboard_url": (
-                        "https://www.firsthavinbk.com/account/dashboard/"
+                        "https://www.firsthavinonline.com/account/dashboard/"
                     )
                 }
             )

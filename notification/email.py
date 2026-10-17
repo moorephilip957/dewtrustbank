@@ -52,6 +52,6 @@ def send_html_email(
 #         'amount': deposit.amount,
 #         'currency': user.bank_account.get_currency_symbol(),
 #         'reference': transaction.reference,
-#         'dashboard_url': 'https://www.firsthavinbk.com/account/dashboard/'
+#         'dashboard_url': 'https://www.firsthavinonline.com/account/dashboard/'
 #     }
 # )
